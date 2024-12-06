@@ -4,8 +4,8 @@ services:
     ports:
       - 8001:5000
     volumes:
-      - .:/app
-    command: flask --app api run --debug --host=0.0.0.0
+      - ./api:/app/api
+    command: flask --app api.app run --debug --host=0.0.0.0
     depends_on:
       - db
   db:
