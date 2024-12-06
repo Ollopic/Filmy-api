@@ -1,0 +1,9 @@
+[tool.ruff]
+# Always generate Python 3.11-compatible code.
+target-version = "py311"
+
+# Allow lines to be as long as 120.
+line-length = 120
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
