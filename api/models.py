@@ -1,4 +1,4 @@
-from .app import db
+from .database import db
 
 # Modèle pour la table 'Person'
 class Person(db.Model):
