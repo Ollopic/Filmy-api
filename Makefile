@@ -25,3 +25,11 @@ log-api: ## log api container
 
 log-db: ## log db container
 	@docker compose logs -f --tail 100 db
+
+lint: ## check errors in python code without fixing them
+	@docker compose exec api ruff check ${DIR_TO_REFAC}
+unsafe-fixes: ## fix python code for unsafe issues
+	@docker compose exec api ruff check --fix --unsafe-fixes ${DIR_TO_REFAC}
+format: ## format python code and sort import
+	@docker compose exec api ruff format ${DIR_TO_REFAC}
+	@docker compose exec api ruff check --select I --fix ${DIR_TO_REFAC}
