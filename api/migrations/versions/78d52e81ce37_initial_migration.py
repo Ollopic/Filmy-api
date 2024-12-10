@@ -23,6 +23,7 @@ def upgrade():
     sa.Column('id_tmdb', sa.Integer(), nullable=False),
     sa.Column('data', sa.JSON(), nullable=False),
     sa.Column('image_path', sa.String(), nullable=True),
+    sa.Column('poster_path', sa.String(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('person',
