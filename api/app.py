@@ -4,7 +4,8 @@ app = Flask(__name__)
 
 
 # Importation des modèles
-from .models import Person, Film, CreditsFilm, User, CollectionItem
+from .models import CollectionItem, CreditsFilm, Film, Person, User
+
 
 @app.route("/")
 def hello():
