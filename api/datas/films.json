@@ -1,0 +1,395 @@
+{
+  "film1": {
+      "adult": false,
+      "backdrop_path": "/tElnmtQ6yz1PjN1kePNl8yMSb59.jpg",
+      "belongs_to_collection": {
+          "id": 1241984,
+          "name": "Vaiana - Saga",
+          "poster_path": "/hiGRhPYMKU8aXfxmSD7lqJNSzJG.jpg",
+          "backdrop_path": "/4OgaftFNqtE1UvfDDb2Eov7A5Rz.jpg"
+      },
+      "budget": 150000000,
+      "genres": [
+          {
+          "id": 16,
+          "name": "Animation"
+          },
+          {
+          "id": 12,
+          "name": "Aventure"
+          },
+          {
+          "id": 10751,
+          "name": "Familial"
+          },
+          {
+          "id": 35,
+          "name": "Comédie"
+          }
+      ],
+      "homepage": "",
+      "id": 1241982,
+      "imdb_id": "tt13622970",
+      "origin_country": [
+          "US"
+      ],
+      "original_language": "en",
+      "original_title": "Moana 2",
+      "overview": "Vaiana 2 embarquera les spectateurs dans un périple inédit en compagnie de Vaiana, Maui et d’un improbable nouvel équipage de marins. Après avoir reçu un appel inattendu de ses ancêtres, la jeune femme entreprend un voyage qui la conduira jusqu’aux eaux dangereuses des confins des mers d’Océanie pour y vivre une aventure comme jamais vécue auparavant.",
+      "popularity": 4485.032,
+      "poster_path": "/f4voSsbPTvaQwicwd1dyxICow6c.jpg",
+      "production_companies": [
+          {
+          "id": 2,
+          "logo_path": "/wdrCwmRnLFJhEoH8GSfymY85KHT.png",
+          "name": "Walt Disney Pictures",
+          "origin_country": "US"
+          },
+          {
+          "id": 6125,
+          "logo_path": "/tzsMJBJZINu7GHzrpYzpReWhh66.png",
+          "name": "Walt Disney Animation Studios",
+          "origin_country": "US"
+          },
+          {
+          "id": 158526,
+          "logo_path": "/tzsMJBJZINu7GHzrpYzpReWhh66.png",
+          "name": "Walt Disney Animation Studios",
+          "origin_country": "CA"
+          }
+      ],
+      "production_countries": [
+          {
+          "iso_3166_1": "CA",
+          "name": "Canada"
+          },
+          {
+          "iso_3166_1": "US",
+          "name": "United States of America"
+          }
+      ],
+      "release_date": "2024-11-21",
+      "revenue": 600055655,
+      "runtime": 100,
+      "spoken_languages": [
+          {
+          "english_name": "English",
+          "iso_639_1": "en",
+          "name": "English"
+          }
+      ],
+      "status": "Released",
+      "tagline": "",
+      "title": "Vaiana 2",
+      "video": false,
+      "vote_average": 6.9,
+      "vote_count": 418
+    },
+  "film2": {
+    "adult": false,
+    "backdrop_path": "/2ndyL4HjM9JLMqBSgbyCM57aMWl.jpg",
+    "belongs_to_collection": {
+      "id": 727761,
+      "name": "Terrifier Collection",
+      "poster_path": "/60PWLvDagquCysvzNWmpdPeVvsx.jpg",
+      "backdrop_path": "/j0SjkcJPLWEgtu7VGHLLWiQKAap.jpg"
+    },
+    "budget": 2000000,
+    "genres": [
+      {
+        "id": 27,
+        "name": "Horror"
+      },
+      {
+        "id": 53,
+        "name": "Thriller"
+      }
+    ],
+    "homepage": "https://terrifier3.com/",
+    "id": 1034541,
+    "imdb_id": "tt27911000",
+    "origin_country": [
+      "US"
+    ],
+    "original_language": "en",
+    "original_title": "Terrifier 3",
+    "overview": "Five years after surviving Art the Clown's Halloween massacre, Sienna and Jonathan are still struggling to rebuild their shattered lives. As the holiday season approaches, they try to embrace the Christmas spirit and leave the horrors of the past behind. But just when they think they're safe, Art returns, determined to turn their holiday cheer into a new nightmare. The festive season quickly unravels as Art unleashes his twisted brand of terror, proving that no holiday is safe.",
+    "popularity": 922.731,
+    "poster_path": "/ju10W5gl3PPK3b7TjEmVOZap51I.jpg",
+    "production_companies": [
+      {
+        "id": 238902,
+        "logo_path": "/jLAg5fOlAw1Jl8Q7WoyKxh1H22y.png",
+        "name": "Cineverse",
+        "origin_country": "US"
+      },
+      {
+        "id": 15157,
+        "logo_path": "/yezzLb9RbKNtQUsyYySAqC9TQr7.png",
+        "name": "Bloody Disgusting",
+        "origin_country": "US"
+      },
+      {
+        "id": 84591,
+        "logo_path": null,
+        "name": "Dark Age Cinema",
+        "origin_country": "US"
+      },
+      {
+        "id": 114220,
+        "logo_path": "/b5n3DtfUySREkq4Xi962zMg69qq.png",
+        "name": "Fuzz on the Lens Productions",
+        "origin_country": "US"
+      },
+      {
+        "id": 213025,
+        "logo_path": "/bFz17QGqfF8wiQAH3T4kfzKC8dU.png",
+        "name": "The Coven",
+        "origin_country": "US"
+      }
+    ],
+    "production_countries": [
+      {
+        "iso_3166_1": "US",
+        "name": "United States of America"
+      }
+    ],
+    "release_date": "2024-10-09",
+    "revenue": 89012340,
+    "runtime": 125,
+    "spoken_languages": [
+      {
+        "english_name": "English",
+        "iso_639_1": "en",
+        "name": "English"
+      }
+    ],
+    "status": "Released",
+    "tagline": "Prepare to be terrified again.",
+    "title": "Terrifier 3",
+    "video": false,
+    "vote_average": 6.8,
+    "vote_count": 1200
+  },
+  "film3": {
+    "adult": false,
+    "backdrop_path": "/idoSsWF6oOlrMFBd966OUd0aB8g.jpg",
+    "belongs_to_collection": null,
+    "budget": 0,
+    "genres": [
+      {
+        "id": 37,
+        "name": "Western"
+      }
+    ],
+    "homepage": "",
+    "id": 114975,
+    "imdb_id": "tt0048806",
+    "origin_country": [
+      "US"
+    ],
+    "original_language": "en",
+    "original_title": "Wichita",
+    "overview": "Former buffalo hunter and entrepreneur Wyatt Earp arrives in the lawless cattle town of Wichita Kansas. His skill as a gun-fighter makes him a perfect candidate for Marshal, but he refuses the job until he feels morally obligated to bring law and order to this wild town.",
+    "popularity": 5.278,
+    "poster_path": "/ne83mYnmEBLhXnU8qawebKTA1nv.jpg",
+    "production_companies": [
+      {
+        "id": 4928,
+        "logo_path": null,
+        "name": "Allied Artists Pictures",
+        "origin_country": "US"
+      }
+    ],
+    "production_countries": [
+      {
+        "iso_3166_1": "US",
+        "name": "United States of America"
+      }
+    ],
+    "release_date": "1955-07-03",
+    "revenue": 0,
+    "runtime": 81,
+    "spoken_languages": [
+      {
+        "english_name": "English",
+        "iso_639_1": "en",
+        "name": "English"
+      }
+    ],
+    "status": "Released",
+    "tagline": "THE TRUE SAVAGE STORY OF WYATT EARP!",
+    "title": "Wichita",
+    "video": false,
+    "vote_average": 6.2,
+    "vote_count": 51
+  },
+  "film4": {
+    "adult": false,
+    "backdrop_path": "/3V4kLQg0kSqPLctI5ziYWabAZYF.jpg",
+    "belongs_to_collection": {
+      "id": 558216,
+      "name": "Venom Collection",
+      "poster_path": "/4bXIKqdZIjR8wKgZaGDaLhLj4yF.jpg",
+      "backdrop_path": "/vq340s8DxA5Q209FT8PHA6CXYOx.jpg"
+    },
+    "budget": 120000000,
+    "genres": [
+      {
+        "id": 28,
+        "name": "Action"
+      },
+      {
+        "id": 878,
+        "name": "Science Fiction"
+      },
+      {
+        "id": 12,
+        "name": "Adventure"
+      }
+    ],
+    "homepage": "https://venom.movie",
+    "id": 912649,
+    "imdb_id": "tt16366836",
+    "origin_country": [
+      "US"
+    ],
+    "original_language": "en",
+    "original_title": "Venom: The Last Dance",
+    "overview": "Eddie and Venom are on the run. Hunted by both of their worlds and with the net closing in, the duo are forced into a devastating decision that will bring the curtains down on Venom and Eddie's last dance.",
+    "popularity": 12656.263,
+    "poster_path": "/aosm8NMQ3UyoBVpSxyimorCQykC.jpg",
+    "production_companies": [
+      {
+        "id": 5,
+        "logo_path": "/71BqEFAF4V3qjjMPCpLuyJFB9A.png",
+        "name": "Columbia Pictures",
+        "origin_country": "US"
+      },
+      {
+        "id": 84041,
+        "logo_path": "/nw4kyc29QRpNtFbdsBHkRSFavvt.png",
+        "name": "Pascal Pictures",
+        "origin_country": "US"
+      },
+      {
+        "id": 53462,
+        "logo_path": "/nx8B3Phlcse02w86RW4CJqzCnfL.png",
+        "name": "Matt Tolmach Productions",
+        "origin_country": "US"
+      },
+      {
+        "id": 91797,
+        "logo_path": null,
+        "name": "Hutch Parker Entertainment",
+        "origin_country": "US"
+      },
+      {
+        "id": 14439,
+        "logo_path": null,
+        "name": "Arad Productions",
+        "origin_country": "US"
+      }
+    ],
+    "production_countries": [
+      {
+        "iso_3166_1": "US",
+        "name": "United States of America"
+      }
+    ],
+    "release_date": "2024-10-22",
+    "revenue": 468513700,
+    "runtime": 109,
+    "spoken_languages": [
+      {
+        "english_name": "English",
+        "iso_639_1": "en",
+        "name": "English"
+      }
+    ],
+    "status": "Released",
+    "tagline": "'Til death do they part.",
+    "title": "Venom: The Last Dance",
+    "video": false,
+    "vote_average": 6.6,
+    "vote_count": 1109
+  },
+  "film5": {
+    "adult": false,
+    "backdrop_path": "/euYIwmwkmz95mnXvufEmbL6ovhZ.jpg",
+    "belongs_to_collection": {
+      "id": 1069584,
+      "name": "Gladiator Collection",
+      "poster_path": "/jF6ceQFwbGmFxJWgmG7IBYvyb1B.jpg",
+      "backdrop_path": "/1VdLvSIeHuwqCT13H9EafxCacGB.jpg"
+    },
+    "budget": 310000000,
+    "genres": [
+      {
+        "id": 28,
+        "name": "Action"
+      },
+      {
+        "id": 12,
+        "name": "Adventure"
+      },
+      {
+        "id": 36,
+        "name": "History"
+      }
+    ],
+    "homepage": "https://www.gladiator.movie",
+    "id": 558449,
+    "imdb_id": "tt9218128",
+    "origin_country": [
+      "US"
+    ],
+    "original_language": "en",
+    "original_title": "Gladiator II",
+    "overview": "Years after witnessing the death of the revered hero Maximus at the hands of his uncle, Lucius is forced to enter the Colosseum after his home is conquered by the tyrannical Emperors who now lead Rome with an iron fist. With rage in his heart and the future of the Empire at stake, Lucius must look to his past to find strength and honor to return the glory of Rome to its people.",
+    "popularity": 1262.621,
+    "poster_path": "/2cxhvwyEwRlysAmRH4iodkvo0z5.jpg",
+    "production_companies": [
+      {
+        "id": 4,
+        "logo_path": "/gz66EfNoYPqHTYI4q9UEN4CbHRc.png",
+        "name": "Paramount Pictures",
+        "origin_country": "US"
+      },
+      {
+        "id": 221347,
+        "logo_path": "/6Ry6uNBaa0IbbSs1XYIgX5DkA9r.png",
+        "name": "Scott Free Productions",
+        "origin_country": "US"
+      },
+      {
+        "id": 246486,
+        "logo_path": null,
+        "name": "Lucy Fisher/Douglas Wick Productions",
+        "origin_country": "US"
+      }
+    ],
+    "production_countries": [
+      {
+        "iso_3166_1": "US",
+        "name": "United States of America"
+      }
+    ],
+    "release_date": "2024-11-05",
+    "revenue": 368092895,
+    "runtime": 148,
+    "spoken_languages": [
+      {
+        "english_name": "English",
+        "iso_639_1": "en",
+        "name": "English"
+      }
+    ],
+    "status": "Released",
+    "tagline": "Prepare to be entertained.",
+    "title": "Gladiator II",
+    "video": false,
+    "vote_average": 6.7,
+    "vote_count": 1006
+  }
+}

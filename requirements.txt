@@ -1,5 +1,7 @@
 flask
-psycopg[binary]
+psycopg2
 ruff
 pytest
 Flask-SQLAlchemy
+Flask-Migrate
+faker
