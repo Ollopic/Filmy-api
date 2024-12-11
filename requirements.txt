@@ -1,7 +1,8 @@
-flask
-psycopg2
-ruff
-pytest
-Flask-SQLAlchemy
-Flask-Migrate
 faker
+flask
+flask-jwt-extended
+Flask-Migrate
+Flask-SQLAlchemy
+psycopg2
+pytest
+ruff
