@@ -1,7 +1,9 @@
 from flask import jsonify, request
+
 from app.app import app
 from app.db.database import db
 from app.db.models import User
+
 
 # Récupérer les infos d'un utilisateur
 @app.route("/user/<int:id>", methods=["GET"])

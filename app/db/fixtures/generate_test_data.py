@@ -1,5 +1,6 @@
 import json
 import random
+
 from faker import Faker
 
 from app.app import app
