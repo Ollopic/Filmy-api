@@ -33,7 +33,6 @@ def generate_test_data():
 
         with open("api/datas/films.json", "r") as file:
             data = json.load(file)
-            print(data)
 
         films = []
         film1 = Film(
