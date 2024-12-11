@@ -1,4 +1,4 @@
-from .database import db
+from app.db.database import db
 
 
 # Modèle pour la table 'Person'
