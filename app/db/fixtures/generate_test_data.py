@@ -31,7 +31,7 @@ def generate_test_data():
             users.append(user)
             db.session.add(user)
 
-        with open("app/db/datas/films.json", "r") as file:
+        with open("app/db/fixtures/datas/films.json", "r") as file:
             data = json.load(file)
 
         films = []
@@ -76,7 +76,7 @@ def generate_test_data():
         films.append(film5)
         db.session.add(film5)
 
-        with open("app/db/datas/persons.json", "r") as file:
+        with open("app/db/fixtures/datas/persons.json", "r") as file:
             data = json.load(file)
 
         persons = []
