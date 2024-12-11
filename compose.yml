@@ -8,6 +8,8 @@ services:
     command: flask run --debug --host=0.0.0.0
     depends_on:
       - db
+    networks:
+      - filmy_network
   db:
     image: postgres:17
     ports:
@@ -16,3 +18,9 @@ services:
       POSTGRES_DB: filmy
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+    networks:
+        - filmy_network
+
+networks:
+  filmy_network:
+    name: filmy_network
