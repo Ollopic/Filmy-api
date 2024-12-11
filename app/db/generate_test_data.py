@@ -3,8 +3,8 @@ import random
 from faker import Faker
 
 from app.app import app
-from app.database import db
-from app.models import CollectionItem, CreditsFilm, Film, Person, User
+from app.db.database import db
+from app.db.models import CollectionItem, CreditsFilm, Film, Person, User
 
 fake = Faker()
 
@@ -31,7 +31,7 @@ def generate_test_data():
             users.append(user)
             db.session.add(user)
 
-        with open("api/datas/films.json", "r") as file:
+        with open("app/db/datas/films.json", "r") as file:
             data = json.load(file)
 
         films = []
@@ -76,7 +76,7 @@ def generate_test_data():
         films.append(film5)
         db.session.add(film5)
 
-        with open("api/datas/persons.json", "r") as file:
+        with open("app/db/datas/persons.json", "r") as file:
             data = json.load(file)
 
         persons = []

@@ -31,16 +31,16 @@ log-db: ## log db container
 
 
 make-migrations: ## generate migration files
-	@docker compose exec api bash -c "cd /app/api && flask db migrate"
+	@docker compose exec api flask db migrate
 
 migrate: ## apply migrations
-	@docker compose exec api bash -c "cd /app/api && flask db upgrade"
+	@docker compose exec api flask db upgrade
 
 generate-data: ## generate data
-	@docker compose exec api python -m api.generate_test_data
+	@docker compose exec api bash -c "cd / && python -m app.db.generate_test_data"
 
 reset-db: ## reset database
-	@docker compose exec api bash -c "cd /app/api && flask db downgrade base"
+	@docker compose exec api flask db downgrade base
 	@$(MAKE) migrate
 	@$(MAKE) generate-data
 
