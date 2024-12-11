@@ -2,9 +2,9 @@ import json
 import random
 from faker import Faker
 
-from api.app import app
-from api.database import db
-from api.models import CollectionItem, CreditsFilm, Film, Person, User
+from app.app import app
+from app.database import db
+from app.models import CollectionItem, CreditsFilm, Film, Person, User
 
 fake = Faker()
 
