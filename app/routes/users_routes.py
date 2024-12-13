@@ -4,19 +4,20 @@ from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_requir
 
 from app.app import app
 from app.db.database import db
-from app.db.models import User
+from app.db.models import User, CollectionItem
 
 
 @app.route("/user/<int:id>", methods=["GET"])
 @jwt_required()
 def get_user(id):
     user = db.session.query(User).get(id)
+    user_request = db.session.query(User).get(get_jwt_identity())
+
+    if user_request.id != user.id and not user_request.is_admin:
+        return jsonify({"error": "Unauthorized"}), 401
 
     if user is None:
         return jsonify({"error": "User not found"}), 404
-
-    if get_jwt_identity() != user.id and not user.is_admin:
-        return jsonify({"error": "Unauthorized"}), 401
 
     user_info = {
         "id": user.id,
@@ -24,7 +25,7 @@ def get_user(id):
         "mail": user.mail,
         "is_admin": user.is_admin,
     }
-    return jsonify(user_info)
+    return jsonify(user_info), 200
 
 
 @app.route("/user", methods=["POST"])
@@ -57,12 +58,13 @@ def create_user():
 def update_user(id):
     data = request.json
     user = db.session.query(User).get(id)
+    user_request = db.session.query(User).get(get_jwt_identity())
+
+    if user_request.id != user.id and not user_request.is_admin:
+        return jsonify({"error": "Unauthorized"}), 401
 
     if user is None:
         return jsonify({"error": "User not found"}), 404
-
-    if get_jwt_identity() != user.id and not user.is_admin:
-        return jsonify({"error": "Unauthorized"}), 401
 
     if "username" in data and data["username"]:
         user.username = data["username"]
@@ -81,13 +83,15 @@ def update_user(id):
 @jwt_required()
 def delete_user(id):
     user = db.session.query(User).get(id)
+    user_request = db.session.query(User).get(get_jwt_identity())
+
+    if user_request.id != user.id and not user_request.is_admin:
+        return jsonify({"error": "Unauthorized"}), 401
 
     if user is None:
         return jsonify({"error": "User not found"}), 404
 
-    if get_jwt_identity() != user.id and not user.is_admin:
-        return jsonify({"error": "Unauthorized"}), 401
-
+    db.session.query(CollectionItem).filter(CollectionItem.user_id == id).delete()
     db.session.delete(user)
     db.session.commit()
     return jsonify({"message": "User deleted successfully"})

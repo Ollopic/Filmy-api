@@ -5,7 +5,6 @@ from app.db.database import db
 from app.db.models import Film
 
 
-# Récupérer la liste de tous les films
 @app.route("/movies", methods=["GET"])
 def get_movies():
     movies = db.session.query(Film).all()
@@ -22,7 +21,6 @@ def get_movies():
     return jsonify(movies_data)
 
 
-# Récupérer un film par son ID
 @app.route("/movies/<int:id>", methods=["GET"])
 def get_movie(id):
     movie = db.session.query(Film).get(id)
