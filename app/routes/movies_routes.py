@@ -1,5 +1,3 @@
-from flask import jsonify
-
 from app.app import app
 from app.db.database import db
 from app.db.models import Film
@@ -18,7 +16,7 @@ def get_movies():
             "poster_path": movie.poster_path,
         }
         movies_data.append(film_info)
-    return jsonify(movies_data)
+    return movies_data
 
 
 @app.route("/movies/<int:id>", methods=["GET"])
@@ -26,7 +24,7 @@ def get_movie(id):
     movie = db.session.query(Film).get(id)
 
     if movie is None:
-        return jsonify({"error": "Movie not found"}), 404
+        return {"error": "Movie not found"}, 404
 
     film_info = {
         "id": movie.id,
@@ -35,4 +33,4 @@ def get_movie(id):
         "image_path": movie.image_path,
         "poster_path": movie.poster_path,
     }
-    return jsonify(film_info)
+    return film_info

@@ -1,5 +1,5 @@
 import bcrypt
-from flask import jsonify, request
+from flask import request
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
 
 from app.app import app
@@ -14,10 +14,10 @@ def get_user(id):
     user_request = db.session.query(User).get(get_jwt_identity())
 
     if user_request.id != user.id and not user_request.is_admin:
-        return jsonify({"error": "Unauthorized"}), 401
+        return {"error": "Unauthorized"}, 401
 
     if user is None:
-        return jsonify({"error": "User not found"}), 404
+        return {"error": "User not found"}, 404
 
     user_info = {
         "id": user.id,
@@ -25,7 +25,7 @@ def get_user(id):
         "mail": user.mail,
         "is_admin": user.is_admin,
     }
-    return jsonify(user_info), 200
+    return user_info, 200
 
 
 @app.route("/user", methods=["POST"])
@@ -38,9 +38,9 @@ def create_user():
 
     if existing_user:
         if existing_user.username == data["username"]:
-            return jsonify({"error": "Username already exists"}), 409
+            return {"error": "Username already exists"}, 409
         elif existing_user.mail == data["mail"]:
-            return jsonify({"error": "Email already exists"}), 409
+            return {"error": "Email already exists"}, 409
 
     user = User(
         username=data["username"],
@@ -50,7 +50,7 @@ def create_user():
     )
     db.session.add(user)
     db.session.commit()
-    return jsonify({"message": "User created successfully"}), 201
+    return {"message": "User created successfully"}, 201
 
 
 @app.route("/user/<int:id>", methods=["PATCH"])
@@ -61,10 +61,10 @@ def update_user(id):
     user_request = db.session.query(User).get(get_jwt_identity())
 
     if user_request.id != user.id and not user_request.is_admin:
-        return jsonify({"error": "Unauthorized"}), 401
+        return {"error": "Unauthorized"}, 401
 
     if user is None:
-        return jsonify({"error": "User not found"}), 404
+        return {"error": "User not found"}, 404
 
     if "username" in data and data["username"]:
         user.username = data["username"]
@@ -76,7 +76,7 @@ def update_user(id):
         user.is_admin = data["is_admin"]
 
     db.session.commit()
-    return jsonify({"message": "User updated successfully"})
+    return {"message": "User updated successfully"}
 
 
 @app.route("/user/<int:id>", methods=["DELETE"])
@@ -86,15 +86,15 @@ def delete_user(id):
     user_request = db.session.query(User).get(get_jwt_identity())
 
     if user_request.id != user.id and not user_request.is_admin:
-        return jsonify({"error": "Unauthorized"}), 401
+        return {"error": "Unauthorized"}, 401
 
     if user is None:
-        return jsonify({"error": "User not found"}), 404
+        return {"error": "User not found"}, 404
 
     db.session.query(CollectionItem).filter(CollectionItem.user_id == id).delete()
     db.session.delete(user)
     db.session.commit()
-    return jsonify({"message": "User deleted successfully"})
+    return {"message": "User deleted successfully"}
 
 
 @app.route("/user/login", methods=["GET"])
@@ -103,17 +103,15 @@ def login_user():
     user = User.query.filter_by(mail=data["mail"]).first()
 
     if user is None:
-        return jsonify({"error": "User not found"}), 404
+        return {"error": "User not found"}, 404
 
     if bcrypt.checkpw(data["password"].encode("utf-8"), user.password.encode("utf-8")):
-        return jsonify(
-            {
-                "message": "User logged in successfully",
-                "token": create_access_token(identity=str(user.id)),
-            }
-        ), 200
+        return {
+            "message": "User logged in successfully",
+            "token": create_access_token(identity=str(user.id)),
+        }, 200
     else:
-        return jsonify({"error": "Invalid password"}), 401
+        return {"error": "Invalid password"}, 401
 
 
 def hash_password(password):
