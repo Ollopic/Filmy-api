@@ -1,8 +1,13 @@
-from flask import Flask
-from flask_jwt_extended import JWTManager
 from datetime import timedelta
 
-from app.config import jwtSecretKeyConfig, jwtAccessTokenExpiresConfig, jwtRefreshTokenExpiresConfig
+from flask import Flask
+from flask_jwt_extended import JWTManager
+
+from app.config import (
+    jwtAccessTokenExpiresConfig,
+    jwtRefreshTokenExpiresConfig,
+    jwtSecretKeyConfig,
+)
 
 app = Flask(__name__)
 

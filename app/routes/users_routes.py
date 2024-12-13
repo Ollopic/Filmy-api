@@ -1,11 +1,11 @@
+import bcrypt
 from flask import jsonify, request
+from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
 
 from app.app import app
 from app.db.database import db
 from app.db.models import User
 
-import bcrypt
-from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
 
 @app.route("/user/<int:id>", methods=["GET"])
 @jwt_required()
@@ -14,7 +14,7 @@ def get_user(id):
 
     if user is None:
         return jsonify({"error": "User not found"}), 404
-    
+
     if get_jwt_identity() != user.id and not user.is_admin:
         return jsonify({"error": "Unauthorized"}), 401
 
@@ -60,7 +60,7 @@ def update_user(id):
 
     if user is None:
         return jsonify({"error": "User not found"}), 404
-    
+
     if get_jwt_identity() != user.id and not user.is_admin:
         return jsonify({"error": "Unauthorized"}), 401
 
@@ -84,7 +84,7 @@ def delete_user(id):
 
     if user is None:
         return jsonify({"error": "User not found"}), 404
-    
+
     if get_jwt_identity() != user.id and not user.is_admin:
         return jsonify({"error": "Unauthorized"}), 401
 

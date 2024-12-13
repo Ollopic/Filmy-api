@@ -1,7 +1,6 @@
 from logging import Logger, getLogger
 
 import requests
-
 import settings_back
 
 
