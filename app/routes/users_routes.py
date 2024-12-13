@@ -5,6 +5,7 @@ from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_requir
 from app.app import app
 from app.db.database import db
 from app.db.models import CollectionItem, User
+from app.util import hash_password
 
 
 @app.route("/user/<int:id>", methods=["GET"])
@@ -112,10 +113,3 @@ def login_user():
         }, 200
     else:
         return {"error": "Invalid password"}, 401
-
-
-def hash_password(password):
-    salt = bcrypt.gensalt()
-    hashed = bcrypt.hashpw(password.encode("utf-8"), salt)
-    print(hashed)
-    return hashed.decode("utf-8")

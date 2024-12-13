@@ -19,3 +19,8 @@ ou
 ```bash
 docker compose up --build
 ```
+
+Utilisateur par défaut :
+
+- email : `admin@example.com`
+- mot de passe : `admin`
