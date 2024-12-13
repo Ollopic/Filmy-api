@@ -6,6 +6,7 @@ from faker import Faker
 from app.app import app
 from app.db.database import db
 from app.db.models import CollectionItem, CreditsFilm, Film, Person, User
+from app.utils import hash_password
 
 fake = Faker()
 
@@ -16,7 +17,10 @@ def generate_test_data():
         db.create_all()
 
         admin_user = User(
-            username="admin", mail="admin@example.com", password="admin", is_admin=True
+            username="admin",
+            mail="admin@example.com",
+            password=hash_password("admin"),
+            is_admin=True,
         )
         db.session.add(admin_user)
 
@@ -26,7 +30,7 @@ def generate_test_data():
             user = User(
                 username=fake.user_name(),
                 mail=fake.email(),
-                password=fake.password(),
+                password=hash_password(fake.password()),
                 is_admin=fake.boolean(chance_of_getting_true=10),
             )
             users.append(user)

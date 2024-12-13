@@ -5,6 +5,7 @@ from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_requir
 from app.app import app
 from app.db.database import db
 from app.db.models import CollectionItem, User
+from app.utils import hash_password
 
 
 @app.route("/user/<int:id>", methods=["GET"])
