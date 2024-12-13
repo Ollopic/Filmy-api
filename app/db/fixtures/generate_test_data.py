@@ -6,7 +6,7 @@ from faker import Faker
 from app.app import app
 from app.db.database import db
 from app.db.models import CollectionItem, CreditsFilm, Film, Person, User
-from app.util import hash_password
+from app.utils import hash_password
 
 fake = Faker()
 
