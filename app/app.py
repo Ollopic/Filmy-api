@@ -11,7 +11,7 @@ from app.config import (
 
 app = Flask(__name__)
 
-# Importation des routes
+# Import routes
 from app.routes import *
 
 app.config["JWT_SECRET_KEY"] = jwtSecretKeyConfig
