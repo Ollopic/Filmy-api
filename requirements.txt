@@ -6,4 +6,5 @@ Flask-Migrate
 Flask-SQLAlchemy
 psycopg2
 pytest
+requests
 ruff
