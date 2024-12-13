@@ -109,9 +109,3 @@ def login_user():
         }, 200
 
     return {"error": "Invalid password"}, 401
-
-
-def hash_password(password):
-    salt = bcrypt.gensalt()
-    hashed = bcrypt.hashpw(password.encode("utf-8"), salt)
-    return hashed.decode("utf-8")
