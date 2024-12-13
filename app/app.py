@@ -15,6 +15,6 @@ app = Flask(__name__)
 from app.routes import *
 
 app.config["JWT_SECRET_KEY"] = jwtSecretKeyConfig
-app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(jwtAccessTokenExpiresConfig)
-app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(jwtRefreshTokenExpiresConfig)
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours = jwtAccessTokenExpiresConfig)
+app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(days = jwtRefreshTokenExpiresConfig)
 jwt = JWTManager(app)
