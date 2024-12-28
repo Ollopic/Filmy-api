@@ -8,6 +8,7 @@ init: ## init project
 	@$(MAKE) start
 	@sleep 5
 	@$(MAKE) reset-db
+	@docker compose exec api bash -c "cd ../ && pip install -e ."
 	@$(MAKE) log
 
 start: ## start containers
@@ -37,13 +38,16 @@ migrate: ## apply migrations
 	@docker compose exec api flask db upgrade
 
 generate-data: ## generate data
-	@docker compose exec api bash -c "cd / && python -m app.db.fixtures.generate_test_data"
+	@docker compose exec api bash -c "cd ../ && python -m app.db.fixtures.generate_test_data"
 
 reset-db: ## reset database
 	@docker compose exec api flask db downgrade base
 	@$(MAKE) migrate
 	@$(MAKE) generate-data
+	
 
+test: ## run tests
+	@docker compose exec api bash -c "cd ../ && pytest"
 
 
 lint: ## check errors in python code without fixing them
