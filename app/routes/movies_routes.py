@@ -18,8 +18,8 @@ def get_movies():
 
 
 @app.route("/movies/<int:id>", methods=["GET"])
-def get_movie(identifier: int):
-    movie = db.session.query(Film).get(identifier)
+def get_movie(id: int):
+    movie = db.session.get(Film, id)
 
     if not movie:
         return {"error": "Movie not found"}, 404
