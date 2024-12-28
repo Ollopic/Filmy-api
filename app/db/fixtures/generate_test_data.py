@@ -123,9 +123,7 @@ def generate_test_data():
                     borrowed_at=fake.date_time_between(start_date="-1y", end_date="now")
                     if fake.boolean(chance_of_getting_true=20)
                     else None,
-                    borrowed_by=fake.name()
-                    if fake.boolean(chance_of_getting_true=20)
-                    else None,
+                    borrowed_by=fake.name() if fake.boolean(chance_of_getting_true=20) else None,
                     favorite=fake.boolean(chance_of_getting_true=20),
                     in_wishlist=fake.boolean(chance_of_getting_true=20),
                     user=user,

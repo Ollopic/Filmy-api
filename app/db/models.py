@@ -23,9 +23,7 @@ class Film(db.Model):
     credits = db.relationship("CreditsFilm", back_populates="film")
 
     # Relation ManyToMany avec 'CollectionItem'
-    collection_items = db.relationship(
-        "CollectionItem", secondary="film_collection", back_populates="films"
-    )
+    collection_items = db.relationship("CollectionItem", secondary="film_collection", back_populates="films")
 
 
 # Modèle pour la table 'CreditsFilm'
@@ -58,9 +56,7 @@ class CollectionItem(db.Model):
     state = db.Column(db.String, nullable=False)  # Par exemple, "Physique", "Numérique"
     borrowed = db.Column(db.Boolean, default=False)
     borrowed_at = db.Column(db.DateTime, nullable=True)
-    borrowed_by = db.Column(
-        db.String, nullable=True
-    )  # Peut aussi être une relation si besoin
+    borrowed_by = db.Column(db.String, nullable=True)  # Peut aussi être une relation si besoin
     favorite = db.Column(db.Boolean, default=False)
     in_wishlist = db.Column(db.Boolean, default=False)
 
@@ -68,9 +64,7 @@ class CollectionItem(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     user = db.relationship("User", back_populates="collection")
 
-    films = db.relationship(
-        "Film", secondary="film_collection", back_populates="collection_items"
-    )
+    films = db.relationship("Film", secondary="film_collection", back_populates="collection_items")
 
 
 # Table intermédiaire pour la relation ManyToMany entre 'Film' et 'CollectionItem'

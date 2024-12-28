@@ -86,9 +86,7 @@ def delete_user(identifier: int):
     if not user:
         return {"error": "User not found"}, 404
 
-    db.session.query(CollectionItem).filter(
-        CollectionItem.user_id == identifier
-    ).delete()
+    db.session.query(CollectionItem).filter(CollectionItem.user_id == identifier).delete()
     db.session.delete(user)
     db.session.commit()
     return {"message": "User deleted successfully"}
