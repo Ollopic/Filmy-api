@@ -10,15 +10,15 @@ from app.utils import hash_password
 
 @app.route("/user/<int:id>", methods=["GET"])
 @jwt_required()
-def get_user(identifier: int):
-    user = db.session.query(User).get(identifier)
-    user_request = db.session.query(User).get(get_jwt_identity())
-
-    if user_request.id != user.id and not user_request.is_admin:
-        return {"error": "Unauthorized"}, 401
+def get_user(id: int):
+    user = db.session.get(User, id)
+    user_request = db.session.get(User, get_jwt_identity())
 
     if not user:
         return {"error": "User not found"}, 404
+
+    if user_request.id != user.id and not user_request.is_admin:
+        return {"error": "Unauthorized"}, 401
 
     return {
         "id": user.id,
@@ -50,16 +50,16 @@ def create_user():
 
 @app.route("/user/<int:id>", methods=["PATCH"])
 @jwt_required()
-def update_user(identifier: int):
+def update_user(id: int):
     data = request.json
-    user = db.session.query(User).get(identifier)
-    user_request = db.session.query(User).get(get_jwt_identity())
-
-    if user_request.id != user.id and not user_request.is_admin:
-        return {"error": "Unauthorized"}, 401
+    user = db.session.get(User, id)
+    user_request = db.session.get(User, get_jwt_identity())
 
     if user is None:
         return {"error": "User not found"}, 404
+
+    if user_request.id != user.id and not user_request.is_admin:
+        return {"error": "Unauthorized"}, 401
 
     if data.get("username"):
         user.username = data["username"]
@@ -76,17 +76,17 @@ def update_user(identifier: int):
 
 @app.route("/user/<int:id>", methods=["DELETE"])
 @jwt_required()
-def delete_user(identifier: int):
-    user = db.session.query(User).get(identifier)
-    user_request = db.session.query(User).get(get_jwt_identity())
-
-    if user_request.id != user.id and not user_request.is_admin:
-        return {"error": "Unauthorized"}, 401
+def delete_user(id: int):
+    user = db.session.get(User, id)
+    user_request = db.session.get(User, get_jwt_identity())
 
     if not user:
         return {"error": "User not found"}, 404
 
-    db.session.query(CollectionItem).filter(CollectionItem.user_id == identifier).delete()
+    if user_request.id != user.id and not user_request.is_admin:
+        return {"error": "Unauthorized"}, 401
+
+    db.session.query(CollectionItem).filter(CollectionItem.user_id == id).delete()
     db.session.delete(user)
     db.session.commit()
     return {"message": "User deleted successfully"}
@@ -95,7 +95,8 @@ def delete_user(identifier: int):
 @app.route("/user/login", methods=["GET"])
 def login_user():
     data = request.json
-    user = User.query.get(mail=data["mail"])
+    # user = User.query.get(mail=data["mail"])
+    user = User.query.filter_by(mail=data["mail"]).first()
 
     if not user:
         return {"error": "User not found"}, 404
