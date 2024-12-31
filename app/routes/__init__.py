@@ -1,2 +1,2 @@
-from .movies_routes import *
-from .users_routes import *
+from .movies_routes import *  # noqa: F403
+from .users_routes import *  # noqa: F403
