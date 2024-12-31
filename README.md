@@ -20,6 +20,12 @@ ou
 docker compose up --build
 ```
 
+Pour lancer les tests :
+
+```bash
+make test
+```
+
 Utilisateur par défaut :
 
 - email : `admin@example.com`

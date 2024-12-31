@@ -22,7 +22,16 @@ def generate_test_data():
             password=hash_password("admin"),
             is_admin=True,
         )
+
+        unadmin_user = User(
+            username="user",
+            mail="unadmin@example.com",
+            password=hash_password("user"),
+            is_admin=False,
+        )
+
         db.session.add(admin_user)
+        db.session.add(unadmin_user)
 
         # Générer des utilisateurs aléatoires
         users = []
@@ -123,9 +132,7 @@ def generate_test_data():
                     borrowed_at=fake.date_time_between(start_date="-1y", end_date="now")
                     if fake.boolean(chance_of_getting_true=20)
                     else None,
-                    borrowed_by=fake.name()
-                    if fake.boolean(chance_of_getting_true=20)
-                    else None,
+                    borrowed_by=fake.name() if fake.boolean(chance_of_getting_true=20) else None,
                     favorite=fake.boolean(chance_of_getting_true=20),
                     in_wishlist=fake.boolean(chance_of_getting_true=20),
                     user=user,
