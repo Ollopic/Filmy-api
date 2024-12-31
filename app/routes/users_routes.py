@@ -1,41 +1,41 @@
-from flask import jsonify, request
+import bcrypt
+from flask import request
+from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
 
 from app.app import app
 from app.db.database import db
-from app.db.models import User
+from app.db.models import CollectionItem, User
+from app.utils import hash_password
 
 
-# Récupérer les infos d'un utilisateur
 @app.route("/user/<int:id>", methods=["GET"])
-def get_user(id):
-    user = db.session.query(User).get(id)
+@jwt_required()
+def get_user(identifier: int):
+    user = db.session.query(User).get(identifier)
+    user_request = db.session.query(User).get(get_jwt_identity())
 
-    if user is None:
-        return jsonify({"error": "User not found"}), 404
+    if user_request.id != user.id and not user_request.is_admin:
+        return {"error": "Unauthorized"}, 401
 
-    user_info = {
+    if not user:
+        return {"error": "User not found"}, 404
+
+    return {
         "id": user.id,
         "username": user.username,
         "mail": user.mail,
         "is_admin": user.is_admin,
-    }
-    return jsonify(user_info)
+    }, 200
 
 
-# Créer un nouvel utilisateur
 @app.route("/user", methods=["POST"])
 def create_user():
     data = request.json
 
-    existing_user = User.query.filter(
-        (User.username == data["username"]) | (User.mail == data["mail"])
-    ).first()
+    existing_user = User.query.filter(User.mail == data["mail"]).first()
 
     if existing_user:
-        if existing_user.username == data["username"]:
-            return jsonify({"error": "Username already exists"}), 409
-        elif existing_user.mail == data["mail"]:
-            return jsonify({"error": "Email already exists"}), 409
+        return {"error": "Email already exists"}, 409
 
     user = User(
         username=data["username"],
@@ -45,39 +45,67 @@ def create_user():
     )
     db.session.add(user)
     db.session.commit()
-    return jsonify({"message": "User created successfully"}), 201
+    return {"message": "User created successfully"}, 201
 
 
-# Modifier les informations d'un utilisateur
 @app.route("/user/<int:id>", methods=["PATCH"])
-def update_user(id):
+@jwt_required()
+def update_user(identifier: int):
     data = request.json
-    user = db.session.query(User).get(id)
+    user = db.session.query(User).get(identifier)
+    user_request = db.session.query(User).get(get_jwt_identity())
+
+    if user_request.id != user.id and not user_request.is_admin:
+        return {"error": "Unauthorized"}, 401
 
     if user is None:
-        return jsonify({"error": "User not found"}), 404
+        return {"error": "User not found"}, 404
 
-    if "username" in data and data["username"]:
+    if data.get("username"):
         user.username = data["username"]
-    if "mail" in data and data["mail"]:
+    if data.get("mail"):
         user.mail = data["mail"]
-    if "password" in data and data["password"]:
-        user.password = data["password"]
-    if "is_admin" in data and data["is_admin"]:
+    if data.get("password"):
+        user.password = hash_password(data["password"])
+    if data.get("is_admin"):
         user.is_admin = data["is_admin"]
 
     db.session.commit()
-    return jsonify({"message": "User updated successfully"})
+    return {"message": "User updated successfully"}
 
 
-# Supprimer un utilisateur
 @app.route("/user/<int:id>", methods=["DELETE"])
-def delete_user(id):
-    user = db.session.query(User).get(id)
+@jwt_required()
+def delete_user(identifier: int):
+    user = db.session.query(User).get(identifier)
+    user_request = db.session.query(User).get(get_jwt_identity())
 
-    if user is None:
-        return jsonify({"error": "User not found"}), 404
+    if user_request.id != user.id and not user_request.is_admin:
+        return {"error": "Unauthorized"}, 401
 
+    if not user:
+        return {"error": "User not found"}, 404
+
+    db.session.query(CollectionItem).filter(
+        CollectionItem.user_id == identifier
+    ).delete()
     db.session.delete(user)
     db.session.commit()
-    return jsonify({"message": "User deleted successfully"})
+    return {"message": "User deleted successfully"}
+
+
+@app.route("/user/login", methods=["GET"])
+def login_user():
+    data = request.json
+    user = User.query.get(mail=data["mail"])
+
+    if not user:
+        return {"error": "User not found"}, 404
+
+    if bcrypt.checkpw(data["password"].encode("utf-8"), user.password.encode("utf-8")):
+        return {
+            "message": "User logged in successfully",
+            "token": create_access_token(identity=str(user.id)),
+        }, 200
+
+    return {"error": "Invalid password"}, 401

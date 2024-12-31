@@ -1,3 +1,4 @@
+bcrypt
 faker
 flask
 flask-jwt-extended
@@ -5,4 +6,5 @@ Flask-Migrate
 Flask-SQLAlchemy
 psycopg2
 pytest
+requests
 ruff

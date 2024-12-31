@@ -1,6 +1,6 @@
 [tool.ruff]
-# Always generate Python 3.11-compatible code.
-target-version = "py311"
+# Always generate Python 3.13-compatible code.
+target-version = "py313"
 
 # Allow lines to be as long as 120.
 line-length = 120

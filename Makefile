@@ -11,7 +11,7 @@ init: ## init project
 	@$(MAKE) log
 
 start: ## start containers
-	@docker compose up -d --build
+	@docker compose up -d --build --remove-orphans
 
 stop: ## stop containers
 	@docker compose stop

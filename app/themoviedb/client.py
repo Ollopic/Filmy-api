@@ -2,7 +2,7 @@ from logging import Logger, getLogger
 
 import requests
 
-import settings_back
+from app.config import MOVIE_DB_TOKEN
 
 
 class Client:
@@ -14,7 +14,7 @@ class Client:
 
     def __init__(self, logger: Logger = getLogger(__name__)):
         self._logger = logger
-        self._token = settings_back.MOVIE_DB_TOKEN
+        self._token = MOVIE_DB_TOKEN
 
     def _request(self, endpoint: str, params: dict = None) -> dict:
         if params is None:
