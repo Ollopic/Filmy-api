@@ -95,7 +95,6 @@ def delete_user(id: int):
 @app.route("/user/login", methods=["GET"])
 def login_user():
     data = request.json
-    # user = User.query.get(mail=data["mail"])
     user = User.query.filter_by(mail=data["mail"]).first()
 
     if not user:
