@@ -3,6 +3,7 @@ import json
 with open("app/db/fixtures/datas/films.json", "r") as file:
     data = json.load(file)
 
+
 def test_get_movies_returns_list(client):
     """Test que l'endpoint /movies renvoie une liste de films"""
     response = client.get('/movies')

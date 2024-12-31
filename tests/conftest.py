@@ -4,6 +4,7 @@ import tempfile
 from app.app import app
 from app.db.fixtures.generate_test_data import generate_test_data
 
+
 @pytest.fixture(scope="module")
 def client():
     db_fd, db_path = tempfile.mkstemp()
