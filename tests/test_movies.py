@@ -71,6 +71,27 @@ def test_get_movie_by_id_not_found(client):
     assert error_response["error"] == "Movie not found"
 
 
+def test_get_movie_credits(client):
+    """Test que l'endpoint /movies/<int:id>/credits renvoie les crédits d'un film"""   
+    specific_id = 1
+    response = client.get(f'/movies/{specific_id}/credits')
+    assert response.status_code == 200
+
+    credits = response.json
+    assert isinstance(credits, list)
+
+    expected_credits = [
+        {"person_id": 1, "character": "John Doe"},
+        {"person_id": 2, "character": "Jane Doe"},
+    ]
+
+    for expected_credit in expected_credits:
+        assert any(
+            credit["person_id"] == expected_credit["person_id"]
+            and credit["character"] == expected_credit["character"]
+            for credit in credits
+        ), f"Expected credit {expected_credit} not found in response"
+
 #
 # ---- POST ----
 #

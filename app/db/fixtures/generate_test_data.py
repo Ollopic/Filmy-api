@@ -114,6 +114,12 @@ def generate_test_data():
         persons.append(person5)
         db.session.add(person5)
 
+        # Ajout manuel de crédits
+        credit1 = CreditsFilm(film_id=1, person_id=1, character="John Doe")
+        credit2 = CreditsFilm(film_id=1, person_id=2, character="Jane Doe")
+        db.session.add(credit1)
+        db.session.add(credit2)
+
         # Générer des crédits
         for film in films:
             num_credits = random.randint(3, 7)
