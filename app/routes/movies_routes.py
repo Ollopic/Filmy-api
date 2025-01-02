@@ -1,10 +1,8 @@
-import json
-
 from flask import request
 
 from app.app import app
 from app.db.database import db
-from app.db.models import Film
+from app.db.models import CreditsFilm, Film
 
 
 @app.route("/movies", methods=["GET"])
@@ -35,6 +33,25 @@ def get_movie(id: int):
         "image_path": movie.image_path,
         "poster_path": movie.poster_path,
     }
+
+
+@app.route("/movies/<int:id>/credits", methods=["GET"])
+def get_movie_credits(id: int):
+    movie = db.session.get(Film, id)
+    if not movie:
+        return {"error": "Movie not found"}, 404
+
+    credits = db.session.query(CreditsFilm).filter(CreditsFilm.film_id == id).all()
+
+    result = [
+        {
+            "person_id": credit.person_id,
+            "character": credit.character,
+        }
+        for credit in credits
+    ]
+
+    return result, 200
 
 
 @app.route("/movies", methods=["POST"])
