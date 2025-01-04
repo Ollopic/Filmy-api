@@ -35,13 +35,13 @@ def get_movie(identifier: int):
     }
 
 
-@app.route("/movies/<int:id>/credits", methods=["GET"])
-def get_movie_credits(id: int):
-    movie = db.session.get(Film, id)
+@app.route("/movies/<int:identifier>/credits", methods=["GET"])
+def get_movie_credits(identifier: int):
+    movie = db.session.get(Film, identifier)
     if not movie:
         return {"error": "Movie not found"}, 404
 
-    credits = db.session.query(CreditsFilm).filter(CreditsFilm.film_id == id).all()
+    credits = db.session.query(CreditsFilm).filter(CreditsFilm.film_id == identifier).all()
 
     result = [
         {
