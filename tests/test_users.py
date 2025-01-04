@@ -4,12 +4,12 @@
 
 def test_get_user_as_user(client):
     """Test que l'utilisateur connecté peut récupérer ses propres infos"""
-    user_login = client.get(
-        "/user/login",
+    user_login = client.post(
+        "/token",
         json={"mail": "unadmin@example.com", "password": "user"},
     )
 
-    user_token = user_login.json["token"]
+    user_token = user_login.json["access_token"]
 
     response = client.get("/user/2", headers={"Authorization": f"Bearer {user_token}"})
 
@@ -24,12 +24,12 @@ def test_get_user_as_user(client):
 
 def test_get_user_as_admin(client):
     """Test que l'admin peut récupérer les infos d'un autre utilisateur"""
-    admin_login = client.get(
-        "/user/login",
+    admin_login = client.post(
+        "/token",
         json={"mail": "admin@example.com", "password": "admin"},
     )
 
-    admin_token = admin_login.json["token"]
+    admin_token = admin_login.json["access_token"]
 
     response = client.get("/user/2", headers={"Authorization": f"Bearer {admin_token}"})
 
@@ -44,12 +44,12 @@ def test_get_user_as_admin(client):
 
 def test_get_user_not_found(client):
     """Test de la gestion d'erreur d'un utilisateur inexistant"""
-    admin_login = client.get(
-        "/user/login",
+    admin_login = client.post(
+        "/token",
         json={"mail": "admin@example.com", "password": "admin"},
     )
 
-    admin_token = admin_login.json["token"]
+    admin_token = admin_login.json["access_token"]
 
     response = client.get("/user/999", headers={"Authorization": f"Bearer {admin_token}"})
 
@@ -67,12 +67,12 @@ def test_get_user_unauthenticated(client):
 
 def test_get_user_unauthorized(client):
     """Test de la gestion d'erreur d'un utilisateur non autorisé (un utilisateur tente d'accéder à un autre utilisateur sans être admin)"""
-    user_login = client.get(
-        "/user/login",
+    user_login = client.post(
+        "/token",
         json={"mail": "unadmin@example.com", "password": "user"},
     )
 
-    user_token = user_login.json["token"]
+    user_token = user_login.json["access_token"]
 
     response = client.get("/user/4", headers={"Authorization": f"Bearer {user_token}"})
 
@@ -122,11 +122,11 @@ def test_create_user_email_exists(client):
 
 def test_update_user_success(client):
     """Test de mise à jour d'un utilisateur"""
-    admin_login = client.get(
-        "/user/login",
+    admin_login = client.post(
+        "/token",
         json={"mail": "admin@example.com", "password": "admin"},
     )
-    admin_token = admin_login.json["token"]
+    admin_token = admin_login.json["access_token"]
 
     response = client.patch(
         "/user/2",
@@ -143,11 +143,11 @@ def test_update_user_success(client):
 
 def test_update_user_not_found(client):
     """Test de gestion d'erreur d'un utilisateur inexistant"""
-    admin_login = client.get(
-        "/user/login",
+    admin_login = client.post(
+        "/token",
         json={"mail": "admin@example.com", "password": "admin"},
     )
-    admin_token = admin_login.json["token"]
+    admin_token = admin_login.json["access_token"]
 
     response = client.patch(
         "/user/999",
@@ -161,11 +161,11 @@ def test_update_user_not_found(client):
 
 def test_update_user_unauthorized(client):
     """Test de gestion d'erreur d'un utilisateur non autorisé (un utilisateur tente de mettre à jour un autre utilisateur sans être admin)"""
-    user_login = client.get(
-        "/user/login",
+    user_login = client.post(
+        "/token",
         json={"mail": "unadmin@example.com", "password": "user"},
     )
-    user_token = user_login.json["token"]
+    user_token = user_login.json["access_token"]
 
     response = client.patch(
         "/user/4",
@@ -183,11 +183,11 @@ def test_update_user_unauthorized(client):
 
 def test_delete_user_success_admin(client):
     """Test de suppression d'un utilisateur en tant qu'admin"""
-    admin_login = client.get(
-        "/user/login",
+    admin_login = client.post(
+        "/token",
         json={"mail": "admin@example.com", "password": "admin"},
     )
-    admin_token = admin_login.json["token"]
+    admin_token = admin_login.json["access_token"]
 
     response = client.delete(
         "/user/2",
@@ -200,11 +200,11 @@ def test_delete_user_success_admin(client):
 
 def test_delete_user_success_user(client, reset_db):
     """Test de suppression de son propre compte en tant qu'utilisateur"""
-    user_login = client.get(
-        "/user/login",
+    user_login = client.post(
+        "/token",
         json={"mail": "unadmin@example.com", "password": "user"},
     )
-    user_token = user_login.json["token"]
+    user_token = user_login.json["access_token"]
 
     response = client.delete(
         "/user/2",
@@ -217,11 +217,11 @@ def test_delete_user_success_user(client, reset_db):
 
 def test_delete_user_not_found(client):
     """Test de gestion d'erreur d'un utilisateur inexistant"""
-    admin_login = client.get(
-        "/user/login",
+    admin_login = client.post(
+        "/token",
         json={"mail": "admin@example.com", "password": "admin"},
     )
-    admin_token = admin_login.json["token"]
+    admin_token = admin_login.json["access_token"]
 
     response = client.delete(
         "/user/999",
@@ -234,11 +234,11 @@ def test_delete_user_not_found(client):
 
 def test_delete_user_unauthorized(client, reset_db):
     """Test de gestion d'erreur d'un utilisateur non autorisé (un utilisateur tente de supprimer un autre utilisateur sans être admin)"""
-    user_login = client.get(
-        "/user/login",
+    user_login = client.post(
+        "/token",
         json={"mail": "unadmin@example.com", "password": "user"},
     )
-    user_token = user_login.json["token"]
+    user_token = user_login.json["access_token"]
 
     response = client.delete(
         "/user/4",

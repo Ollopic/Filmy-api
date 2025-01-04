@@ -1,19 +1,22 @@
 def test_login_user_success(client):
     """Test de connexion d'un utilisateur"""
-    response = client.get(
-        "/user/login",
+    response = client.post(
+        "/token",
         json={"mail": "admin@example.com", "password": "admin"},
     )
 
     assert response.status_code == 200
-    assert "token" in response.json
+    assert "access_token" in response.json
+    assert "refresh_token" in response.json
+    assert "refresh_token_expires" in response.json
+    assert "access_token_expires" in response.json
     assert response.json["message"] == "User logged in successfully"
 
 
 def test_login_user_invalid_password(client):
     """Test de connexion avec un mauvais mot de passe"""
-    response = client.get(
-        "/user/login",
+    response = client.post(
+        "/token",
         json={"mail": "admin@example.com", "password": "wrongpassword"},
     )
 
@@ -23,8 +26,8 @@ def test_login_user_invalid_password(client):
 
 def test_login_user_not_found(client):
     """Test de connexion avec un utilisateur inexistant"""
-    response = client.get(
-        "/user/login",
+    response = client.post(
+        "/token",
         json={"mail": "nonexistent@example.com", "password": "password"},
     )
 
