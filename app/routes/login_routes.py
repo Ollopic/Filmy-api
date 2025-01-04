@@ -19,12 +19,8 @@ def create_token():
     if bcrypt.checkpw(data["password"].encode("utf-8"), user.password.encode("utf-8")):
         return {
             "message": "User logged in successfully",
-            "access_token": create_access_token(identity=str(user.id)),
-            "refresh_token": create_refresh_token(identity=str(user.id)),
-            "refresh_token_expires": round(
-                datetime.timestamp(datetime.now() + app.config["JWT_REFRESH_TOKEN_EXPIRES"])
-            ),
-            "access_token_expires": round(datetime.timestamp(datetime.now() + app.config["JWT_ACCESS_TOKEN_EXPIRES"])),
+            "token": create_access_token(identity=str(user.id)),
+            "token_expires_at": round(datetime.timestamp(datetime.now() + app.config["JWT_ACCESS_TOKEN_EXPIRES"])),
         }, 200
 
     return {"error": "Invalid password"}, 401

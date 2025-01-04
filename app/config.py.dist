@@ -7,4 +7,3 @@ MOVIE_DB_TOKEN = ''
 jwtSecretKeyConfig = "your_secret_key"
 
 jwtAccessTokenExpiresConfig = 1
-jwtRefreshTokenExpiresConfig = 15

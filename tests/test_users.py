@@ -9,7 +9,7 @@ def test_get_user_as_user(client):
         json={"mail": "unadmin@example.com", "password": "user"},
     )
 
-    user_token = user_login.json["access_token"]
+    user_token = user_login.json["token"]
 
     response = client.get("/user/2", headers={"Authorization": f"Bearer {user_token}"})
 
@@ -29,7 +29,7 @@ def test_get_user_as_admin(client):
         json={"mail": "admin@example.com", "password": "admin"},
     )
 
-    admin_token = admin_login.json["access_token"]
+    admin_token = admin_login.json["token"]
 
     response = client.get("/user/2", headers={"Authorization": f"Bearer {admin_token}"})
 
@@ -49,7 +49,7 @@ def test_get_user_not_found(client):
         json={"mail": "admin@example.com", "password": "admin"},
     )
 
-    admin_token = admin_login.json["access_token"]
+    admin_token = admin_login.json["token"]
 
     response = client.get("/user/999", headers={"Authorization": f"Bearer {admin_token}"})
 
@@ -72,7 +72,7 @@ def test_get_user_unauthorized(client):
         json={"mail": "unadmin@example.com", "password": "user"},
     )
 
-    user_token = user_login.json["access_token"]
+    user_token = user_login.json["token"]
 
     response = client.get("/user/4", headers={"Authorization": f"Bearer {user_token}"})
 
@@ -126,7 +126,7 @@ def test_update_user_success(client):
         "/token",
         json={"mail": "admin@example.com", "password": "admin"},
     )
-    admin_token = admin_login.json["access_token"]
+    admin_token = admin_login.json["token"]
 
     response = client.patch(
         "/user/2",
@@ -147,7 +147,7 @@ def test_update_user_not_found(client):
         "/token",
         json={"mail": "admin@example.com", "password": "admin"},
     )
-    admin_token = admin_login.json["access_token"]
+    admin_token = admin_login.json["token"]
 
     response = client.patch(
         "/user/999",
@@ -165,7 +165,7 @@ def test_update_user_unauthorized(client):
         "/token",
         json={"mail": "unadmin@example.com", "password": "user"},
     )
-    user_token = user_login.json["access_token"]
+    user_token = user_login.json["token"]
 
     response = client.patch(
         "/user/4",
@@ -187,7 +187,7 @@ def test_delete_user_success_admin(client):
         "/token",
         json={"mail": "admin@example.com", "password": "admin"},
     )
-    admin_token = admin_login.json["access_token"]
+    admin_token = admin_login.json["token"]
 
     response = client.delete(
         "/user/2",
@@ -204,7 +204,7 @@ def test_delete_user_success_user(client, reset_db):
         "/token",
         json={"mail": "unadmin@example.com", "password": "user"},
     )
-    user_token = user_login.json["access_token"]
+    user_token = user_login.json["token"]
 
     response = client.delete(
         "/user/2",
@@ -221,7 +221,7 @@ def test_delete_user_not_found(client):
         "/token",
         json={"mail": "admin@example.com", "password": "admin"},
     )
-    admin_token = admin_login.json["access_token"]
+    admin_token = admin_login.json["token"]
 
     response = client.delete(
         "/user/999",
@@ -238,7 +238,7 @@ def test_delete_user_unauthorized(client, reset_db):
         "/token",
         json={"mail": "unadmin@example.com", "password": "user"},
     )
-    user_token = user_login.json["access_token"]
+    user_token = user_login.json["token"]
 
     response = client.delete(
         "/user/4",
