@@ -1,6 +1,5 @@
-import bcrypt
 from flask import request
-from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
+from flask_jwt_extended import get_jwt_identity, jwt_required
 
 from app.app import app
 from app.db.database import db
@@ -8,10 +7,10 @@ from app.db.models import CollectionItem, User
 from app.utils import hash_password
 
 
-@app.route("/user/<int:id>", methods=["GET"])
+@app.route("/user/<int:identifier>", methods=["GET"])
 @jwt_required()
-def get_user(id: int):
-    user = db.session.get(User, id)
+def get_user(identifier: int):
+    user = db.session.get(User, identifier)
     user_request = db.session.get(User, get_jwt_identity())
 
     if not user:
@@ -48,11 +47,11 @@ def create_user():
     return {"message": "User created successfully"}, 201
 
 
-@app.route("/user/<int:id>", methods=["PATCH"])
+@app.route("/user/<int:identifier>", methods=["PATCH"])
 @jwt_required()
-def update_user(id: int):
+def update_user(identifier: int):
     data = request.json
-    user = db.session.get(User, id)
+    user = db.session.get(User, identifier)
     user_request = db.session.get(User, get_jwt_identity())
 
     if user is None:
@@ -74,10 +73,10 @@ def update_user(id: int):
     return {"message": "User updated successfully"}
 
 
-@app.route("/user/<int:id>", methods=["DELETE"])
+@app.route("/user/<int:identifier>", methods=["DELETE"])
 @jwt_required()
-def delete_user(id: int):
-    user = db.session.get(User, id)
+def delete_user(identifier: int):
+    user = db.session.get(User, identifier)
     user_request = db.session.get(User, get_jwt_identity())
 
     if not user:
@@ -86,24 +85,7 @@ def delete_user(id: int):
     if user_request.id != user.id and not user_request.is_admin:
         return {"error": "Unauthorized"}, 401
 
-    db.session.query(CollectionItem).filter(CollectionItem.user_id == id).delete()
+    db.session.query(CollectionItem).filter(CollectionItem.user_id == identifier).delete()
     db.session.delete(user)
     db.session.commit()
     return {"message": "User deleted successfully"}
-
-
-@app.route("/user/login", methods=["GET"])
-def login_user():
-    data = request.json
-    user = User.query.filter_by(mail=data["mail"]).first()
-
-    if not user:
-        return {"error": "User not found"}, 404
-
-    if bcrypt.checkpw(data["password"].encode("utf-8"), user.password.encode("utf-8")):
-        return {
-            "message": "User logged in successfully",
-            "token": create_access_token(identity=str(user.id)),
-        }, 200
-
-    return {"error": "Invalid password"}, 401
