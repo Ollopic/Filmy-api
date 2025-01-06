@@ -1,3 +1,5 @@
+import base64
+
 #
 # ---- GET ----
 #
@@ -22,6 +24,7 @@ def test_get_me(client):
         "username": "admin",
         "mail": "admin@example.com",
         "is_admin": True,
+        "profile_image": None,
     }
 
 
@@ -42,6 +45,7 @@ def test_get_user_as_user(client):
         "username": "user",
         "mail": "unadmin@example.com",
         "is_admin": False,
+        "profile_image": None,
     }
 
 
@@ -62,6 +66,7 @@ def test_get_user_as_admin(client):
         "username": "user",
         "mail": "unadmin@example.com",
         "is_admin": False,
+        "profile_image": None,
     }
 
 
@@ -160,11 +165,16 @@ def test_update_user_success(client):
         json={"mail": "admin@example.com", "password": "admin"},
     )
     admin_token = admin_login.json["token"]
-
+    
+    image_path = "app/db/fixtures/datas/photo_profil.png"
+    with open(image_path, "rb") as image_file:
+        image_binary = image_file.read()
+        image_base64 = base64.b64encode(image_binary).decode('utf-8')
+    
     response = client.patch(
         "/user/2",
         headers={"Authorization": f"Bearer {admin_token}"},
-        json={"username": "updateduser"},
+        json={"username": "updateduser", "profile_image": image_base64},
     )
 
     assert response.status_code == 200
@@ -172,6 +182,7 @@ def test_update_user_success(client):
 
     updated_user = client.get("/user/2", headers={"Authorization": f"Bearer {admin_token}"})
     assert updated_user.json["username"] == "updateduser"
+    assert updated_user.json["profile_image"] == image_base64
 
 
 def test_update_user_not_found(client):
