@@ -53,7 +53,7 @@ def create_user():
         username=data["username"],
         mail=data["mail"],
         password=hash_password(data["password"]),
-        is_admin=data["is_admin"],
+        is_admin=data.get("is_admin", False),
     )
     db.session.add(user)
     db.session.commit()
