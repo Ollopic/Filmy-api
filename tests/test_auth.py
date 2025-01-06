@@ -6,11 +6,8 @@ def test_login_user_success(client):
     )
 
     assert response.status_code == 200
-    assert "access_token" in response.json
-    assert "refresh_token" in response.json
-    assert "refresh_token_expires" in response.json
-    assert "access_token_expires" in response.json
-    assert response.json["message"] == "User logged in successfully"
+    assert "token" in response.json
+    assert response.json["message"] == "Utilisateur connecté avec succès"
 
 
 def test_login_user_invalid_password(client):
@@ -21,7 +18,7 @@ def test_login_user_invalid_password(client):
     )
 
     assert response.status_code == 401
-    assert response.json == {"error": "Invalid password"}
+    assert response.json == {"error": "Mail ou mot de passe incorrect"}
 
 
 def test_login_user_not_found(client):
@@ -31,5 +28,5 @@ def test_login_user_not_found(client):
         json={"mail": "nonexistent@example.com", "password": "password"},
     )
 
-    assert response.status_code == 404
-    assert response.json == {"error": "User not found"}
+    assert response.status_code == 401
+    assert response.json == {"error": "Mail ou mot de passe incorrect"}
