@@ -2,6 +2,29 @@
 # ---- GET ----
 #
 
+def test_get_me(client):
+    """Test que l'utilisateur connecté peut récupérer ses propres infos"""
+    user_login = client.post(
+        "/token",
+        json={"mail": "admin@example.com", "password": "admin"},
+    )
+
+    user_token = user_login.json["token"]
+
+    user_infos = client.get(
+        "/user/me",
+        headers={"Authorization": f"Bearer {user_token}"},
+    )
+
+    assert user_infos.status_code == 200
+    assert user_infos.json == {
+        "id": 1,
+        "username": "admin",
+        "mail": "admin@example.com",
+        "is_admin": True,
+    }
+
+
 def test_get_user_as_user(client):
     """Test que l'utilisateur connecté peut récupérer ses propres infos"""
     user_login = client.post(

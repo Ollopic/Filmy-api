@@ -7,6 +7,19 @@ from app.db.models import CollectionItem, User
 from app.utils import hash_password
 
 
+@app.route("/user/me", methods=["GET"])
+@jwt_required()
+def get_me():
+    user_id = get_jwt_identity()
+
+    user = db.session.get(User, user_id)
+
+    if not user:
+        return {"error": "Utilisateur introuvable"}, 404
+
+    return {"id": user.id, "username": user.username, "mail": user.mail, "is_admin": user.is_admin}, 200
+
+
 @app.route("/user/<int:identifier>", methods=["GET"])
 @jwt_required()
 def get_user(identifier: int):
