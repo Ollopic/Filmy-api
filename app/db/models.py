@@ -45,7 +45,7 @@ class User(db.Model):
     mail = db.Column(db.String, unique=True, nullable=False)
     password = db.Column(db.String, nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
-    profile_image = db.Column(db.LargeBinary, nullable=True)
+    profile_image = db.Column(db.Text, nullable=True)
 
     # Relation OneToMany avec 'CollectionItem'
     collection = db.relationship("CollectionItem", back_populates="user")

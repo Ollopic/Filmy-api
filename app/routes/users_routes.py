@@ -1,5 +1,3 @@
-import base64
-
 from flask import request
 from flask_jwt_extended import get_jwt_identity, jwt_required
 
@@ -24,7 +22,7 @@ def get_me():
         "username": user.username,
         "mail": user.mail,
         "is_admin": user.is_admin,
-        "profile_image": base64.b64encode(user.profile_image).decode() if user.profile_image else None,
+        "profile_image": user.profile_image,
     }, 200
 
 
@@ -45,7 +43,7 @@ def get_user(identifier: int):
         "username": user.username,
         "mail": user.mail,
         "is_admin": user.is_admin,
-        "profile_image": base64.b64encode(user.profile_image).decode() if user.profile_image else None,
+        "profile_image": user.profile_image,
     }, 200
 
 
@@ -91,7 +89,7 @@ def update_user(identifier: int):
     if data.get("is_admin"):
         user.is_admin = data["is_admin"]
     if data.get("profile_image"):
-        user.profile_image = base64.b64decode(data["profile_image"])
+        user.profile_image = data["profile_image"]
 
     db.session.commit()
     return {"message": "Utilisateur mis à jour avec succès"}
