@@ -52,7 +52,7 @@ def create_user():
     user = User(
         username=data["username"],
         mail=data["mail"],
-        password=data["password"],
+        password=hash_password(data["password"]),
         is_admin=data["is_admin"],
     )
     db.session.add(user)
