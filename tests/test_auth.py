@@ -7,7 +7,7 @@ def test_login_user_success(client):
 
     assert response.status_code == 200
     assert "token" in response.json
-    assert response.json["message"] == "User logged in successfully"
+    assert response.json["message"] == "Utilisateur connecté avec succès"
 
 
 def test_login_user_invalid_password(client):

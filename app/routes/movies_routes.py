@@ -22,7 +22,7 @@ def get_movie(identifier: int):
     movie = db.session.get(Film, identifier)
 
     if not movie:
-        return {"error": "Movie not found"}, 404
+        return {"error": "Film introuvable"}, 404
 
     return {
         "id": movie.id,

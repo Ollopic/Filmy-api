@@ -15,6 +15,6 @@ def create_token():
         return {"error": "Mail ou mot de passe incorrect"}, 401
 
     return {
-        "message": "User logged in successfully",
+        "message": "Utilisateur connecté avec succès",
         "token": create_access_token(identity=str(user.id)),
     }, 200

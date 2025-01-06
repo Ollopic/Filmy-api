@@ -27,10 +27,10 @@ def get_user(identifier: int):
     user_request = db.session.get(User, get_jwt_identity())
 
     if not user:
-        return {"error": "User not found"}, 404
+        return {"error": "Utilisateur introuvable"}, 404
 
     if user_request.id != user.id and not user_request.is_admin:
-        return {"error": "Unauthorized"}, 401
+        return {"error": "Non autorisé"}, 401
 
     return {
         "id": user.id,
@@ -47,7 +47,7 @@ def create_user():
     existing_user = User.query.filter(User.mail == data["mail"]).first()
 
     if existing_user:
-        return {"error": "Email already exists"}, 409
+        return {"error": "Email déjà utilisé"}, 409
 
     user = User(
         username=data["username"],
@@ -57,7 +57,7 @@ def create_user():
     )
     db.session.add(user)
     db.session.commit()
-    return {"message": "User created successfully"}, 201
+    return {"message": "Utilisateur créé avec succès"}, 201
 
 
 @app.route("/user/<int:identifier>", methods=["PATCH"])
@@ -68,10 +68,10 @@ def update_user(identifier: int):
     user_request = db.session.get(User, get_jwt_identity())
 
     if user is None:
-        return {"error": "User not found"}, 404
+        return {"error": "Utilisateur introuvable"}, 404
 
     if user_request.id != user.id and not user_request.is_admin:
-        return {"error": "Unauthorized"}, 401
+        return {"error": "Non autorisé"}, 401
 
     if data.get("username"):
         user.username = data["username"]
@@ -83,7 +83,7 @@ def update_user(identifier: int):
         user.is_admin = data["is_admin"]
 
     db.session.commit()
-    return {"message": "User updated successfully"}
+    return {"message": "Utilisateur mis à jour avec succès"}
 
 
 @app.route("/user/<int:identifier>", methods=["DELETE"])
@@ -93,12 +93,12 @@ def delete_user(identifier: int):
     user_request = db.session.get(User, get_jwt_identity())
 
     if not user:
-        return {"error": "User not found"}, 404
+        return {"error": "Utilisateur introuvable"}, 404
 
     if user_request.id != user.id and not user_request.is_admin:
-        return {"error": "Unauthorized"}, 401
+        return {"error": "Non autorisé"}, 401
 
     db.session.query(CollectionItem).filter(CollectionItem.user_id == identifier).delete()
     db.session.delete(user)
     db.session.commit()
-    return {"message": "User deleted successfully"}
+    return {"message": "Utilisateur supprimé avec succès"}

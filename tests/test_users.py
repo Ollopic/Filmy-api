@@ -77,7 +77,7 @@ def test_get_user_not_found(client):
     response = client.get("/user/999", headers={"Authorization": f"Bearer {admin_token}"})
 
     assert response.status_code == 404
-    assert response.json == {"error": "User not found"}
+    assert response.json == {"error": "Utilisateur introuvable"}
 
 
 def test_get_user_unauthenticated(client):
@@ -100,7 +100,7 @@ def test_get_user_unauthorized(client):
     response = client.get("/user/4", headers={"Authorization": f"Bearer {user_token}"})
 
     assert response.status_code == 401
-    assert response.json == {"error": "Unauthorized"}
+    assert response.json == {"error": "Non autorisé"}
 
 
 #
@@ -120,7 +120,7 @@ def test_create_user_success(client):
     )
 
     assert response.status_code == 201
-    assert response.json == {"message": "User created successfully"}
+    assert response.json == {"message": "Utilisateur créé avec succès"}
 
     """Test que le mot de passe est bien hashé dans la base de données en tentant de se connecter"""
     response = client.post(
@@ -130,7 +130,7 @@ def test_create_user_success(client):
 
     assert response.status_code == 200
     assert "token" in response.json
-    assert response.json["message"] == "User logged in successfully"
+    assert response.json["message"] == "Utilisateur connecté avec succès"
 
 
 def test_create_user_email_exists(client):
@@ -146,7 +146,7 @@ def test_create_user_email_exists(client):
     )
 
     assert response.status_code == 409
-    assert response.json == {"error": "Email already exists"}
+    assert response.json == {"error": "Email déjà utilisé"}
 
 
 #
@@ -168,7 +168,7 @@ def test_update_user_success(client):
     )
 
     assert response.status_code == 200
-    assert response.json == {"message": "User updated successfully"}
+    assert response.json == {"message": "Utilisateur mis à jour avec succès"}
 
     updated_user = client.get("/user/2", headers={"Authorization": f"Bearer {admin_token}"})
     assert updated_user.json["username"] == "updateduser"
@@ -189,7 +189,7 @@ def test_update_user_not_found(client):
     )
 
     assert response.status_code == 404
-    assert response.json == {"error": "User not found"}
+    assert response.json == {"error": "Utilisateur introuvable"}
 
 
 def test_update_user_unauthorized(client):
@@ -207,7 +207,7 @@ def test_update_user_unauthorized(client):
     )
 
     assert response.status_code == 401
-    assert response.json == {"error": "Unauthorized"}
+    assert response.json == {"error": "Non autorisé"}
 
 
 #
@@ -228,7 +228,7 @@ def test_delete_user_success_admin(client):
     )
 
     assert response.status_code == 200
-    assert response.json == {"message": "User deleted successfully"}
+    assert response.json == {"message": "Utilisateur supprimé avec succès"}
 
 
 def test_delete_user_success_user(client, reset_db):
@@ -245,7 +245,7 @@ def test_delete_user_success_user(client, reset_db):
     )
 
     assert response.status_code == 200
-    assert response.json == {"message": "User deleted successfully"}
+    assert response.json == {"message": "Utilisateur supprimé avec succès"}
 
 
 def test_delete_user_not_found(client):
@@ -262,7 +262,7 @@ def test_delete_user_not_found(client):
     )
 
     assert response.status_code == 404
-    assert response.json == {"error": "User not found"}
+    assert response.json == {"error": "Utilisateur introuvable"}
 
 
 def test_delete_user_unauthorized(client, reset_db):
@@ -279,4 +279,4 @@ def test_delete_user_unauthorized(client, reset_db):
     )
 
     assert response.status_code == 401
-    assert response.json == {"error": "Unauthorized"}
+    assert response.json == {"error": "Non autorisé"}

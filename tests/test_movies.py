@@ -65,4 +65,4 @@ def test_get_movie_by_id_not_found(client):
 
     error_response = response.json
     assert "error" in error_response
-    assert error_response["error"] == "Movie not found"
+    assert error_response["error"] == "Film introuvable"
