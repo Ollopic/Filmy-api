@@ -12,7 +12,7 @@ def create_token():
     user = User.query.filter_by(mail=data["mail"]).first()
 
     if not user or not bcrypt.checkpw(data["password"].encode("utf-8"), user.password.encode("utf-8")):
-        return {"error": "Mail or password is incorrect"}, 401
+        return {"error": "Mail ou mot de passe incorrect"}, 401
 
     return {
         "message": "User logged in successfully",

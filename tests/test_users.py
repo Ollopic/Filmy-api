@@ -122,6 +122,16 @@ def test_create_user_success(client):
     assert response.status_code == 201
     assert response.json == {"message": "User created successfully"}
 
+    """Test que le mot de passe est bien hashé dans la base de données en tentant de se connecter"""
+    response = client.post(
+        "/token",
+        json={"mail": "newuser@example.com", "password": "newuserPassword"},
+    )
+
+    assert response.status_code == 200
+    assert "token" in response.json
+    assert response.json["message"] == "User logged in successfully"
+
 
 def test_create_user_email_exists(client):
     """Test de gestion d'erreur d'un email déjà existant"""
