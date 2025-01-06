@@ -1,3 +1,5 @@
+import base64
+
 from flask import request
 from flask_jwt_extended import get_jwt_identity, jwt_required
 
@@ -17,7 +19,13 @@ def get_me():
     if not user:
         return {"error": "Utilisateur introuvable"}, 404
 
-    return {"id": user.id, "username": user.username, "mail": user.mail, "is_admin": user.is_admin}, 200
+    return {
+        "id": user.id,
+        "username": user.username,
+        "mail": user.mail,
+        "is_admin": user.is_admin,
+        "profile_image": base64.b64encode(user.profile_image).decode() if user.profile_image else None,
+    }, 200
 
 
 @app.route("/user/<int:identifier>", methods=["GET"])
@@ -37,6 +45,7 @@ def get_user(identifier: int):
         "username": user.username,
         "mail": user.mail,
         "is_admin": user.is_admin,
+        "profile_image": base64.b64encode(user.profile_image).decode() if user.profile_image else None,
     }, 200
 
 
@@ -81,6 +90,8 @@ def update_user(identifier: int):
         user.password = hash_password(data["password"])
     if data.get("is_admin"):
         user.is_admin = data["is_admin"]
+    if data.get("profile_image"):
+        user.profile_image = base64.b64decode(data["profile_image"])
 
     db.session.commit()
     return {"message": "Utilisateur mis à jour avec succès"}
