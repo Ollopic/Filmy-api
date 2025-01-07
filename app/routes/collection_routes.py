@@ -17,9 +17,6 @@ def get_collection(identifier: int):
 
     query = db.session.query(CollectionItem).filter(CollectionItem.user_id == identifier)
 
-    if not query:
-        return {"error": "Aucun item trouvé"}, 404
-
     if wishlist is not None:
         if not validate_boolean_param(wishlist):
             return {"error": "La valeur de wishlist doit être un booléen"}, 400
@@ -42,6 +39,9 @@ def get_collection(identifier: int):
         query = query.filter(CollectionItem.borrowed == borrowed)
 
     collection = query.all()
+
+    if not collection:
+        return {"error": "Aucun item trouvé"}, 404
 
     return [
         {
