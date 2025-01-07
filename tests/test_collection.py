@@ -195,3 +195,37 @@ def test_get_collection_without_jwt(client):
     response = client.get('/user/3/collection')
     assert response.status_code == 401
     assert response.json == {"msg": "Missing Authorization Header"}
+
+
+#
+# ---- POST ----
+#
+
+def test_create_item_returns_created_item(client):
+    admin_login = client.post(
+        "/token",
+        json={"mail": "admin@example.com", "password": "admin"},
+    )
+    admin_token = admin_login.json["token"]
+
+    response = client.post(
+        '/user/3/collection',
+        headers={"Authorization": f"Bearer {admin_token}"},
+        json={
+            "film_id": 2,
+            "state": "Physique",
+            "borrowed": False,
+            "favorite": False,
+            "in_wishlist": False,
+        }
+    )
+
+    assert response.status_code == 201
+    assert response.json == {"message": "Item ajouté avec succès"}
+    
+    response = client.get(
+        '/user/3/collection',
+        headers={"Authorization": f"Bearer {admin_token}"}
+    )
+    collection = response.json
+    assert any(item["film"]["id"] == 2 for item in collection)

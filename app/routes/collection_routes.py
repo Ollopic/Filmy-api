@@ -62,3 +62,23 @@ def get_collection(identifier: int):
         }
         for item in collection
     ]
+
+
+@app.route("/user/<int:identifier>/collection", methods=["POST"])
+@jwt_required()
+def create_item(identifier: int):
+    data = request.json
+
+    item = CollectionItem(
+        user_id=identifier,
+        film_id=data["film_id"],
+        state=data["state"],
+        borrowed=data["borrowed"],
+        favorite=data["favorite"],
+        in_wishlist=data["in_wishlist"],
+    )
+
+    db.session.add(item)
+    db.session.commit()
+
+    return  {"message": "Item ajouté avec succès"}, 201
