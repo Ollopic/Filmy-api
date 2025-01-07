@@ -303,3 +303,33 @@ def test_patch_item(client):
     response = client.patch(f"/user/1/collection/{item_id}", json=update_data, headers={"Authorization": f"Bearer {admin_token}"})
     assert response.status_code == 200
     assert response.json["message"] == "Item mis à jour avec succès"
+
+
+#
+# ---- DELETE ----
+#
+
+def test_delete_item(client):
+    admin_login = client.post(
+        "/token",
+        json={"mail": "admin@example.com", "password": "admin"},
+    )
+    admin_token = admin_login.json["token"]
+
+    item_data = {
+        "film_id": 1,
+        "state": "Physique",
+        "borrowed": False,
+        "favorite": False,
+        "in_wishlist": False
+    }
+    response = client.post("/user/1/collection", json=item_data, headers={"Authorization": f"Bearer {admin_token}"})
+    assert response.status_code == 201
+    item_id = client.get(
+        "/user/1/collection",
+        headers={"Authorization": f"Bearer {admin_token}"}
+    ).json[0]["id"]
+
+    response = client.delete(f"/user/1/collection/{item_id}", headers={"Authorization": f"Bearer {admin_token}"})
+    assert response.status_code == 200
+    assert response.json["message"] == "Item supprimé avec succès"

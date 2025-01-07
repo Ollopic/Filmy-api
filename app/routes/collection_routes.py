@@ -138,3 +138,29 @@ def update_item(identifier: int, item_id: int):
     db.session.commit()
 
     return {"message": "Item mis à jour avec succès"}, 200
+
+
+@app.route("/user/<int:identifier>/collection/<int:item_id>", methods=["DELETE"])
+@jwt_required()
+def delete_item(identifier: int, item_id: int):
+    user = db.session.get(User, identifier)
+    user_request = db.session.get(User, get_jwt_identity())
+
+    if user is None:
+        return {"error": "Utilisateur introuvable"}, 404
+
+    if user_request.id != user.id and not user_request.is_admin:
+        return {"error": "Non autorisé"}, 401
+
+    item = db.session.get(CollectionItem, item_id)
+
+    if item is None:
+        return {"error": "Item introuvable"}, 404
+
+    if item.user_id != identifier and not user_request.is_admin:
+        return {"error": "Non autorisé"}, 401
+
+    db.session.delete(item)
+    db.session.commit()
+
+    return {"message": "Item supprimé avec succès"}, 200
