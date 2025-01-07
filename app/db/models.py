@@ -64,4 +64,3 @@ class CollectionItem(db.Model):
 
     film_id = db.Column(db.Integer, db.ForeignKey("film.id"), nullable=False)
     film = db.relationship("Film", back_populates="collection_items")
-

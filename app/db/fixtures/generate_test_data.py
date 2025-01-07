@@ -127,7 +127,7 @@ def generate_test_data():
             num_items = random.randint(3, 7)
             for _ in range(num_items):
                 film = random.choice(films)
-                
+
                 item = CollectionItem(
                     state=random.choice(["Physique", "Numérique"]),
                     borrowed=fake.boolean(chance_of_getting_true=20),
@@ -140,7 +140,7 @@ def generate_test_data():
                     user=user,
                     film=film,
                 )
-                
+
                 collection_items.append(item)
                 db.session.add(item)
 
