@@ -1,15 +1,24 @@
 from flask import request
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import get_jwt_identity, jwt_required
 
 from app.app import app
 from app.db.database import db
-from app.db.models import CollectionItem
+from app.db.models import CollectionItem, User
 from app.utils import validate_boolean_param, validate_state_param
 
 
 @app.route("/user/<int:identifier>/collection", methods=["GET"])
 @jwt_required()
 def get_collection(identifier: int):
+    user = db.session.get(User, identifier)
+    user_request = db.session.get(User, get_jwt_identity())
+
+    if user is None:
+        return {"error": "Utilisateur introuvable"}, 404
+
+    if user_request.id != user.id and not user_request.is_admin:
+        return {"error": "Non autorisé"}, 401
+
     wishlist = request.args.get("wishlist")
     favorite = request.args.get("favorite")
     state = request.args.get("state")
@@ -67,6 +76,15 @@ def get_collection(identifier: int):
 @app.route("/user/<int:identifier>/collection", methods=["POST"])
 @jwt_required()
 def create_item(identifier: int):
+    user = db.session.get(User, identifier)
+    user_request = db.session.get(User, get_jwt_identity())
+
+    if user is None:
+        return {"error": "Utilisateur introuvable"}, 404
+
+    if user_request.id != user.id and not user_request.is_admin:
+        return {"error": "Non autorisé"}, 401
+    
     data = request.json
 
     item = CollectionItem(

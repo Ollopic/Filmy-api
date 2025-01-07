@@ -197,6 +197,22 @@ def test_get_collection_without_jwt(client):
     assert response.json == {"msg": "Missing Authorization Header"}
 
 
+def test_get_collection_with_invalid_jwt(client):
+    user_login = client.post(
+        "/token",
+        json={"mail": "unadmin@example.com", "password": "user"},
+    )
+
+    user_token = user_login.json["token"]
+
+    response = client.get(
+        '/user/3/collection',
+        headers={"Authorization": f"Bearer {user_token}"}
+    )
+
+    assert response.status_code == 401
+    assert response.json == {"error": "Non autorisé"}
+
 #
 # ---- POST ----
 #
@@ -229,3 +245,27 @@ def test_create_item_returns_created_item(client):
     )
     collection = response.json
     assert any(item["film"]["id"] == 2 for item in collection)
+
+
+def test_create_item_with_invalid_jwt(client):
+    user_login = client.post(
+        "/token",
+        json={"mail": "unadmin@example.com", "password": "user"},
+    )
+
+    user_token = user_login.json["token"]
+
+    response = client.post(
+        '/user/3/collection',
+        headers={"Authorization": f"Bearer {user_token}"},
+        json={
+            "film_id": 2,
+            "state": "Physique",
+            "borrowed": False,
+            "favorite": False,
+            "in_wishlist": False,
+        }
+    )
+
+    assert response.status_code == 401
+    assert response.json == {"error": "Non autorisé"}
