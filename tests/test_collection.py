@@ -1,8 +1,5 @@
 import json
 
-with open("app/db/fixtures/datas/films.json", "r") as file:
-    data = json.load(file)
-
 #
 # ---- GET ----
 #
