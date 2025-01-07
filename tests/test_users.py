@@ -178,7 +178,10 @@ def test_update_user_success(client):
     )
 
     assert response.status_code == 200
-    assert response.json == {"message": "Utilisateur mis à jour avec succès"}
+    assert "profile_image" in response.json
+    assert "username" in response.json
+    assert "mail" in response.json
+    assert "is_admin" in response.json
 
     updated_user = client.get("/user/2", headers={"Authorization": f"Bearer {admin_token}"})
     assert updated_user.json["username"] == "updateduser"
