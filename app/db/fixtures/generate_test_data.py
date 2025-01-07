@@ -121,8 +121,14 @@ def generate_test_data():
                 person = random.choice(persons)
                 credit = CreditsFilm(film=film, person=person, character=fake.name())
                 db.session.add(credit)
-        
-        film_1 = Film(id=1, id_tmdb=1241982, data="Film 1", image_path="/tElnmtQ6yz1PjN1kePNl8yMSb59.jpg", poster_path="/m0SbwFNCa9epW1X60deLqTHiP7x.jpg")
+
+        film_1 = Film(
+            id=1,
+            id_tmdb=1241982,
+            data="Film 1",
+            image_path="/tElnmtQ6yz1PjN1kePNl8yMSb59.jpg",
+            poster_path="/m0SbwFNCa9epW1X60deLqTHiP7x.jpg",
+        )
         film_2 = Film(id=2, id_tmdb=1241983, data="Film 2", image_path="/image2.jpg", poster_path="/poster2.jpg")
 
         item_true = CollectionItem(
@@ -133,7 +139,7 @@ def generate_test_data():
             borrowed_by="User 1",
             favorite=True,
             in_wishlist=True,
-            film_id=film_1.id
+            film_id=film_1.id,
         )
 
         item_false = CollectionItem(
@@ -144,12 +150,12 @@ def generate_test_data():
             borrowed_by=None,
             favorite=False,
             in_wishlist=False,
-            film_id=film_2.id
+            film_id=film_2.id,
         )
 
         db.session.add(item_true)
         db.session.add(item_false)
-        
+
         # Générer des items de collection aléatoires
         collection_items = []
         for user in users:
