@@ -19,11 +19,8 @@ class Film(db.Model):
     image_path = db.Column(db.String, nullable=True)
     poster_path = db.Column(db.String, nullable=True)
 
-    # Relation OneToMany avec 'CreditsFilm'
     credits = db.relationship("CreditsFilm", back_populates="film")
-
-    # Relation ManyToMany avec 'CollectionItem'
-    collection_items = db.relationship("CollectionItem", secondary="film_collection", back_populates="films")
+    collection_items = db.relationship("CollectionItem", back_populates="film")
 
 
 # Modèle pour la table 'CreditsFilm'
@@ -65,17 +62,6 @@ class CollectionItem(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     user = db.relationship("User", back_populates="collection")
 
-    films = db.relationship("Film", secondary="film_collection", back_populates="collection_items")
+    film_id = db.Column(db.Integer, db.ForeignKey("film.id"), nullable=False)
+    film = db.relationship("Film", back_populates="collection_items")
 
-
-# Table intermédiaire pour la relation ManyToMany entre 'Film' et 'CollectionItem'
-film_collection = db.Table(
-    "film_collection",
-    db.Column("film_id", db.Integer, db.ForeignKey("film.id"), primary_key=True),
-    db.Column(
-        "collection_item_id",
-        db.Integer,
-        db.ForeignKey("collection_item.id"),
-        primary_key=True,
-    ),
-)
