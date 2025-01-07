@@ -84,7 +84,7 @@ def create_item(identifier: int):
 
     if user_request.id != user.id and not user_request.is_admin:
         return {"error": "Non autorisé"}, 401
-    
+
     data = request.json
 
     item = CollectionItem(
@@ -99,7 +99,7 @@ def create_item(identifier: int):
     db.session.add(item)
     db.session.commit()
 
-    return  {"message": "Item ajouté avec succès"}, 201
+    return {"message": "Item ajouté avec succès"}, 201
 
 
 @app.route("/user/<int:identifier>/collection/<int:item_id>", methods=["PATCH"])
@@ -134,7 +134,7 @@ def update_item(identifier: int, item_id: int):
         item.favorite = data["favorite"]
     if "in_wishlist" in data:
         item.in_wishlist = data["in_wishlist"]
-    
+
     db.session.commit()
 
     return {"message": "Item mis à jour avec succès"}, 200

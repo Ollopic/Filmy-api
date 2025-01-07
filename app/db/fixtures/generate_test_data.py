@@ -123,13 +123,15 @@ def generate_test_data():
                 db.session.add(credit)
 
         film_1 = Film(
-            id=1,
+            id=6,
             id_tmdb=1241982,
-            data="Film 1",
+            data={"title": "Film 1"},
             image_path="/tElnmtQ6yz1PjN1kePNl8yMSb59.jpg",
             poster_path="/m0SbwFNCa9epW1X60deLqTHiP7x.jpg",
         )
-        film_2 = Film(id=2, id_tmdb=1241983, data="Film 2", image_path="/image2.jpg", poster_path="/poster2.jpg")
+        film_2 = Film(
+            id=7, id_tmdb=1241983, data={"title": "Film 2"}, image_path="/image2.jpg", poster_path="/poster2.jpg"
+        )
 
         item_true = CollectionItem(
             user_id=3,
@@ -155,6 +157,8 @@ def generate_test_data():
 
         db.session.add(item_true)
         db.session.add(item_false)
+        db.session.add(film_1)
+        db.session.add(film_2)
 
         # Générer des items de collection aléatoires
         collection_items = []

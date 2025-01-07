@@ -44,34 +44,20 @@ def test_get_collection_contains_specific_item(client):
         "id": 1,
         "state": "Physique",
         "borrowed": True,
-        "borrowed_at": "2025-01-01 00:00:00",
+        "borrowed_at": "Wed, 01 Jan 2025 00:00:00 GMT",
         "borrowed_by": "User 1",
         "favorite": True,
         "in_wishlist": True,
         "film": {
-            "id": 1,
+            "id": 6,
             "id_tmdb": 1241982,
-            "data": "Film 1",
+            "data": {"title": "Film 1"},
             "image_path": "/tElnmtQ6yz1PjN1kePNl8yMSb59.jpg",
             "poster_path": "/m0SbwFNCa9epW1X60deLqTHiP7x.jpg",
         },
     }
 
-    assert any(
-        item["id"] == specific_item["id"]
-        and item["state"] == specific_item["state"]
-        and item["borrowed"] == specific_item["borrowed"]
-        and item["borrowed_at"] == specific_item["borrowed_at"]
-        and item["borrowed_by"] == specific_item["borrowed_by"]
-        and item["favorite"] == specific_item["favorite"]
-        and item["in_wishlist"] == specific_item["in_wishlist"]
-        and item["film"]["id"] == specific_item["film"]["id"]
-        and item["film"]["id_tmdb"] == specific_item["film"]["id_tmdb"]
-        and item["film"]["data"] == specific_item["film"]["data"]
-        and item["film"]["image_path"] == specific_item["film"]["image_path"]
-        and item["film"]["poster_path"] == specific_item["film"]["poster_path"]
-        for item in collection
-    )
+    assert specific_item in collection
 
 
 def test_get_collection_with_good_param(client):
