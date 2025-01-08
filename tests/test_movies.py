@@ -44,7 +44,7 @@ def test_search_movie(client):
 
 def test_get_movie_by_id(client):
     """Test que l'endpoint /movies/<int:id> renvoie bien les informations d'un film"""
-    response = client.get(f'/movies/2')
+    response = client.get('/movies/2')
     assert response.status_code == 200
 
     movie = response.json
@@ -74,7 +74,7 @@ def test_get_movie_by_id_not_found(client):
 
 def test_get_movie_credits(client):
     """Test que l'endpoint /movies/<int:id>/credits renvoie les crédits d'un film"""   
-    response = client.get(f'/movies/2/credits')
+    response = client.get('/movies/2/credits')
     assert response.status_code == 200
 
     credits = response.json
@@ -98,7 +98,7 @@ def test_get_movie_credits(client):
 
 def test_create_movie(client):
     """Test que l'endpoint /movies/id permet de créer un film correctement s'il n'existe pas dans la db"""
-    response = client.get(f'/movies/11')
+    response = client.get('/movies/11')
     assert response.status_code == 200
 
     movie = response.json
