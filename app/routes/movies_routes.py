@@ -8,30 +8,22 @@ from app.themoviedb.client import Client
 
 tmdb_client = Client()
 
+
 @app.route("/movies/popular", methods=["GET"])
 def get_popular_movies():
-    response = tmdb_client.get_popular_movies()
-
-    return response["results"], 200
+    return tmdb_client.get_popular_movies()["results"], 200
 
 
 @app.route("/movies/trending", methods=["GET"])
 def get_trending_movies():
-    response = tmdb_client.get_trending_movies()
-
-    return response["results"], 200
+    return tmdb_client.get_trending_movies()["results"], 200
 
 
 @app.route("/movies/search", methods=["GET"])
 def search_movie():
     title = request.args.get("title")
 
-    if not title:
-        return {"error": "Paramètre 'title' manquant"}, 400
-
-    response = tmdb_client.get_movie_by_title(title)
-
-    return response["results"], 200
+    return tmdb_client.get_movie_by_title(title)["results"], 200
 
 
 @app.route("/movies/<int:identifier>", methods=["GET"])
@@ -41,7 +33,15 @@ def get_movie(identifier: int):
     if not movie:
         try:
             movie_data = tmdb_client.get_movie_by_id(identifier)
+            data = {
+                "id_tmdb": movie_data["id"],
+                "data": movie_data,
+                "image_path": movie_data["poster_path"],
+                "poster_path": movie_data["backdrop_path"],
+            }
+            create_movie(data)
             return movie_data, 200
+
         except HTTPError as e:
             if e.response.status_code == 404:
                 return {"error": "Film introuvable"}, 404
@@ -78,18 +78,7 @@ def get_movie_credits(identifier: int):
     return result, 200
 
 
-@app.route("/movies", methods=["POST"])
-def create_movie():
-    data = request.json
-
-    existing_movie = Film.query.filter(Film.id_tmdb == data["id_tmdb"]).first()
-
-    if not isinstance(data.get("data"), (dict, list)):
-        return {"error": "The 'data' field must be a JSON object or array"}, 400
-
-    if existing_movie:
-        return {"error": "Movie already exists"}, 409
-
+def create_movie(data):
     movie = Film(
         id_tmdb=data["id_tmdb"],
         data=data["data"],
@@ -99,5 +88,3 @@ def create_movie():
 
     db.session.add(movie)
     db.session.commit()
-
-    return {"message": "Movie created successfully"}, 201

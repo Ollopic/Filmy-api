@@ -97,55 +97,26 @@ def test_get_movie_credits(client):
         ), f"Expected credit {expected_credit} not found in response"
 
 #
-# ---- POST ----
+# ---- CREATE MOVIE ----
 #
 
 def test_create_movie(client):
-    """Test que l'endpoint /movies permet de créer un film correctement"""
-    new_movie = {
-        "id_tmdb": 9999,
-        "data": data["film2"],
+    """Test que l'endpoint /movies/id permet de créer un film correctement s'il n'existe pas dans la db"""
+    specific_id = 1
+    response = client.get(f'/movies/{specific_id}')
+    assert response.status_code == 200
+
+    movie = response.json
+    expected_movie = {
+        "id": specific_id,
+        "id_tmdb": 1241982,
+        "data": data["film1"],
         "image_path": "/tElnmtQ6yz1PjN1kePNl8yMSb59.jpg",
         "poster_path": "/m0SbwFNCa9epW1X60deLqTHiP7x.jpg",
     }
 
-    response = client.post('/movies', json=new_movie)
-    assert response.status_code == 201
-
-    success_response = response.json
-    assert "message" in success_response
-    assert success_response["message"] == "Movie created successfully"
-
-
-def test_create_movie_already_exists(client):
-    """Test que l'endpoint /movies renvoie une erreur 409 si le film existe déjà"""
-    existing_movie = {
-        "id_tmdb": 9999,
-        "data": data["film2"],
-        "image_path": "/tElnmtQ6yz1PjN1kePNl8yMSb59.jpg",
-        "poster_path": "/m0SbwFNCa9epW1X60deLqTHiP7x.jpg",
-    }
-
-    response = client.post('/movies', json=existing_movie)
-    assert response.status_code == 409
-
-    error_response = response.json
-    assert "error" in error_response
-    assert error_response["error"] == "Movie already exists"
-
-
-def test_create_movie_invalid_data(client):
-    """Test que l'endpoint /movies renvoie une erreur 400 si le champ 'data' n'est pas un JSON valide"""
-    invalid_data_movie = {
-        "id_tmdb": 9999,
-        "data": "invalid_json",
-        "image_path": "/tElnmtQ6yz1PjN1kePNl8yMSb59.jpg",
-        "poster_path": "/m0SbwFNCa9epW1X60deLqTHiP7x.jpg",
-    }
-
-    response = client.post('/movies', json=invalid_data_movie)
-    assert response.status_code == 400
-
-    error_response = response.json
-    assert "error" in error_response
-    assert error_response["error"] == "The 'data' field must be a JSON object or array"
+    assert movie["id"] == expected_movie["id"]
+    assert movie["id_tmdb"] == expected_movie["id_tmdb"]
+    assert movie["data"] == expected_movie["data"]
+    assert movie["image_path"] == expected_movie["image_path"]
+    assert movie["poster_path"] == expected_movie["poster_path"]
