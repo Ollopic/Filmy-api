@@ -28,6 +28,7 @@ def get_top_rating_movies():
 def get_upcoming_movies():
     return tmdb_client.get_upcoming_movies()["results"], 200
 
+
 @app.route("/movies/search", methods=["GET"])
 def search_movie():
     title = request.args.get("title")
