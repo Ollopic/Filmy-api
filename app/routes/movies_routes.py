@@ -3,20 +3,15 @@ from flask import request
 from app.app import app
 from app.db.database import db
 from app.db.models import CreditsFilm, Film
+from app.themoviedb.client import Client
 
 
-@app.route("/movies", methods=["GET"])
-def get_movies():
-    return [
-        {
-            "id": movie.id,
-            "id_tmdb": movie.id_tmdb,
-            "data": movie.data,
-            "image_path": movie.image_path,
-            "poster_path": movie.poster_path,
-        }
-        for movie in db.session.query(Film).all()
-    ]
+@app.route("/movies/popular", methods=["GET"])
+def get_popular_movies():
+    client = Client()
+    response = client.get_popular_movies()
+
+    return response["results"], 200
 
 
 @app.route("/movies/<int:identifier>", methods=["GET"])

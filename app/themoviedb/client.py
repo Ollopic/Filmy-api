@@ -45,6 +45,11 @@ class Client:
             endpoint="trending/movie/week",
         )
 
+    def get_popular_movies(self) -> dict:
+        return self._request(
+            endpoint="movie/popular",
+        )
+
     def get_movie_by_title(self, title: str) -> dict:
         return self._request(
             endpoint="search/movie",
