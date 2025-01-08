@@ -6,19 +6,18 @@ from app.db.database import db
 from app.db.models import CreditsFilm, Film
 from app.themoviedb.client import Client
 
+tmdb_client = Client()
 
 @app.route("/movies/popular", methods=["GET"])
 def get_popular_movies():
-    client = Client()
-    response = client.get_popular_movies()
+    response = tmdb_client.get_popular_movies()
 
     return response["results"], 200
 
 
 @app.route("/movies/trending", methods=["GET"])
 def get_trending_movies():
-    client = Client()
-    response = client.get_trending_movies()
+    response = tmdb_client.get_trending_movies()
 
     return response["results"], 200
 
@@ -30,8 +29,7 @@ def search_movie():
     if not title:
         return {"error": "Paramètre 'title' manquant"}, 400
 
-    client = Client()
-    response = client.get_movie_by_title(title)
+    response = tmdb_client.get_movie_by_title(title)
 
     return response["results"], 200
 
@@ -41,7 +39,6 @@ def get_movie(identifier: int):
     movie = db.session.get(Film, identifier)
 
     if not movie:
-        tmdb_client = Client()
         try:
             movie_data = tmdb_client.get_movie_by_id(identifier)
             return movie_data, 200
@@ -64,7 +61,6 @@ def get_movie(identifier: int):
 def get_movie_credits(identifier: int):
     movie = db.session.get(Film, identifier)
     if not movie:
-        tmdb_client = Client()
         movie_data = tmdb_client.get_movie_credits(identifier)
 
         return movie_data, 200
