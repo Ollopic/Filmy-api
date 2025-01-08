@@ -5,6 +5,8 @@ from app.db.database import db
 from app.db.models import CreditsFilm, Film
 from app.themoviedb.client import Client
 
+from requests.exceptions import HTTPError
+
 
 @app.route("/movies/popular", methods=["GET"])
 def get_popular_movies():
@@ -41,9 +43,14 @@ def get_movie(identifier: int):
 
     if not movie:
         tmdb_client = Client()
-        movie_data = tmdb_client.get_movie_by_id(identifier)
-
-        return movie_data, 200
+        try:
+            movie_data = tmdb_client.get_movie_by_id(identifier)
+            return movie_data, 200
+        except HTTPError as e:
+            if e.response.status_code == 404:
+                return {"error": "Film introuvable"}, 404
+            else:
+                return {"error": "Erreur lors de la communication avec l'API TMDB"}, 500
 
     return {
         "id": movie.id,
