@@ -53,15 +53,15 @@ def test_get_movie_by_id(client):
         "id": specific_id,
         "id_tmdb": 1241982,
         "data": data["film1"],
-        "image_path": "/tElnmtQ6yz1PjN1kePNl8yMSb59.jpg",
-        "poster_path": "/m0SbwFNCa9epW1X60deLqTHiP7x.jpg",
+        "poster_path": "/tElnmtQ6yz1PjN1kePNl8yMSb59.jpg",
+        "backdrop_path": "/m0SbwFNCa9epW1X60deLqTHiP7x.jpg",
     }
 
     assert movie["id"] == expected_movie["id"]
     assert movie["id_tmdb"] == expected_movie["id_tmdb"]
     assert movie["data"] == expected_movie["data"]
-    assert movie["image_path"] == expected_movie["image_path"]
     assert movie["poster_path"] == expected_movie["poster_path"]
+    assert movie["backdrop_path"] == expected_movie["backdrop_path"]
 
 
 def test_get_movie_by_id_not_found(client):
@@ -111,12 +111,12 @@ def test_create_movie(client):
         "id": specific_id,
         "id_tmdb": 1241982,
         "data": data["film1"],
-        "image_path": "/tElnmtQ6yz1PjN1kePNl8yMSb59.jpg",
-        "poster_path": "/m0SbwFNCa9epW1X60deLqTHiP7x.jpg",
+        "poster_path": "/tElnmtQ6yz1PjN1kePNl8yMSb59.jpg",
+        "backdrop_path": "/m0SbwFNCa9epW1X60deLqTHiP7x.jpg",
     }
 
     assert movie["id"] == expected_movie["id"]
     assert movie["id_tmdb"] == expected_movie["id_tmdb"]
     assert movie["data"] == expected_movie["data"]
-    assert movie["image_path"] == expected_movie["image_path"]
     assert movie["poster_path"] == expected_movie["poster_path"]
+    assert movie["backdrop_path"] == expected_movie["backdrop_path"]
