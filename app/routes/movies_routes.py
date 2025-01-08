@@ -22,12 +22,28 @@ def get_trending_movies():
     return response["results"], 200
 
 
+@app.route("/movies/search", methods=["GET"])
+def search_movie():
+    title = request.args.get("title")
+
+    if not title:
+        return {"error": "Paramètre 'title' manquant"}, 400
+
+    client = Client()
+    response = client.get_movie_by_title(title)
+
+    return response["results"], 200
+
+
 @app.route("/movies/<int:identifier>", methods=["GET"])
 def get_movie(identifier: int):
     movie = db.session.get(Film, identifier)
 
     if not movie:
-        return {"error": "Film introuvable"}, 404
+        tmdb_client = Client()
+        movie_data = tmdb_client.get_movie_by_id(identifier)
+
+        return movie_data, 200
 
     return {
         "id": movie.id,
