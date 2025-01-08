@@ -14,6 +14,14 @@ def get_popular_movies():
     return response["results"], 200
 
 
+@app.route("/movies/trending", methods=["GET"])
+def get_trending_movies():
+    client = Client()
+    response = client.get_trending_movies()
+
+    return response["results"], 200
+
+
 @app.route("/movies/<int:identifier>", methods=["GET"])
 def get_movie(identifier: int):
     movie = db.session.get(Film, identifier)
