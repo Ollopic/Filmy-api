@@ -24,23 +24,25 @@ def create_movie_if_not_exists(data_movie):
 
 
 def create_credits_if_not_exists(data_person, film_id):
-    person_id_mapping = {}
+    all_cast_ids = [person["id"] for person in data_person["cast"]]
+
+    existing_people = db.session.query(Person).filter(Person.id_tmdb.in_(all_cast_ids)).all()
+    existing_people_mapping = {person.id_tmdb: person.id for person in existing_people}
+
+    missing_ids = set(all_cast_ids) - set(existing_people_mapping.keys())
 
     for person in data_person["cast"]:
-        existing_person = db.session.query(Person).filter_by(id_tmdb=person["id"]).first()
-        if not existing_person:
+        if person["id"] in missing_ids:
             new_person = Person(
                 id_tmdb=person["id"],
                 data=person,
             )
             db.session.add(new_person)
             db.session.flush()
-            person_id_mapping[person["id"]] = new_person.id
-        else:
-            person_id_mapping[person["id"]] = existing_person.id
+            existing_people_mapping[person["id"]] = new_person.id
 
     for person in data_person["cast"]:
-        local_person_id = person_id_mapping[person["id"]]
+        local_person_id = existing_people_mapping[person["id"]]
         credits = CreditsFilm(
             person_id=local_person_id,
             character=person["character"],

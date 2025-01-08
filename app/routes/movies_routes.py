@@ -123,8 +123,7 @@ def get_movie(identifier: int):
         except HTTPError as e:
             if e.response.status_code == 404:
                 return {"error": "Film introuvable"}, 404
-            else:
-                return {"error": "Erreur lors de la communication avec l'API TMDB"}, 500
+            return {"error": "Erreur lors de la communication avec l'API TMDB"}, 500
 
     return {
         "id_tmdb": movie.id_tmdb,
