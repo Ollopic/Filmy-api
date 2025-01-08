@@ -48,12 +48,38 @@ def get_trending_movies():
 
 @app.route("/movies/top_rated", methods=["GET"])
 def get_top_rating_movies():
-    return tmdb_client.get_top_rating_movies()["results"], 200
+    data = tmdb_client.get_top_rating_movies()["results"]
+
+    result = [
+        {
+            "id_tmdb": movie["id"],
+            "title": movie["title"],
+            "release_date": movie["release_date"],
+            "vote_average": movie["vote_average"],
+            "poster_path": movie["poster_path"],
+        }
+        for movie in data
+    ]
+
+    return result, 200
 
 
 @app.route("/movies/upcoming", methods=["GET"])
 def get_upcoming_movies():
-    return tmdb_client.get_upcoming_movies()["results"], 200
+    data = tmdb_client.get_upcoming_movies()["results"]
+
+    result = [
+        {
+            "id_tmdb": movie["id"],
+            "title": movie["title"],
+            "release_date": movie["release_date"],
+            "vote_average": movie["vote_average"],
+            "poster_path": movie["poster_path"],
+        }
+        for movie in data
+    ]
+
+    return result, 200
 
 
 @app.route("/movies/search", methods=["GET"])
