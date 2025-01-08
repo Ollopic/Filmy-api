@@ -58,7 +58,10 @@ def get_movie(identifier: int):
 def get_movie_credits(identifier: int):
     movie = db.session.get(Film, identifier)
     if not movie:
-        return {"error": "Movie not found"}, 404
+        tmdb_client = Client()
+        movie_data = tmdb_client.get_movie_credits(identifier)
+
+        return movie_data, 200
 
     credits = db.session.query(CreditsFilm).filter(CreditsFilm.film_id == identifier).all()
 
