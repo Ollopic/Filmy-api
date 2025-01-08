@@ -1,91 +1,340 @@
 {
   "film1": {
-      "adult": false,
-      "backdrop_path": "/tElnmtQ6yz1PjN1kePNl8yMSb59.jpg",
-      "belongs_to_collection": {
-          "id": 1241984,
-          "name": "Vaiana - Saga",
-          "poster_path": "/hiGRhPYMKU8aXfxmSD7lqJNSzJG.jpg",
-          "backdrop_path": "/4OgaftFNqtE1UvfDDb2Eov7A5Rz.jpg"
-      },
-      "budget": 150000000,
-      "genres": [
-          {
-          "id": 16,
-          "name": "Animation"
-          },
-          {
-          "id": 12,
-          "name": "Aventure"
-          },
-          {
-          "id": 10751,
-          "name": "Familial"
-          },
-          {
-          "id": 35,
-          "name": "Comédie"
-          }
-      ],
-      "homepage": "",
-      "id": 1241982,
-      "imdb_id": "tt13622970",
-      "origin_country": [
-          "US"
-      ],
-      "original_language": "en",
-      "original_title": "Moana 2",
-      "overview": "Vaiana 2 embarquera les spectateurs dans un périple inédit en compagnie de Vaiana, Maui et d’un improbable nouvel équipage de marins. Après avoir reçu un appel inattendu de ses ancêtres, la jeune femme entreprend un voyage qui la conduira jusqu’aux eaux dangereuses des confins des mers d’Océanie pour y vivre une aventure comme jamais vécue auparavant.",
-      "popularity": 4485.032,
-      "poster_path": "/f4voSsbPTvaQwicwd1dyxICow6c.jpg",
-      "production_companies": [
-          {
-          "id": 2,
-          "logo_path": "/wdrCwmRnLFJhEoH8GSfymY85KHT.png",
-          "name": "Walt Disney Pictures",
-          "origin_country": "US"
-          },
-          {
-          "id": 6125,
-          "logo_path": "/tzsMJBJZINu7GHzrpYzpReWhh66.png",
-          "name": "Walt Disney Animation Studios",
-          "origin_country": "US"
-          },
-          {
-          "id": 158526,
-          "logo_path": "/tzsMJBJZINu7GHzrpYzpReWhh66.png",
-          "name": "Walt Disney Animation Studios",
-          "origin_country": "CA"
-          }
-      ],
-      "production_countries": [
-          {
-          "iso_3166_1": "CA",
-          "name": "Canada"
-          },
-          {
-          "iso_3166_1": "US",
-          "name": "United States of America"
-          }
-      ],
-      "release_date": "2024-11-21",
-      "revenue": 600055655,
-      "runtime": 100,
-      "spoken_languages": [
-          {
-          "english_name": "English",
-          "iso_639_1": "en",
-          "name": "English"
-          }
-      ],
-      "status": "Released",
-      "tagline": "",
-      "title": "Vaiana 2",
-      "video": false,
-      "vote_average": 6.9,
-      "vote_count": 418
+    "backdrop_path": "/zTBiWgIEvnABVd087L54x3IASdh.jpg",
+    "data": {
+        "adult": false,
+        "backdrop_path": "/zTBiWgIEvnABVd087L54x3IASdh.jpg",
+        "belongs_to_collection": null,
+        "budget": 0,
+        "genres": [
+            {
+                "id": 18,
+                "name": "Drame"
+            }
+        ],
+        "homepage": "",
+        "id": 124198,
+        "imdb_id": "tt0362873",
+        "origin_country": [
+            "AR"
+        ],
+        "original_language": "es",
+        "original_title": "Monobloc",
+        "overview": "",
+        "popularity": 1.151,
+        "poster_path": "/slLjOjuPAExATxNxLc1sGFwprBj.jpg",
+        "production_companies": [
+            {
+                "id": 129959,
+                "logo_path": null,
+                "name": "Villa Vicio",
+                "origin_country": ""
+            },
+            {
+                "id": 6458,
+                "logo_path": "/eT4oMUK7ODM0vvZue8yq3Ojwqf8.png",
+                "name": "INCAA",
+                "origin_country": "AR"
+            },
+            {
+                "id": 10188,
+                "logo_path": "/es95AfZkgSEFwxub9zfhrjlnnCc.png",
+                "name": "Aleph",
+                "origin_country": "AR"
+            }
+        ],
+        "production_countries": [
+            {
+                "iso_3166_1": "AR",
+                "name": "Argentina"
+            }
+        ],
+        "release_date": "2005-06-09",
+        "revenue": 0,
+        "runtime": 83,
+        "spoken_languages": [
+            {
+                "english_name": "Spanish",
+                "iso_639_1": "es",
+                "name": "Español"
+            }
+        ],
+        "status": "Released",
+        "tagline": "",
+        "title": "Monobloc",
+        "video": false,
+        "vote_average": 4.9,
+        "vote_count": 7
     },
+    "id_tmdb": 124198,
+    "poster_path": "/slLjOjuPAExATxNxLc1sGFwprBj.jpg"
+  },
   "film2": {
+    "backdrop_path": "/hQ4pYsIbP22TMXOUdSfC2mjWrO0.jpg",
+    "data": {
+        "adult": false,
+        "backdrop_path": "/hQ4pYsIbP22TMXOUdSfC2mjWrO0.jpg",
+        "belongs_to_collection": {
+            "backdrop_path": "/zAUItK1Nr473DIe8gWMsZ0DMR7L.jpg",
+            "id": 1382526,
+            "name": "Kaurismäki's Proletariat Trilogy",
+            "poster_path": "/bUrReoZFLGti6ehkBW0xw8f12MT.jpg"
+        },
+        "budget": 0,
+        "genres": [
+            {
+                "id": 35,
+                "name": "Comédie"
+            },
+            {
+                "id": 18,
+                "name": "Drame"
+            },
+            {
+                "id": 10749,
+                "name": "Romance"
+            },
+            {
+                "id": 80,
+                "name": "Crime"
+            }
+        ],
+        "homepage": "",
+        "id": 2,
+        "imdb_id": "tt0094675",
+        "origin_country": [
+            "FI"
+        ],
+        "original_language": "fi",
+        "original_title": "Ariel",
+        "overview": "Salla, petite ville minière de la Laponie. Taisto Kasurinen, mineur, hérite d’une « belle américaine » après le suicide de son propriétaire. Il retire toute ses économies de la banque et part à Helsinki. La capitale l’accueille froidement : il se fait voler son argent et se retrouve en prison. Cependant il a eu le temps de rencontrer Irmeli, jeune femme débordée, et son petit garçon.",
+        "popularity": 15.328,
+        "poster_path": "/4HTJHLPLvhDG4D0m8IcUMh7i9h4.jpg",
+        "production_companies": [
+            {
+                "id": 2303,
+                "logo_path": null,
+                "name": "Villealfa Filmproductions",
+                "origin_country": "FI"
+            }
+        ],
+        "production_countries": [
+            {
+                "iso_3166_1": "FI",
+                "name": "Finland"
+            }
+        ],
+        "release_date": "1988-10-21",
+        "revenue": 0,
+        "runtime": 72,
+        "spoken_languages": [
+            {
+                "english_name": "Finnish",
+                "iso_639_1": "fi",
+                "name": "suomi"
+            }
+        ],
+        "status": "Released",
+        "tagline": "",
+        "title": "Ariel",
+        "video": false,
+        "vote_average": 7.1,
+        "vote_count": 338
+    },
+    "id_tmdb": 2,
+    "poster_path": "/4HTJHLPLvhDG4D0m8IcUMh7i9h4.jpg"
+  },
+  "film3": {
+    "backdrop_path": "/ne83mYnmEBLhXnU8qawebKTA1nv.jpg",
+    "data": {
+        "adult": false,
+        "backdrop_path": "/idoSsWF6oOlrMFBd966OUd0aB8g.jpg",
+        "belongs_to_collection": null,
+        "budget": 0,
+        "genres": [
+            {
+                "id": 37,
+                "name": "Western"
+            }
+        ],
+        "homepage": "",
+        "id": 114975,
+        "imdb_id": "tt0048806",
+        "origin_country": [
+            "US"
+        ],
+        "original_language": "en",
+        "original_title": "Wichita",
+        "overview": "Former buffalo hunter and entrepreneur Wyatt Earp arrives in the lawless cattle town of Wichita Kansas. His skill as a gun-fighter makes him a perfect candidate for Marshal, but he refuses the job until he feels morally obligated to bring law and order to this wild town.",
+        "popularity": 5.278,
+        "poster_path": "/ne83mYnmEBLhXnU8qawebKTA1nv.jpg",
+        "production_companies": [
+            {
+                "id": 4928,
+                "logo_path": null,
+                "name": "Allied Artists Pictures",
+                "origin_country": "US"
+            }
+        ],
+        "production_countries": [
+            {
+                "iso_3166_1": "US",
+                "name": "United States of America"
+            }
+        ],
+        "release_date": "1955-07-03",
+        "revenue": 0,
+        "runtime": 81,
+        "spoken_languages": [
+            {
+                "english_name": "English",
+                "iso_639_1": "en",
+                "name": "English"
+            }
+        ],
+        "status": "Released",
+        "tagline": "THE TRUE SAVAGE STORY OF WYATT EARP!",
+        "title": "Wichita",
+        "video": false,
+        "vote_average": 6.2,
+        "vote_count": 51
+    },
+    "id_tmdb": 114975,
+    "poster_path": "/idoSsWF6oOlrMFBd966OUd0aB8g.jpg"
+  },
+  "film4": {
+    "backdrop_path": null,
+    "data": {
+        "adult": false,
+        "backdrop_path": null,
+        "belongs_to_collection": null,
+        "budget": 0,
+        "genres": [
+            {
+                "id": 18,
+                "name": "Drame"
+            }
+        ],
+        "homepage": "",
+        "id": 55821,
+        "imdb_id": "tt0162709",
+        "origin_country": [
+            "GB",
+            "US"
+        ],
+        "original_language": "en",
+        "original_title": "The Tribe",
+        "overview": "",
+        "popularity": 4.591,
+        "poster_path": "/nT8Tfl3yKLTVDXvOFfgks8O3XJY.jpg",
+        "production_companies": [
+            {
+                "id": 3324,
+                "logo_path": "/dqT3yOTlfJRmtvk52Ccd1O6dZ0A.png",
+                "name": "BBC",
+                "origin_country": "GB"
+            },
+            {
+                "id": 26714,
+                "logo_path": null,
+                "name": "Deep City Films",
+                "origin_country": ""
+            }
+        ],
+        "production_countries": [
+            {
+                "iso_3166_1": "GB",
+                "name": "United Kingdom"
+            }
+        ],
+        "release_date": "1998-06-21",
+        "revenue": 0,
+        "runtime": 105,
+        "spoken_languages": [
+            {
+                "english_name": "English",
+                "iso_639_1": "en",
+                "name": "English"
+            }
+        ],
+        "status": "Released",
+        "tagline": "",
+        "title": "The Tribe",
+        "video": false,
+        "vote_average": 5.2,
+        "vote_count": 8
+    },
+    "id_tmdb": 55821,
+    "poster_path": "/nT8Tfl3yKLTVDXvOFfgks8O3XJY.jpg"
+  },
+  "film5": {
+    "backdrop_path": "/baFzhrJ5NozyWBeEtap1LMNCCIZ.jpg",
+    "data": {
+        "adult": false,
+        "backdrop_path": "/baFzhrJ5NozyWBeEtap1LMNCCIZ.jpg",
+        "belongs_to_collection": {
+            "backdrop_path": null,
+            "id": 991217,
+            "name": "The Golem Trilogy",
+            "poster_path": null
+        },
+        "budget": 0,
+        "genres": [
+            {
+                "id": 27,
+                "name": "Horreur"
+            },
+            {
+                "id": 14,
+                "name": "Fantastique"
+            }
+        ],
+        "homepage": "",
+        "id": 10695,
+        "imdb_id": "tt0004026",
+        "origin_country": [
+            "DE"
+        ],
+        "original_language": "de",
+        "original_title": "Der Golem",
+        "overview": "",
+        "popularity": 4.935,
+        "poster_path": "/yi6GsrnKO3XpNjAMQgqWhtX8SYT.jpg",
+        "production_companies": [
+            {
+                "id": 51972,
+                "logo_path": null,
+                "name": "Deutsche Bioscope",
+                "origin_country": "DE"
+            }
+        ],
+        "production_countries": [
+            {
+                "iso_3166_1": "DE",
+                "name": "Germany"
+            }
+        ],
+        "release_date": "1915-01-15",
+        "revenue": 0,
+        "runtime": 60,
+        "spoken_languages": [
+            {
+                "english_name": "No Language",
+                "iso_639_1": "xx",
+                "name": "No Language"
+            }
+        ],
+        "status": "Released",
+        "tagline": "",
+        "title": "Der Golem",
+        "video": false,
+        "vote_average": 6.655,
+        "vote_count": 42
+    },
+    "id_tmdb": 10695,
+    "poster_path": "/yi6GsrnKO3XpNjAMQgqWhtX8SYT.jpg"
+  },
+  "film6": {
     "adult": false,
     "backdrop_path": "/2ndyL4HjM9JLMqBSgbyCM57aMWl.jpg",
     "belongs_to_collection": {
@@ -171,225 +420,81 @@
     "vote_average": 6.8,
     "vote_count": 1200
   },
-  "film3": {
-    "adult": false,
-    "backdrop_path": "/idoSsWF6oOlrMFBd966OUd0aB8g.jpg",
-    "belongs_to_collection": null,
-    "budget": 0,
-    "genres": [
-      {
-        "id": 37,
-        "name": "Western"
-      }
-    ],
-    "homepage": "",
-    "id": 114975,
-    "imdb_id": "tt0048806",
-    "origin_country": [
-      "US"
-    ],
-    "original_language": "en",
-    "original_title": "Wichita",
-    "overview": "Former buffalo hunter and entrepreneur Wyatt Earp arrives in the lawless cattle town of Wichita Kansas. His skill as a gun-fighter makes him a perfect candidate for Marshal, but he refuses the job until he feels morally obligated to bring law and order to this wild town.",
-    "popularity": 5.278,
-    "poster_path": "/ne83mYnmEBLhXnU8qawebKTA1nv.jpg",
-    "production_companies": [
-      {
-        "id": 4928,
-        "logo_path": null,
-        "name": "Allied Artists Pictures",
-        "origin_country": "US"
-      }
-    ],
-    "production_countries": [
-      {
-        "iso_3166_1": "US",
-        "name": "United States of America"
-      }
-    ],
-    "release_date": "1955-07-03",
-    "revenue": 0,
-    "runtime": 81,
-    "spoken_languages": [
-      {
-        "english_name": "English",
-        "iso_639_1": "en",
-        "name": "English"
-      }
-    ],
-    "status": "Released",
-    "tagline": "THE TRUE SAVAGE STORY OF WYATT EARP!",
-    "title": "Wichita",
-    "video": false,
-    "vote_average": 6.2,
-    "vote_count": 51
-  },
-  "film4": {
-    "adult": false,
-    "backdrop_path": "/3V4kLQg0kSqPLctI5ziYWabAZYF.jpg",
-    "belongs_to_collection": {
-      "id": 558216,
-      "name": "Venom Collection",
-      "poster_path": "/4bXIKqdZIjR8wKgZaGDaLhLj4yF.jpg",
-      "backdrop_path": "/vq340s8DxA5Q209FT8PHA6CXYOx.jpg"
+  "film7": {
+    "backdrop_path": "/4qCqAdHcNKeAHcK8tJ8wNJZa9cx.jpg",
+    "data": {
+        "adult": false,
+        "backdrop_path": "/4qCqAdHcNKeAHcK8tJ8wNJZa9cx.jpg",
+        "belongs_to_collection": {
+            "backdrop_path": "/zZDkgOmFMVYpGAkR9Tkxw0CRnxX.jpg",
+            "id": 10,
+            "name": "Star Wars - Saga",
+            "poster_path": "/6mHkagjziBPth2Mx0VpEercocm4.jpg"
+        },
+        "budget": 11000000,
+        "genres": [
+            {
+                "id": 12,
+                "name": "Aventure"
+            },
+            {
+                "id": 28,
+                "name": "Action"
+            },
+            {
+                "id": 878,
+                "name": "Science-Fiction"
+            }
+        ],
+        "homepage": "",
+        "id": 11,
+        "imdb_id": "tt0076759",
+        "origin_country": [
+            "US"
+        ],
+        "original_language": "en",
+        "original_title": "Star Wars",
+        "overview": "Il y a bien longtemps, dans une galaxie très lointaine... La guerre civile fait rage entre l'Empire galactique et l'Alliance rebelle. Capturée par les troupes de choc de l'Empereur menées par le sombre et impitoyable Dark Vador, la princesse Leia Organa dissimule les plans de l’Étoile Noire, une station spatiale invulnérable, à son droïde R2-D2 avec pour mission de les remettre au Jedi Obi-Wan Kenobi. Accompagné de son fidèle compagnon, le droïde de protocole C-3PO, R2-D2 s'échoue sur la planète Tatooine et termine sa quête chez le jeune Luke Skywalker. Rêvant de devenir pilote mais confiné aux travaux de la ferme, ce dernier se lance à la recherche de ce mystérieux Obi-Wan Kenobi, devenu ermite au cœur des montagnes désertiques de Tatooine...",
+        "popularity": 132.056,
+        "poster_path": "/qelTNHrBSYjPvwdzsDBPVsqnNzc.jpg",
+        "production_companies": [
+            {
+                "id": 1,
+                "logo_path": "/tlVSws0RvvtPBwViUyOFAO0vcQS.png",
+                "name": "Lucasfilm Ltd.",
+                "origin_country": "US"
+            },
+            {
+                "id": 25,
+                "logo_path": "/qZCc1lty5FzX30aOCVRBLzaVmcp.png",
+                "name": "20th Century Fox",
+                "origin_country": "US"
+            }
+        ],
+        "production_countries": [
+            {
+                "iso_3166_1": "US",
+                "name": "United States of America"
+            }
+        ],
+        "release_date": "1977-05-25",
+        "revenue": 775398007,
+        "runtime": 121,
+        "spoken_languages": [
+            {
+                "english_name": "English",
+                "iso_639_1": "en",
+                "name": "English"
+            }
+        ],
+        "status": "Released",
+        "tagline": "Il y a bien longtemps dans une galaxie très lointaine…",
+        "title": "La Guerre des étoiles",
+        "video": false,
+        "vote_average": 8.2,
+        "vote_count": 20750
     },
-    "budget": 120000000,
-    "genres": [
-      {
-        "id": 28,
-        "name": "Action"
-      },
-      {
-        "id": 878,
-        "name": "Science Fiction"
-      },
-      {
-        "id": 12,
-        "name": "Adventure"
-      }
-    ],
-    "homepage": "https://venom.movie",
-    "id": 912649,
-    "imdb_id": "tt16366836",
-    "origin_country": [
-      "US"
-    ],
-    "original_language": "en",
-    "original_title": "Venom: The Last Dance",
-    "overview": "Eddie and Venom are on the run. Hunted by both of their worlds and with the net closing in, the duo are forced into a devastating decision that will bring the curtains down on Venom and Eddie's last dance.",
-    "popularity": 12656.263,
-    "poster_path": "/aosm8NMQ3UyoBVpSxyimorCQykC.jpg",
-    "production_companies": [
-      {
-        "id": 5,
-        "logo_path": "/71BqEFAF4V3qjjMPCpLuyJFB9A.png",
-        "name": "Columbia Pictures",
-        "origin_country": "US"
-      },
-      {
-        "id": 84041,
-        "logo_path": "/nw4kyc29QRpNtFbdsBHkRSFavvt.png",
-        "name": "Pascal Pictures",
-        "origin_country": "US"
-      },
-      {
-        "id": 53462,
-        "logo_path": "/nx8B3Phlcse02w86RW4CJqzCnfL.png",
-        "name": "Matt Tolmach Productions",
-        "origin_country": "US"
-      },
-      {
-        "id": 91797,
-        "logo_path": null,
-        "name": "Hutch Parker Entertainment",
-        "origin_country": "US"
-      },
-      {
-        "id": 14439,
-        "logo_path": null,
-        "name": "Arad Productions",
-        "origin_country": "US"
-      }
-    ],
-    "production_countries": [
-      {
-        "iso_3166_1": "US",
-        "name": "United States of America"
-      }
-    ],
-    "release_date": "2024-10-22",
-    "revenue": 468513700,
-    "runtime": 109,
-    "spoken_languages": [
-      {
-        "english_name": "English",
-        "iso_639_1": "en",
-        "name": "English"
-      }
-    ],
-    "status": "Released",
-    "tagline": "'Til death do they part.",
-    "title": "Venom: The Last Dance",
-    "video": false,
-    "vote_average": 6.6,
-    "vote_count": 1109
-  },
-  "film5": {
-    "adult": false,
-    "backdrop_path": "/euYIwmwkmz95mnXvufEmbL6ovhZ.jpg",
-    "belongs_to_collection": {
-      "id": 1069584,
-      "name": "Gladiator Collection",
-      "poster_path": "/jF6ceQFwbGmFxJWgmG7IBYvyb1B.jpg",
-      "backdrop_path": "/1VdLvSIeHuwqCT13H9EafxCacGB.jpg"
-    },
-    "budget": 310000000,
-    "genres": [
-      {
-        "id": 28,
-        "name": "Action"
-      },
-      {
-        "id": 12,
-        "name": "Adventure"
-      },
-      {
-        "id": 36,
-        "name": "History"
-      }
-    ],
-    "homepage": "https://www.gladiator.movie",
-    "id": 558449,
-    "imdb_id": "tt9218128",
-    "origin_country": [
-      "US"
-    ],
-    "original_language": "en",
-    "original_title": "Gladiator II",
-    "overview": "Years after witnessing the death of the revered hero Maximus at the hands of his uncle, Lucius is forced to enter the Colosseum after his home is conquered by the tyrannical Emperors who now lead Rome with an iron fist. With rage in his heart and the future of the Empire at stake, Lucius must look to his past to find strength and honor to return the glory of Rome to its people.",
-    "popularity": 1262.621,
-    "poster_path": "/2cxhvwyEwRlysAmRH4iodkvo0z5.jpg",
-    "production_companies": [
-      {
-        "id": 4,
-        "logo_path": "/gz66EfNoYPqHTYI4q9UEN4CbHRc.png",
-        "name": "Paramount Pictures",
-        "origin_country": "US"
-      },
-      {
-        "id": 221347,
-        "logo_path": "/6Ry6uNBaa0IbbSs1XYIgX5DkA9r.png",
-        "name": "Scott Free Productions",
-        "origin_country": "US"
-      },
-      {
-        "id": 246486,
-        "logo_path": null,
-        "name": "Lucy Fisher/Douglas Wick Productions",
-        "origin_country": "US"
-      }
-    ],
-    "production_countries": [
-      {
-        "iso_3166_1": "US",
-        "name": "United States of America"
-      }
-    ],
-    "release_date": "2024-11-05",
-    "revenue": 368092895,
-    "runtime": 148,
-    "spoken_languages": [
-      {
-        "english_name": "English",
-        "iso_639_1": "en",
-        "name": "English"
-      }
-    ],
-    "status": "Released",
-    "tagline": "Prepare to be entertained.",
-    "title": "Gladiator II",
-    "video": false,
-    "vote_average": 6.7,
-    "vote_count": 1006
+    "id_tmdb": 11,
+    "poster_path": "/qelTNHrBSYjPvwdzsDBPVsqnNzc.jpg"
   }
 }

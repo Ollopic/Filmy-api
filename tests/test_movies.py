@@ -44,20 +44,17 @@ def test_search_movie(client):
 
 def test_get_movie_by_id(client):
     """Test que l'endpoint /movies/<int:id> renvoie bien les informations d'un film"""
-    specific_id = 1
-    response = client.get(f'/movies/{specific_id}')
+    response = client.get(f'/movies/2')
     assert response.status_code == 200
 
     movie = response.json
     expected_movie = {
-        "id": specific_id,
-        "id_tmdb": 1241982,
-        "data": data["film1"],
-        "poster_path": "/tElnmtQ6yz1PjN1kePNl8yMSb59.jpg",
-        "backdrop_path": "/m0SbwFNCa9epW1X60deLqTHiP7x.jpg",
+        "id_tmdb": 2,
+        "data": data["film2"]["data"],
+        "poster_path": "/4HTJHLPLvhDG4D0m8IcUMh7i9h4.jpg",
+        "backdrop_path": "/hQ4pYsIbP22TMXOUdSfC2mjWrO0.jpg",
     }
 
-    assert movie["id"] == expected_movie["id"]
     assert movie["id_tmdb"] == expected_movie["id_tmdb"]
     assert movie["data"] == expected_movie["data"]
     assert movie["poster_path"] == expected_movie["poster_path"]
@@ -77,16 +74,15 @@ def test_get_movie_by_id_not_found(client):
 
 def test_get_movie_credits(client):
     """Test que l'endpoint /movies/<int:id>/credits renvoie les crédits d'un film"""   
-    specific_id = 1
-    response = client.get(f'/movies/{specific_id}/credits')
+    response = client.get(f'/movies/2/credits')
     assert response.status_code == 200
 
     credits = response.json
     assert isinstance(credits, list)
 
     expected_credits = [
-        {"person_id": 1, "character": "John Doe"},
-        {"person_id": 2, "character": "Jane Doe"},
+        {"person_id": 6, "character": "Taisto Kasurinen"},
+        {"person_id": 7, "character": "Irmeli Pihlaja"},
     ]
 
     for expected_credit in expected_credits:
@@ -102,20 +98,17 @@ def test_get_movie_credits(client):
 
 def test_create_movie(client):
     """Test que l'endpoint /movies/id permet de créer un film correctement s'il n'existe pas dans la db"""
-    specific_id = 1
-    response = client.get(f'/movies/{specific_id}')
+    response = client.get(f'/movies/11')
     assert response.status_code == 200
 
     movie = response.json
     expected_movie = {
-        "id": specific_id,
-        "id_tmdb": 1241982,
-        "data": data["film1"],
-        "poster_path": "/tElnmtQ6yz1PjN1kePNl8yMSb59.jpg",
-        "backdrop_path": "/m0SbwFNCa9epW1X60deLqTHiP7x.jpg",
+        "id_tmdb": 11,
+        "data": data["film7"]["data"],
+        "poster_path": "/qelTNHrBSYjPvwdzsDBPVsqnNzc.jpg",
+        "backdrop_path": "/4qCqAdHcNKeAHcK8tJ8wNJZa9cx.jpg",
     }
 
-    assert movie["id"] == expected_movie["id"]
     assert movie["id_tmdb"] == expected_movie["id_tmdb"]
     assert movie["data"] == expected_movie["data"]
     assert movie["poster_path"] == expected_movie["poster_path"]
