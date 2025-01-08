@@ -67,10 +67,14 @@ def create_user():
     return {"message": "Utilisateur créé avec succès"}, 201
 
 
+@app.route("/user", methods=["PATCH"])
 @app.route("/user/<int:identifier>", methods=["PATCH"])
 @jwt_required()
-def update_user(identifier: int):
+def update_user(identifier: int = None):
     data = request.json
+    if not identifier:
+        identifier = get_jwt_identity()
+
     user = db.session.get(User, identifier)
     user_request = db.session.get(User, get_jwt_identity())
 
@@ -92,7 +96,12 @@ def update_user(identifier: int):
         user.profile_image = data["profile_image"]
 
     db.session.commit()
-    return {"message": "Utilisateur mis à jour avec succès"}
+    return {
+        "username": user.username,
+        "mail": user.mail,
+        "is_admin": user.is_admin,
+        "profile_image": user.profile_image,
+    }, 200
 
 
 @app.route("/user/<int:identifier>", methods=["DELETE"])
