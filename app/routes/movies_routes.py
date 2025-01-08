@@ -1,11 +1,10 @@
 from flask import request
+from requests.exceptions import HTTPError
 
 from app.app import app
 from app.db.database import db
 from app.db.models import CreditsFilm, Film
 from app.themoviedb.client import Client
-
-from requests.exceptions import HTTPError
 
 
 @app.route("/movies/popular", methods=["GET"])
