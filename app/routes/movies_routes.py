@@ -160,7 +160,7 @@ def get_movie_credits(identifier: int):
             "name": credit.person.data["name"],
             "character": credit.character,
             "profile_path": credit.person.data["profile_path"],
-            "order": credit.order,
+            "order": credit.person.data["order"],
         }
         for credit in credits
     ]
