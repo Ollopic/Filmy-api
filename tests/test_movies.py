@@ -51,14 +51,10 @@ def test_get_movie_by_id(client):
     expected_movie = {
         "id_tmdb": 2,
         "data": data["film2"]["data"],
-        "poster_path": "/4HTJHLPLvhDG4D0m8IcUMh7i9h4.jpg",
-        "backdrop_path": "/hQ4pYsIbP22TMXOUdSfC2mjWrO0.jpg",
     }
 
     assert movie["id_tmdb"] == expected_movie["id_tmdb"]
     assert movie["data"] == expected_movie["data"]
-    assert movie["poster_path"] == expected_movie["poster_path"]
-    assert movie["backdrop_path"] == expected_movie["backdrop_path"]
 
 
 def test_get_movie_by_id_not_found(client):
@@ -74,21 +70,27 @@ def test_get_movie_by_id_not_found(client):
 
 def test_get_movie_credits(client):
     """Test que l'endpoint /movies/<int:id>/credits renvoie les crédits d'un film"""   
-    response = client.get('/movies/2/credits')
+    response = client.get('/movies/11/credits')
     assert response.status_code == 200
 
     credits = response.json
     assert isinstance(credits, list)
 
     expected_credits = [
-        {"person_id": 6, "character": "Taisto Kasurinen"},
-        {"person_id": 7, "character": "Irmeli Pihlaja"},
+        {
+            "character": "Luke Skywalker",
+            "id_tmdb": 2,
+            "name": "Mark Hamill",
+            "profile_path": "/2ZulC2Ccq1yv3pemusks6Zlfy2s.jpg"
+        }
     ]
 
     for expected_credit in expected_credits:
         assert any(
-            credit["person_id"] == expected_credit["person_id"]
+            credit["id_tmdb"] == expected_credit["id_tmdb"]
             and credit["character"] == expected_credit["character"]
+            and credit["name"] == expected_credit["name"]
+            and credit["profile_path"] == expected_credit["profile_path"]
             for credit in credits
         ), f"Expected credit {expected_credit} not found in response"
 
@@ -105,11 +107,7 @@ def test_create_movie(client):
     expected_movie = {
         "id_tmdb": 11,
         "data": data["film7"]["data"],
-        "poster_path": "/qelTNHrBSYjPvwdzsDBPVsqnNzc.jpg",
-        "backdrop_path": "/4qCqAdHcNKeAHcK8tJ8wNJZa9cx.jpg",
     }
 
     assert movie["id_tmdb"] == expected_movie["id_tmdb"]
     assert movie["data"] == expected_movie["data"]
-    assert movie["poster_path"] == expected_movie["poster_path"]
-    assert movie["backdrop_path"] == expected_movie["backdrop_path"]

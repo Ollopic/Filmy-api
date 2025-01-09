@@ -14,8 +14,6 @@ def create_movie_if_not_exists(data_movie):
     movie = Film(
         id_tmdb=data_movie["id_tmdb"],
         data=data_movie["data"],
-        poster_path=data_movie["poster_path"],
-        backdrop_path=data_movie["backdrop_path"],
     )
 
     db.session.add(movie)

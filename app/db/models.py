@@ -16,8 +16,6 @@ class Film(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     id_tmdb = db.Column(db.Integer, nullable=False)
     data = db.Column(db.JSON, nullable=False)
-    poster_path = db.Column(db.String, nullable=True)
-    backdrop_path = db.Column(db.String, nullable=True)
 
     # Relation OneToMany avec 'CreditsFilm'
     credits = db.relationship("CreditsFilm", back_populates="film")

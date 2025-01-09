@@ -111,8 +111,6 @@ def get_movie(identifier: int):
             data_movie = {
                 "id_tmdb": movie_data["id"],
                 "data": movie_data,
-                "poster_path": movie_data["poster_path"],
-                "backdrop_path": movie_data["backdrop_path"],
             }
             data_person = tmdb_client.get_movie_credits(identifier)
 
@@ -128,8 +126,6 @@ def get_movie(identifier: int):
     return {
         "id_tmdb": movie.id_tmdb,
         "data": movie.data,
-        "poster_path": movie.poster_path,
-        "backdrop_path": movie.backdrop_path,
     }
 
 
@@ -155,8 +151,10 @@ def get_movie_credits(identifier: int):
 
     result = [
         {
-            "person_id": credit.person_id,
+            "id_tmdb": credit.person.id_tmdb,
+            "name": credit.person.data["name"],
             "character": credit.character,
+            "profile_path": credit.person.data["profile_path"],
         }
         for credit in credits
     ]
