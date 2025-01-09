@@ -116,11 +116,14 @@ def get_movie(identifier: int):
                     director = person["name"]
             movie_data["director"] = director
 
-            trailer = tmdb_client.get_movie_videos(identifier)["results"][0]
-            if trailer is not None:
-                if trailer["site"] != "YouTube":
-                    movie_data["trailerKey"] = None
-                movie_data["trailerKey"] = trailer["key"]
+            trailers = tmdb_client.get_movie_videos(identifier)["results"] or []
+            for trailer in trailers:
+                if trailer["site"].lower() == "youtube":
+                    movie_data["trailerKey"] = trailer["key"]
+                    break
+
+            if not trailers:
+                movie_data["trailerKey"] = None
 
             data_movie = {
                 "id_tmdb": movie_data["id"],
