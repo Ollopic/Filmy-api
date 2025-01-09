@@ -115,6 +115,7 @@ def get_movie(identifier: int):
                 if person["job"] == "Director":
                     director = person["name"]
             movie_data["director"] = director
+            movie_data["video"] = tmdb_client.get_movie_videos(identifier)["results"][0]["key"]
             
             data_movie = {
                 "id_tmdb": movie_data["id"],
