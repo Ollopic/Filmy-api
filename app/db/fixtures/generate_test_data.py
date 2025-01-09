@@ -122,12 +122,8 @@ def generate_test_data():
             id=6,
             id_tmdb=1241982,
             data={"title": "Film 1"},
-            image_path="/tElnmtQ6yz1PjN1kePNl8yMSb59.jpg",
-            poster_path="/m0SbwFNCa9epW1X60deLqTHiP7x.jpg",
         )
-        film_2 = Film(
-            id=7, id_tmdb=1241983, data={"title": "Film 2"}, image_path="/image2.jpg", poster_path="/poster2.jpg"
-        )
+        film_2 = Film(id=7, id_tmdb=1241983, data={"title": "Film 2"})
 
         item_true = CollectionItem(
             user_id=3,

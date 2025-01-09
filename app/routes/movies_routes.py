@@ -109,13 +109,13 @@ def get_movie(identifier: int):
         try:
             movie_data = tmdb_client.get_movie_by_id(identifier)
             data_person = tmdb_client.get_movie_credits(identifier)
-            
+
             director = None
             for person in data_person["crew"]:
                 if person["job"] == "Director":
                     director = person["name"]
             movie_data["director"] = director
-            
+
             data_movie = {
                 "id_tmdb": movie_data["id"],
                 "data": movie_data,

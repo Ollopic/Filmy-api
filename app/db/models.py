@@ -42,8 +42,19 @@ class User(db.Model):
     is_admin = db.Column(db.Boolean, default=False)
     profile_image = db.Column(db.Text, nullable=True)
 
-    # Relation OneToMany avec 'CollectionItem'
-    collection = db.relationship("CollectionItem", back_populates="user")
+    collection = db.relationship("Collection", back_populates="user")
+
+
+# Modèle pour la table 'Collection'
+class Collection(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, nullable=False)
+    picture = db.Column(db.String, nullable=True)
+
+    # Relations
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    user = db.relationship("User", back_populates="collection")
+    collection_items = db.relationship("CollectionItem", back_populates="collection")
 
 
 # Modèle pour la table 'CollectionItem'
@@ -52,13 +63,12 @@ class CollectionItem(db.Model):
     state = db.Column(db.String, nullable=False)  # Par exemple, "Physique", "Numérique"
     borrowed = db.Column(db.Boolean, default=False)
     borrowed_at = db.Column(db.DateTime, nullable=True)
-    borrowed_by = db.Column(db.String, nullable=True)  # Peut aussi être une relation si besoin
+    borrowed_by = db.Column(db.String, nullable=True)
     favorite = db.Column(db.Boolean, default=False)
     in_wishlist = db.Column(db.Boolean, default=False)
 
-    # Relations avec 'User' et 'Film'
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
-    user = db.relationship("User", back_populates="collection")
+    collection_id = db.Column(db.Integer, db.ForeignKey("collection.id"), nullable=False)
+    collection = db.relationship("Collection", back_populates="collection_items")
 
     film_id = db.Column(db.Integer, db.ForeignKey("film.id"), nullable=False)
     film = db.relationship("Film", back_populates="collection_items")
