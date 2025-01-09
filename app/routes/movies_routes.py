@@ -119,11 +119,11 @@ def get_movie(identifier: int):
             trailers = tmdb_client.get_movie_videos(identifier)["results"] or []
             for trailer in trailers:
                 if trailer["site"].lower() == "youtube":
-                    movie_data["trailerKey"] = trailer["key"]
+                    movie_data["trailer_key"] = trailer["key"]
                     break
 
             if not trailers:
-                movie_data["trailerKey"] = None
+                movie_data["trailer_key"] = None
 
             data_movie = {
                 "id_tmdb": movie_data["id"],
