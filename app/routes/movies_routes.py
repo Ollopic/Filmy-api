@@ -108,11 +108,18 @@ def get_movie(identifier: int):
     if not movie:
         try:
             movie_data = tmdb_client.get_movie_by_id(identifier)
+            data_person = tmdb_client.get_movie_credits(identifier)
+            
+            director = None
+            for person in data_person["crew"]:
+                if person["job"] == "Director":
+                    director = person["name"]
+            movie_data["director"] = director
+            
             data_movie = {
                 "id_tmdb": movie_data["id"],
                 "data": movie_data,
             }
-            data_person = tmdb_client.get_movie_credits(identifier)
 
             film_id = create_movie_if_not_exists(data_movie)
             create_credits_if_not_exists(data_person, film_id)
