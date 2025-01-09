@@ -59,7 +59,7 @@ class Client:
         return self._request(
             endpoint="movie/upcoming",
         )
-    
+
     def get_movie_videos(self, movie_id: int) -> dict:
         return self._request(
             endpoint=f"movie/{movie_id}/videos",
