@@ -116,17 +116,14 @@ def get_movie(identifier: int):
 
             film_id = create_movie_if_not_exists(data_movie)
             create_credits_if_not_exists(data_person, film_id)
-            return data_movie, 200
+            return movie_data, 200
 
         except HTTPError as e:
             if e.response.status_code == 404:
                 return {"error": "Film introuvable"}, 404
             return {"error": "Erreur lors de la communication avec l'API TMDB"}, 500
 
-    return {
-        "id_tmdb": movie.id_tmdb,
-        "data": movie.data,
-    }
+    return movie.data, 200
 
 
 @app.route("/movies/<int:identifier>/credits", methods=["GET"])

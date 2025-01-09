@@ -48,13 +48,9 @@ def test_get_movie_by_id(client):
     assert response.status_code == 200
 
     movie = response.json
-    expected_movie = {
-        "id_tmdb": 2,
-        "data": data["film2"]["data"],
-    }
+    expected_movie = data["film2"]["data"]
 
-    assert movie["id_tmdb"] == expected_movie["id_tmdb"]
-    assert movie["data"] == expected_movie["data"]
+    assert movie == expected_movie
 
 
 def test_get_movie_by_id_not_found(client):
@@ -104,10 +100,6 @@ def test_create_movie(client):
     assert response.status_code == 200
 
     movie = response.json
-    expected_movie = {
-        "id_tmdb": 11,
-        "data": data["film7"]["data"],
-    }
+    expected_movie = data["film7"]["data"]
 
-    assert movie["id_tmdb"] == expected_movie["id_tmdb"]
-    assert movie["data"] == expected_movie["data"]
+    assert movie == expected_movie
