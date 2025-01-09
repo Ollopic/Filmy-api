@@ -3,66 +3,111 @@ import json
 with open("app/db/fixtures/datas/films.json", "r") as file:
     data = json.load(file)
 
+#
+# ---- GET ----
+#
 
-def test_get_movies_returns_list(client):
-    """Test que l'endpoint /movies renvoie une liste de films"""
-    response = client.get('/movies')
+def test_get_popular_movies(client):
+    """Test que l'endpoint /movies/popular renvoie des films populaires"""
+    response = client.get('/movies/popular')
     assert response.status_code == 200
+
     movies = response.json
     assert isinstance(movies, list)
     assert len(movies) > 0
 
 
-def test_get_movies_contains_specific_movie(client):
-    """Test que l'endpoint /movies contient un film avec des informations spécifiques"""
-    response = client.get('/movies')
+
+def test_get_trending_movies(client):
+    """Test que l'endpoint /movies/trending renvoie des films tendances"""
+    response = client.get('/movies/trending')
     assert response.status_code == 200
 
     movies = response.json
-    specific_movie = {
-        "id_tmdb": 1241982,
-        "data": data["film1"],
-        "image_path": "/tElnmtQ6yz1PjN1kePNl8yMSb59.jpg",
-        "poster_path": "/m0SbwFNCa9epW1X60deLqTHiP7x.jpg",
-    }
+    assert isinstance(movies, list)
+    assert len(movies) > 0
 
-    assert any(
-        movie["id_tmdb"] == specific_movie["id_tmdb"]
-        and movie["data"] == specific_movie["data"]
-        and movie["image_path"] == specific_movie["image_path"]
-        and movie["poster_path"] == specific_movie["poster_path"]
-        for movie in movies
-    )
+
+def test_search_movie(client):
+    """Test que l'endpoint /movies/search renvoie des films correspondant à un titre"""
+    title = "The Matrix"
+    response = client.get(f'/movies/search?title={title}')
+    assert response.status_code == 200
+
+    movies = response.json
+    assert isinstance(movies, list)
+    assert len(movies) > 0
+
+    for movie in movies:
+        assert "matrix" in movie["title"].lower()
 
 
 def test_get_movie_by_id(client):
     """Test que l'endpoint /movies/<int:id> renvoie bien les informations d'un film"""
-    specific_id = 1
-    response = client.get(f'/movies/{specific_id}')
+    response = client.get('/movies/2')
     assert response.status_code == 200
 
     movie = response.json
     expected_movie = {
-        "id": specific_id,
-        "id_tmdb": 1241982,
-        "data": data["film1"],
-        "image_path": "/tElnmtQ6yz1PjN1kePNl8yMSb59.jpg",
-        "poster_path": "/m0SbwFNCa9epW1X60deLqTHiP7x.jpg",
+        "id_tmdb": 2,
+        "data": data["film2"]["data"],
     }
 
-    assert movie["id"] == expected_movie["id"]
     assert movie["id_tmdb"] == expected_movie["id_tmdb"]
     assert movie["data"] == expected_movie["data"]
-    assert movie["image_path"] == expected_movie["image_path"]
-    assert movie["poster_path"] == expected_movie["poster_path"]
 
 
 def test_get_movie_by_id_not_found(client):
     """Test que l'endpoint /movies/<int:id> renvoie une erreur 404 si le film n'existe pas"""
-    non_existent_id = 9999
+    non_existent_id = 999999999
     response = client.get(f'/movies/{non_existent_id}')
     assert response.status_code == 404
 
     error_response = response.json
     assert "error" in error_response
     assert error_response["error"] == "Film introuvable"
+
+
+def test_get_movie_credits(client):
+    """Test que l'endpoint /movies/<int:id>/credits renvoie les crédits d'un film"""   
+    response = client.get('/movies/11/credits')
+    assert response.status_code == 200
+
+    credits = response.json
+    assert isinstance(credits, list)
+
+    expected_credits = [
+        {
+            "character": "Luke Skywalker",
+            "id_tmdb": 2,
+            "name": "Mark Hamill",
+            "profile_path": "/2ZulC2Ccq1yv3pemusks6Zlfy2s.jpg"
+        }
+    ]
+
+    for expected_credit in expected_credits:
+        assert any(
+            credit["id_tmdb"] == expected_credit["id_tmdb"]
+            and credit["character"] == expected_credit["character"]
+            and credit["name"] == expected_credit["name"]
+            and credit["profile_path"] == expected_credit["profile_path"]
+            for credit in credits
+        ), f"Expected credit {expected_credit} not found in response"
+
+#
+# ---- CREATE MOVIE ----
+#
+
+def test_create_movie(client):
+    """Test que l'endpoint /movies/id permet de créer un film correctement s'il n'existe pas dans la db"""
+    response = client.get('/movies/11')
+    assert response.status_code == 200
+
+    movie = response.json
+    expected_movie = {
+        "id_tmdb": 11,
+        "data": data["film7"]["data"],
+    }
+
+    assert movie["id_tmdb"] == expected_movie["id_tmdb"]
+    assert movie["data"] == expected_movie["data"]

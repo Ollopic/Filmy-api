@@ -52,40 +52,30 @@ def generate_test_data():
         film1 = Film(
             id_tmdb=1241982,
             data=data["film1"],
-            image_path="/tElnmtQ6yz1PjN1kePNl8yMSb59.jpg",
-            poster_path="/m0SbwFNCa9epW1X60deLqTHiP7x.jpg",
         )
         films.append(film1)
         db.session.add(film1)
         film2 = Film(
             id_tmdb=1034541,
             data=data["film2"],
-            image_path="/2ndyL4HjM9JLMqBSgbyCM57aMWl.jpg",
-            poster_path="/ju10W5gl3PPK3b7TjEmVOZap51I.jpg",
         )
         films.append(film2)
         db.session.add(film2)
         film3 = Film(
             id_tmdb=114975,
             data=data["film3"],
-            image_path="/idoSsWF6oOlrMFBd966OUd0aB8g.jpg",
-            poster_path="/ne83mYnmEBLhXnU8qawebKTA1nv.jpg",
         )
         films.append(film3)
         db.session.add(film3)
         film4 = Film(
             id_tmdb=912649,
             data=data["film4"],
-            image_path="/3sh2UA2Q2l7fihgoj1LhFFPTlIM.jpg",
-            poster_path="/fTGJWXuFDcRSIVPgQLbxziGquOC.jpg",
         )
         films.append(film4)
         db.session.add(film4)
         film5 = Film(
             id_tmdb=558449,
             data=data["film5"],
-            image_path="/euYIwmwkmz95mnXvufEmbL6ovhZ.jpg",
-            poster_path="/2cxhvwyEwRlysAmRH4iodkvo0z5.jpg",
         )
         films.append(film5)
         db.session.add(film5)
@@ -113,6 +103,12 @@ def generate_test_data():
         person5 = Person(id_tmdb=558449, data=data["person5"])
         persons.append(person5)
         db.session.add(person5)
+
+        # Ajout manuel de crédits
+        credit1 = CreditsFilm(film_id=1, person_id=1, character="John Doe")
+        credit2 = CreditsFilm(film_id=1, person_id=2, character="Jane Doe")
+        db.session.add(credit1)
+        db.session.add(credit2)
 
         # Générer des crédits
         for film in films:
