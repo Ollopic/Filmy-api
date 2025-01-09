@@ -16,8 +16,6 @@ class Film(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     id_tmdb = db.Column(db.Integer, nullable=False)
     data = db.Column(db.JSON, nullable=False)
-    image_path = db.Column(db.String, nullable=True)
-    poster_path = db.Column(db.String, nullable=True)
 
     credits = db.relationship("CreditsFilm", back_populates="film")
     collection_items = db.relationship("CollectionItem", back_populates="film")
