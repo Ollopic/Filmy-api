@@ -130,12 +130,14 @@ def get_movie(identifier: int):
             movie_data = tmdb_client.get_movie_by_id(identifier)
             data_person = tmdb_client.get_movie_credits(identifier)
 
+            # Get director
             director = None
             for person in data_person["crew"]:
                 if person["job"] == "Director":
                     director = person["name"]
             movie_data["director"] = director
 
+            # Get trailer
             trailers = tmdb_client.get_movie_videos(identifier)["results"] or []
             for trailer in trailers:
                 if trailer["site"].lower() == "youtube" and trailer["type"].lower() == "trailer":
@@ -144,6 +146,13 @@ def get_movie(identifier: int):
 
             if not trailers:
                 movie_data["trailer_key"] = None
+            
+            # Get release dates FR
+            release_dates = tmdb_client.get_movie_release_dates(identifier)["results"]
+            for release_date in release_dates:
+                if release_date["iso_3166_1"] == "FR":
+                    movie_data["age_restriction"] = release_date["release_dates"][0]["certification"]
+                    break
 
             data_movie = {
                 "id_tmdb": movie_data["id"],
