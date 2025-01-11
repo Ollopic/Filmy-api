@@ -82,10 +82,9 @@ def get_upcoming_movies():
     return result, 200
 
 
-@app.route("/movies/search", methods=["GET"])
-def search_movie():
-    title = request.args.get("title")
-    data = tmdb_client.get_movie_by_title(title)["results"]
+@app.route("/movies/now_playing", methods=["GET"])
+def get_movies_now_playing():
+    data = tmdb_client.get_movies_now_playing()["results"]
 
     result = [
         {
@@ -99,6 +98,27 @@ def search_movie():
     ]
 
     return result, 200
+
+
+@app.route("/movies", methods=["GET"])
+def search_movie():
+    title = request.args.get("title")
+    data = tmdb_client.get_movie_by_title(title)
+
+    result = [
+        {
+            "id_tmdb": movie["id"],
+            "title": movie["title"],
+            "overview": movie["overview"],
+            "poster_path": movie["poster_path"],
+        }
+        for movie in data["results"]
+    ]
+
+    return {
+        "total_results": data["total_results"],
+        "movies": result,
+    }, 200
 
 
 @app.route("/movies/<int:identifier>", methods=["GET"])
@@ -118,7 +138,7 @@ def get_movie(identifier: int):
 
             trailers = tmdb_client.get_movie_videos(identifier)["results"] or []
             for trailer in trailers:
-                if trailer["site"].lower() == "youtube":
+                if trailer["site"].lower() == "youtube" and trailer["type"].lower() == "trailer":
                     movie_data["trailer_key"] = trailer["key"]
                     break
 

@@ -60,6 +60,11 @@ class Client:
             endpoint="movie/upcoming",
         )
 
+    def get_movies_now_playing(self) -> dict:
+        return self._request(
+            endpoint="movie/now_playing",
+        )
+
     def get_movie_videos(self, movie_id: int) -> dict:
         return self._request(
             endpoint=f"movie/{movie_id}/videos",
