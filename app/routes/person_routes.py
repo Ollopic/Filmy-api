@@ -8,7 +8,7 @@ from app.themoviedb.client import Client
 tmdb_client = Client()
 
 
-@app.route("/person", methods=["GET"])
+@app.route("/person/search", methods=["GET"])
 def search_person():
     name = request.args.get("name")
     data = tmdb_client.get_person_by_name(name)["results"]
