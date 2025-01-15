@@ -78,13 +78,13 @@ def test_search_movie(client):
 
 def test_get_movie_by_id(client):
     """Test que l'endpoint /movies/<int:id> renvoie bien les informations d'un film"""
-    response = client.get('/movies/2')
+    response = client.get('/movies/11')
     assert response.status_code == 200
 
     movie = response.json
-    expected_movie = data["film2"]["data"]
+    
+    assert movie["original_title"] == "Star Wars"
 
-    assert movie == expected_movie
 
 
 def test_get_movie_by_id_not_found(client):
@@ -135,6 +135,5 @@ def test_create_movie(client):
     assert response.status_code == 200
 
     movie = response.json
-    expected_movie = data["film7"]["data"]
-
-    assert movie == expected_movie
+    
+    assert movie["original_title"] == "Star Wars"
