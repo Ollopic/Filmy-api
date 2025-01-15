@@ -41,6 +41,8 @@ def create_credits_if_not_exists(data_person, film_id):
 
     for person in data_person["cast"]:
         if person["id"] in missing_ids:
+            order = person["order"]
+            person["order"] = order
             new_person = Person(
                 id_tmdb=person["id"],
                 data=person,

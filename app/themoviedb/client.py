@@ -60,10 +60,25 @@ class Client:
             endpoint="movie/upcoming",
         )
 
+    def get_movies_now_playing(self) -> dict:
+        return self._request(
+            endpoint="movie/now_playing",
+        )
+
+    def get_movie_videos(self, movie_id: int) -> dict:
+        return self._request(
+            endpoint=f"movie/{movie_id}/videos",
+        )
+
     def get_movie_by_title(self, title: str) -> dict:
         return self._request(
             endpoint="search/movie",
             params={"query": title},
+        )
+    
+    def get_movie_release_dates(self, movie_id: int) -> dict:
+        return self._request(
+            endpoint=f"movie/{movie_id}/release_dates",
         )
 
     def get_movie_by_id(self, movie_id: int) -> dict:
