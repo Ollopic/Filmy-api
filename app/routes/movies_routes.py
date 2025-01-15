@@ -146,7 +146,7 @@ def get_movie(identifier: int):
 
             if not trailers:
                 movie_data["trailer_key"] = None
-            
+
             # Get release dates FR
             release_dates = tmdb_client.get_movie_release_dates(identifier)["results"]
             for release_date in release_dates:

@@ -37,13 +37,9 @@ def get_person(identifier: int):
         new_person = Person(id_tmdb=person["id"], data=person)
         db.session.add(new_person)
         db.session.commit()
-        return {
-            "data": person,
-        }, 200
+        return person, 200
 
-    return {
-        "data": person.data,
-    }, 200
+    return person.data, 200
 
 
 @app.route("/person/popular", methods=["GET"])
