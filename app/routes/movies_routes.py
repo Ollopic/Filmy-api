@@ -82,10 +82,9 @@ def get_upcoming_movies():
     return result, 200
 
 
-@app.route("/movies/search", methods=["GET"])
-def search_movie():
-    title = request.args.get("title")
-    data = tmdb_client.get_movie_by_title(title)["results"]
+@app.route("/movies/now_playing", methods=["GET"])
+def get_movies_now_playing():
+    data = tmdb_client.get_movies_now_playing()["results"]
 
     result = [
         {
@@ -101,6 +100,27 @@ def search_movie():
     return result, 200
 
 
+@app.route("/movies", methods=["GET"])
+def search_movie():
+    title = request.args.get("title")
+    data = tmdb_client.get_movie_by_title(title)
+
+    result = [
+        {
+            "id_tmdb": movie["id"],
+            "title": movie["title"],
+            "overview": movie["overview"],
+            "poster_path": movie["poster_path"],
+        }
+        for movie in data["results"]
+    ]
+
+    return {
+        "total_results": data["total_results"],
+        "movies": result,
+    }, 200
+
+
 @app.route("/movies/<int:identifier>", methods=["GET"])
 def get_movie(identifier: int):
     movie = db.session.query(Film).filter(Film.id_tmdb == identifier).first()
@@ -110,20 +130,29 @@ def get_movie(identifier: int):
             movie_data = tmdb_client.get_movie_by_id(identifier)
             data_person = tmdb_client.get_movie_credits(identifier)
 
+            # Get director
             director = None
             for person in data_person["crew"]:
                 if person["job"] == "Director":
                     director = person["name"]
             movie_data["director"] = director
 
+            # Get trailer
             trailers = tmdb_client.get_movie_videos(identifier)["results"] or []
             for trailer in trailers:
-                if trailer["site"].lower() == "youtube":
+                if trailer["site"].lower() == "youtube" and trailer["type"].lower() == "trailer":
                     movie_data["trailer_key"] = trailer["key"]
                     break
 
             if not trailers:
                 movie_data["trailer_key"] = None
+            
+            # Get release dates FR
+            release_dates = tmdb_client.get_movie_release_dates(identifier)["results"]
+            for release_date in release_dates:
+                if release_date["iso_3166_1"] == "FR":
+                    movie_data["age_restriction"] = release_date["release_dates"][0]["certification"]
+                    break
 
             data_movie = {
                 "id_tmdb": movie_data["id"],
