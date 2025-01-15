@@ -34,16 +34,23 @@ def get_person(identifier: int):
         if person is None:
             return {"error": "Personne introuvable"}, 404
 
+        if "gender" in person:
+            gender_id = person["gender"]
+            if gender_id == 0:
+                person["gender"] = "Not set / not specified"
+            elif gender_id == 1:
+                person["gender"] = "Female"
+            elif gender_id == 2:
+                person["gender"] = "Male"
+            elif gender_id == 3:
+                person["gender"] = "Non-binary"
+                
         new_person = Person(id_tmdb=person["id"], data=person)
         db.session.add(new_person)
         db.session.commit()
-        return {
-            "data": person,
-        }, 200
+        return person, 200
 
-    return {
-        "data": person.data,
-    }, 200
+    return person.data, 200
 
 
 @app.route("/person/popular", methods=["GET"])

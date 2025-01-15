@@ -75,7 +75,7 @@ class Client:
             endpoint="search/movie",
             params={"query": title},
         )
-    
+
     def get_movie_release_dates(self, movie_id: int) -> dict:
         return self._request(
             endpoint=f"movie/{movie_id}/release_dates",
