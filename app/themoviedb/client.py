@@ -94,6 +94,12 @@ class Client:
     def get_person_by_id(self, person_id: int) -> dict:
         return self._request(
             endpoint=f"person/{person_id}",
+            params={"append_to_response": "combined_credits"},
+        )
+
+    def get_popular_person(self) -> dict:
+        return self._request(
+            endpoint="person/popular",
         )
 
     def get_person_by_name(self, name: str) -> dict:
