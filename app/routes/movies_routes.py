@@ -183,7 +183,6 @@ def get_movie_credits(identifier: int):
                 "name": person["name"],
                 "character": person["character"] if "character" in person else None,
                 "profile_path": person["profile_path"],
-                "order": person["order"],
             }
             for person in movie_data["cast"]
         ]
@@ -198,7 +197,6 @@ def get_movie_credits(identifier: int):
             "name": credit.person.data["name"],
             "character": credit.character,
             "profile_path": credit.person.data["profile_path"],
-            "order": credit.person.data["order"],
         }
         for credit in credits
     ]
