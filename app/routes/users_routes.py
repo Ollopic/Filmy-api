@@ -51,10 +51,14 @@ def get_user(identifier: int):
 def create_user():
     data = request.json
 
-    existing_user = User.query.filter(User.mail == data["mail"]).first()
+    existing_mail = User.query.filter(User.mail == data["mail"]).first()
+    existing_username = User.query.filter(User.username == data["username"]).first()
 
-    if existing_user:
+    if existing_mail:
         return {"error": "Email déjà utilisé"}, 409
+
+    if existing_username:
+        return {"error": "Nom d'utilisateur déjà utilisé"}, 409
 
     user = User(
         username=data["username"],

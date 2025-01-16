@@ -5,7 +5,7 @@ from faker import Faker
 
 from app.app import app
 from app.db.database import db
-from app.db.models import CollectionItem, CreditsFilm, Film, Person, User
+from app.db.models import Collection, CollectionItem, CreditsFilm, Film, Person, User
 from app.utils import hash_password
 
 fake = Faker()
@@ -125,8 +125,14 @@ def generate_test_data():
         )
         film_2 = Film(id=7, id_tmdb=1241983, data={"title": "Film 2"})
 
-        item_true = CollectionItem(
+        collection1 = Collection(
+            name="Collection 1",
             user_id=3,
+        )
+
+        db.session.add(collection1)
+
+        item_true = CollectionItem(
             state="Physique",
             borrowed=True,
             borrowed_at="2025-01-01 00:00:00",
@@ -134,10 +140,10 @@ def generate_test_data():
             favorite=True,
             in_wishlist=True,
             film_id=film_1.id,
+            collection_id=1,
         )
 
         item_false = CollectionItem(
-            user_id=3,
             state="Physique",
             borrowed=False,
             borrowed_at=None,
@@ -145,35 +151,13 @@ def generate_test_data():
             favorite=False,
             in_wishlist=False,
             film_id=film_2.id,
+            collection_id=1,
         )
 
         db.session.add(item_true)
         db.session.add(item_false)
         db.session.add(film_1)
         db.session.add(film_2)
-
-        # Générer des items de collection aléatoires
-        collection_items = []
-        for user in users:
-            num_items = random.randint(3, 7)
-            for _ in range(num_items):
-                film = random.choice(films)
-
-                item = CollectionItem(
-                    state=random.choice(["Physique", "Numérique"]),
-                    borrowed=fake.boolean(chance_of_getting_true=20),
-                    borrowed_at=fake.date_time_between(start_date="-1y", end_date="now")
-                    if fake.boolean(chance_of_getting_true=20)
-                    else None,
-                    borrowed_by=fake.name() if fake.boolean(chance_of_getting_true=20) else None,
-                    favorite=fake.boolean(chance_of_getting_true=20),
-                    in_wishlist=fake.boolean(chance_of_getting_true=20),
-                    user=user,
-                    film=film,
-                )
-
-                collection_items.append(item)
-                db.session.add(item)
 
         db.session.commit()
         print("Données de test générées avec succès !")
