@@ -203,16 +203,18 @@ def get_movie_credits(identifier: int):
 
     return results, 200
 
+
 @app.route("/movies/genres", methods=["GET"])
 def get_movie_genre_list():
     return tmdb_client.get_movie_genres()["genres"], 200
+
 
 @app.route("/movies/discover", methods=["GET"])
 def discover_movies():
     params = {}
     genres = request.args.getlist("with_genres")
     if genres:
-        params["with_genres"] = ','.join(genres)
+        params["with_genres"] = ",".join(genres)
 
     sort_by = request.args.get("sort_by")
     if sort_by:
