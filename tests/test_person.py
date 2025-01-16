@@ -11,10 +11,13 @@ def test_get_popular_person(client):
 def test_search_person(client):
     """Test que l'endpoint /person renvoie des personnes correspondant à un nom"""
     name = "Didier Bourdon"
-    response = client.get(f'/person/search?name={name}')
+    response = client.get(f'/person?name={name}')
     assert response.status_code == 200
 
-    persons = response.json
+    results = response.json
+    assert "total_results" in results
+
+    persons = results["persons"]
     assert isinstance(persons, list)
     assert len(persons) > 0
 
