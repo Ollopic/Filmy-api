@@ -25,7 +25,7 @@ def create_collection():
     data = request.json
 
     if not data.get("name"):
-        return {"error": "Name is required"}, 400
+        return {"error": "Le champ name est requis"}, 400
 
     collection = Collection(name=data["name"], picture=data.get("picture"), user_id=user.id)
 
@@ -33,6 +33,44 @@ def create_collection():
     db.session.commit()
 
     return {"message": "Collection créé avec succès"}, 201
+
+
+@app.route("/collection/<int:identifier>", methods=["PATCH"])
+@jwt_required()
+def update_collection(identifier):
+    user = db.session.get(User, get_jwt_identity())
+    collection = db.session.get(Collection, identifier)
+    data = request.json
+
+    if collection.user_id != user.id:
+        return {"error": "Non autorisé"}, 403
+
+    if data.get("name"):
+        collection.name = data["name"]
+    if data.get("picture"):
+        collection.picture = data["picture"]
+
+    db.session.commit()
+
+    return {"message": "Collection modifié avec succès"}, 200
+
+
+@app.route("/collection/<int:identifier>", methods=["DELETE"])
+@jwt_required()
+def delete_collection(identifier):
+    user = db.session.get(User, get_jwt_identity())
+    collection = db.session.get(Collection, identifier)
+
+    if collection is None:
+        return {"error": "Collection introuvable"}, 404
+
+    if collection.user_id != user.id:
+        return {"error": "Non autorisé"}, 403
+
+    db.session.delete(collection)
+    db.session.commit()
+
+    return {"message": "Collection supprimé avec succès"}, 200
 
 
 @app.route("/collection/<int:identifier>", methods=["GET"])
@@ -47,7 +85,7 @@ def get_collection(identifier):
         return {"error": "Collection introuvable"}, 404
 
     if collection.user_id != user.id:
-        return {"error": "Unauthorized"}, 403
+        return {"error": "Non autorisé"}, 403
 
     collection_items = db.session.query(CollectionItem).filter(CollectionItem.collection_id == identifier).all()
 
@@ -92,16 +130,16 @@ def create_item_collection(identifier):
         return {"error": "Collection introuvable"}, 404
 
     if collection.user_id != user.id:
-        return {"error": "Unauthorized"}, 403
+        return {"error": "Non autorisé"}, 403
 
     if not data.get("film_id"):
-        return {"error": "Film ID is required"}, 400
+        return {"error": "film_id est requis"}, 400
 
     if not data.get("state"):
-        return {"error": "State is required"}, 400
+        return {"error": "state est requis"}, 400
 
     if not validate_state_param(data["state"]):
-        return {"error": "Invalid state"}, 400
+        return {"error": "state invalide"}, 400
 
     film = db.session.query(Film).filter(Film.id_tmdb == data["film_id"]).first()
     if film is None:
@@ -122,7 +160,7 @@ def create_item_collection(identifier):
         borrowed_by=data.get("borrowed_by"),
         favorite=data.get("favorite"),
         in_wishlist=data.get("in_wishlist"),
-        film_id=film,
+        film_id=film.id,
         collection_id=identifier,
     )
 
@@ -130,3 +168,71 @@ def create_item_collection(identifier):
     db.session.commit()
 
     return {"message": "Item de collection créé avec succès"}, 201
+
+
+@app.route("/collection/<int:collection_id>/<int:film_id>", methods=["PATCH"])
+@jwt_required()
+def update_item_collection(collection_id, film_id):
+    user = db.session.get(User, get_jwt_identity())
+    collection = db.session.get(Collection, collection_id)
+    data = request.json
+
+    if collection.user_id != user.id:
+        return {"error": "Non autorisé"}, 403
+
+    film_idtmdb = db.session.query(Film).filter(Film.id_tmdb == film_id).first()
+
+    item = (
+        db.session.query(CollectionItem)
+        .filter(CollectionItem.film_id == film_idtmdb.id, CollectionItem.collection_id == collection_id)
+        .first()
+    )
+    if item is None:
+        return {"error": "Item introuvable"}, 404
+
+    if data.get("state"):
+        if not validate_state_param(data["state"]):
+            return {"error": "state invalide"}, 400
+        item.state = data["state"]
+    if data.get("borrowed"):
+        item.borrowed = data["borrowed"]
+    if data.get("borrowed_at"):
+        item.borrowed_at = data["borrowed_at"]
+    if data.get("borrowed_by"):
+        item.borrowed_by = data["borrowed_by"]
+    if data.get("favorite"):
+        item.favorite = data["favorite"]
+    if data.get("in_wishlist"):
+        item.in_wishlist = data["in_wishlist"]
+
+    db.session.commit()
+
+    return {"message": "Item de collection modifié avec succès"}, 200
+
+
+@app.route("/collection/<int:collection_id>/<int:film_id>", methods=["DELETE"])
+@jwt_required()
+def delete_item_collection(collection_id, film_id):
+    user = db.session.get(User, get_jwt_identity())
+    collection = db.session.get(Collection, collection_id)
+
+    if collection is None:
+        return {"error": "Collection introuvable"}, 404
+
+    if collection.user_id != user.id:
+        return {"error": "Non autorisé"}, 403
+
+    film_idtmdb = db.session.query(Film).filter(Film.id_tmdb == film_id).first()
+
+    item = (
+        db.session.query(CollectionItem)
+        .filter(CollectionItem.film_id == film_idtmdb.id, CollectionItem.collection_id == collection_id)
+        .first()
+    )
+    if item is None:
+        return {"error": "Item introuvable"}, 404
+
+    db.session.delete(item)
+    db.session.commit()
+
+    return {"message": "Item de collection supprimé avec succès"}, 200

@@ -68,7 +68,7 @@ def create_movie_if_not_exists(identifier):
     create_credits_if_not_exists(data_person, movie.id)
 
     # Retourner l'id de notre base de données
-    return movie.id
+    return movie
 
 
 def create_credits_if_not_exists(data_person, film_id):
