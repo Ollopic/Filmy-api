@@ -75,7 +75,7 @@ class Client:
             endpoint="search/movie",
             params={"query": title},
         )
-    
+
     def get_movie_release_dates(self, movie_id: int) -> dict:
         return self._request(
             endpoint=f"movie/{movie_id}/release_dates",
@@ -94,6 +94,12 @@ class Client:
     def get_person_by_id(self, person_id: int) -> dict:
         return self._request(
             endpoint=f"person/{person_id}",
+            params={"append_to_response": "combined_credits"},
+        )
+
+    def get_popular_person(self) -> dict:
+        return self._request(
+            endpoint="person/popular",
         )
 
     def get_person_by_name(self, name: str) -> dict:
