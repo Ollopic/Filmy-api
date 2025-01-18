@@ -7,6 +7,7 @@ from flask_cors import CORS
 from app.config import (
     jwtAccessTokenExpiresConfig,
     jwtSecretKeyConfig,
+    front_url,
 )
 
 app = Flask(__name__)
@@ -18,4 +19,4 @@ app.config["JWT_SECRET_KEY"] = jwtSecretKeyConfig
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=jwtAccessTokenExpiresConfig)
 jwt = JWTManager(app)
 
-CORS(app, resources={r"/*": {"origins": app.config["front_url"]}})
+CORS(app, resources={r"/*": {"origins": front_url}})
