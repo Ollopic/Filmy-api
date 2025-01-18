@@ -18,4 +18,4 @@ app.config["JWT_SECRET_KEY"] = jwtSecretKeyConfig
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=jwtAccessTokenExpiresConfig)
 jwt = JWTManager(app)
 
-CORS(app, resources={r"/*": {"origins": "http://localhost:8080"}})
+CORS(app, resources={r"/*": {"origins": app.config["front_url"]}})
