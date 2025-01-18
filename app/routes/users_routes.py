@@ -3,7 +3,7 @@ from flask_jwt_extended import get_jwt_identity, jwt_required
 
 from app.app import app
 from app.db.database import db
-from app.db.models import CollectionItem, User
+from app.db.models import Collection, CollectionItem, User
 from app.utils import hash_password
 
 
@@ -66,8 +66,18 @@ def create_user():
         password=hash_password(data["password"]),
         is_admin=data.get("is_admin", False),
     )
+
     db.session.add(user)
     db.session.commit()
+
+    collection = Collection(
+        name="Defaut",
+        user_id=user.id,
+    )
+
+    db.session.add(collection)
+    db.session.commit()
+
     return {"message": "Utilisateur créé avec succès"}, 201
 
 

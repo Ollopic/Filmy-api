@@ -56,6 +56,9 @@ class Collection(db.Model):
     user = db.relationship("User", back_populates="collection")
     collection_items = db.relationship("CollectionItem", back_populates="collection")
 
+    # Contrainte unique sur (name, user_id)
+    __table_args__ = (db.UniqueConstraint("name", "user_id", name="uq_collection_name_user"),)
+
 
 # Modèle pour la table 'CollectionItem'
 class CollectionItem(db.Model):

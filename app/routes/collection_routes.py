@@ -1,5 +1,6 @@
 from flask import request
 from flask_jwt_extended import get_jwt_identity, jwt_required
+from sqlalchemy.exc import IntegrityError
 
 from app.app import app
 from app.db.database import db
@@ -29,8 +30,12 @@ def create_collection():
 
     collection = Collection(name=data["name"], picture=data.get("picture"), user_id=user.id)
 
-    db.session.add(collection)
-    db.session.commit()
+    try:
+        db.session.add(collection)
+        db.session.commit()
+    except IntegrityError:
+        db.session.rollback()
+        return {"error": "Une collection avec ce nom existe déjà pour cet utilisateur."}, 409
 
     return {"message": "Collection créé avec succès"}, 201
 
@@ -147,11 +152,15 @@ def create_item_collection(identifier):
 
     existing_item = (
         db.session.query(CollectionItem)
-        .filter(CollectionItem.film_id == film.id, CollectionItem.collection_id == identifier)
+        .filter(
+            CollectionItem.film_id == film.id,
+            CollectionItem.collection_id == identifier,
+            CollectionItem.user_id == user,
+        )
         .first()
     )
     if existing_item:
-        return {"error": "Film déjà présent dans la collection"}, 400
+        return {"error": "Film déjà présent dans une des collections"}, 400
 
     item = CollectionItem(
         state=data["state"],
