@@ -128,7 +128,7 @@ def create_item_collection(identifier):
     user = db.session.get(User, get_jwt_identity())
     data = request.json
 
-    collection = Collection.query.get(identifier)
+    collection = db.session.get(Collection, identifier)
 
     if collection is None:
         return {"error": "Collection introuvable"}, 404
@@ -151,6 +151,7 @@ def create_item_collection(identifier):
 
     existing_item = (
         db.session.query(CollectionItem)
+        .join(Collection)
         .filter(
             CollectionItem.film_id == film.id,
             Collection.user_id == user.id,

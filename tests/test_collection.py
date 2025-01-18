@@ -1,20 +1,18 @@
-import json
-
 #
 # ---- GET ----
 #
 
 def test_get_collection_returns_list(client):
-    """Test que l'endpoint /user/<int:identifier>/collection renvoie une liste d'items"""
-    admin_login = client.post(
+    """Test que l'endpoint /collection renvoie une liste d'items"""
+    user_login = client.post(
         "/token",
-        json={"mail": "admin@example.com", "password": "admin"},
+        json={"mail": "unadmin@example.com", "password": "user"},
     )
-    admin_token = admin_login.json["token"]
-    
+    user_token = user_login.json["token"]
+
     response = client.get(
-        '/user/3/collection',
-        headers={"Authorization": f"Bearer {admin_token}"}
+        '/collection',
+        headers={"Authorization": f"Bearer {user_token}"}
     )
     assert response.status_code == 200
     collection = response.json
@@ -23,296 +21,141 @@ def test_get_collection_returns_list(client):
 
 
 def test_get_collection_contains_specific_item(client):
-    """Test que l'endpoint /user/<int:identifier>/collection contient un item avec des informations spécifiques"""
-    admin_login = client.post(
+    """Test que l'endpoint /collection contient un item avec des informations spécifiques"""
+    user_login = client.post(
         "/token",
-        json={"mail": "admin@example.com", "password": "admin"},
+        json={"mail": "unadmin@example.com", "password": "user"},
     )
-    admin_token = admin_login.json["token"]
+    user_token = user_login.json["token"]
     
     response = client.get(
-        '/user/3/collection',
-        headers={"Authorization": f"Bearer {admin_token}"}
+        '/collection',
+        headers={"Authorization": f"Bearer {user_token}"}
     )
     assert response.status_code == 200
 
     collection = response.json
     specific_item = {
         "id": 1,
-        "state": "Physique",
-        "borrowed": True,
-        "borrowed_at": "Wed, 01 Jan 2025 00:00:00 GMT",
-        "borrowed_by": "User 1",
-        "favorite": True,
-        "in_wishlist": True,
-        "film": {
-            "id": 6,
-            "id_tmdb": 1241982,
-            "data": {"title": "Film 1"},
-            "image_path": "/tElnmtQ6yz1PjN1kePNl8yMSb59.jpg",
-            "poster_path": "/m0SbwFNCa9epW1X60deLqTHiP7x.jpg",
-        },
+        "items_count": 2,
+        "name": "Collection 1",
+        "picture": None,
     }
 
     assert specific_item in collection
 
 
-def test_get_collection_with_good_param(client):
-    admin_login = client.post(
-        "/token",
-        json={"mail": "admin@example.com", "password": "admin"},
-    )
-    admin_token = admin_login.json["token"]
-
-    # Test with wishlist
-    response = client.get(
-        '/user/3/collection?wishlist=true',
-        headers={"Authorization": f"Bearer {admin_token}"}
-    )
-    assert response.status_code == 200
-    collection = response.json
-    assert all(item["in_wishlist"] == True for item in collection)
-
-    # Test with favorite
-    response = client.get(
-        '/user/3/collection?favorite=false',
-        headers={"Authorization": f"Bearer {admin_token}"}
-    )
-    assert response.status_code == 200
-    collection = response.json
-    assert all(item["favorite"] == False for item in collection)
-
-    # Test with state
-    response = client.get(
-        '/user/3/collection?state=Physique',
-        headers={"Authorization": f"Bearer {admin_token}"}
-    )
-    assert response.status_code == 200
-    collection = response.json
-    assert all(item["state"] == "Physique" for item in collection)
-
-    # Test with borrowed
-    response = client.get(
-        '/user/3/collection?borrowed=false',
-        headers={"Authorization": f"Bearer {admin_token}"}
-    )
-    assert response.status_code == 200
-    collection = response.json
-    assert all(item["borrowed"] == False for item in collection)
-
-
-def test_get_collection_with_invalid_param(client):
-    admin_login = client.post(
-        "/token",
-        json={"mail": "admin@example.com", "password": "admin"},
-    )
-    admin_token = admin_login.json["token"]
-
-    # Test with invalid wishlist
-    response = client.get(
-        '/user/3/collection?wishlist=invalid',
-        headers={"Authorization": f"Bearer {admin_token}"}
-    )
-    assert response.status_code == 400
-    assert response.json == {"error": "La valeur de wishlist doit être un booléen"}
-
-    # Test with invalid state
-    response = client.get(
-        '/user/3/collection?state=InvalidState',
-        headers={"Authorization": f"Bearer {admin_token}"}
-    )
-    assert response.status_code == 400
-    assert response.json == {"error": "La valeur de state doit être 'Physique' ou 'Numérique'"}
-
-    # Test with invalid borrowed
-    response = client.get(
-        '/user/3/collection?borrowed=true',
-        headers={"Authorization": f"Bearer {admin_token}"}
-    )
-    assert response.status_code == 200
-    collection = response.json
-    assert all(item["borrowed"] == True for item in collection)
-
-    # Test with invalid favorite
-    response = client.get(
-        '/user/3/collection?favorite=invalid',
-        headers={"Authorization": f"Bearer {admin_token}"}
-    )
-    assert response.status_code == 400
-    assert response.json == {"error": "La valeur de favorite doit être un booléen"}
-
-
-def test_get_collection_without_filters(client):
-    admin_login = client.post(
-        "/token",
-        json={"mail": "admin@example.com", "password": "admin"},
-    )
-    admin_token = admin_login.json["token"]
-
-    response = client.get(
-        '/user/3/collection',
-        headers={"Authorization": f"Bearer {admin_token}"}
-    )
-    assert response.status_code == 200
-    collection = response.json
-    assert isinstance(collection, list)
-    assert len(collection) > 0
-
-
-def test_get_collection_with_no_matching_items(client):
-    admin_login = client.post(
-        "/token",
-        json={"mail": "admin@example.com", "password": "admin"},
-    )
-    admin_token = admin_login.json["token"]
-
-    response = client.get(
-        '/user/3/collection?wishlist=true&borrowed=true&state=Numérique&favorite=true',
-        headers={"Authorization": f"Bearer {admin_token}"}
-    )
-    assert response.status_code == 404
-    assert response.json == {"error": "Aucun item trouvé"}
-
-
-def test_get_collection_without_jwt(client):
-    response = client.get('/user/3/collection')
-    assert response.status_code == 401
-    assert response.json == {"msg": "Missing Authorization Header"}
-
-
-def test_get_collection_with_invalid_jwt(client):
-    user_login = client.post(
-        "/token",
-        json={"mail": "unadmin@example.com", "password": "user"},
-    )
-
-    user_token = user_login.json["token"]
-
-    response = client.get(
-        '/user/3/collection',
-        headers={"Authorization": f"Bearer {user_token}"}
-    )
-
-    assert response.status_code == 401
-    assert response.json == {"error": "Non autorisé"}
-
 #
 # ---- POST ----
 #
-
-def test_create_item_returns_created_item(client):
-    admin_login = client.post(
-        "/token",
-        json={"mail": "admin@example.com", "password": "admin"},
-    )
-    admin_token = admin_login.json["token"]
-
-    response = client.post(
-        '/user/3/collection',
-        headers={"Authorization": f"Bearer {admin_token}"},
-        json={
-            "film_id": 2,
-            "state": "Physique",
-            "borrowed": False,
-            "favorite": False,
-            "in_wishlist": False,
-        }
-    )
-
-    assert response.status_code == 201
-    assert response.json == {"message": "Item ajouté avec succès"}
-    
-    response = client.get(
-        '/user/3/collection',
-        headers={"Authorization": f"Bearer {admin_token}"}
-    )
-    collection = response.json
-    assert any(item["film"]["id"] == 2 for item in collection)
-
-
-def test_create_item_with_invalid_jwt(client):
+def test_create_collection(client):
+    """Test que l'endpoint POST /collection crée une collection"""
     user_login = client.post(
         "/token",
         json={"mail": "unadmin@example.com", "password": "user"},
     )
-
     user_token = user_login.json["token"]
 
     response = client.post(
-        '/user/3/collection',
+        '/collection',
         headers={"Authorization": f"Bearer {user_token}"},
-        json={
-            "film_id": 2,
-            "state": "Physique",
-            "borrowed": False,
-            "favorite": False,
-            "in_wishlist": False,
-        }
+        json={"name": "Nouvelle Collection", "picture": "image.png"},
+    )
+    assert response.status_code == 201
+    assert response.json["message"] == "Collection créé avec succès"
+
+
+def test_create_collection_duplicate_name(client):
+    """Test que l'endpoint POST /collection renvoie une erreur pour un nom de collection en doublon"""
+    user_login = client.post(
+        "/token",
+        json={"mail": "unadmin@example.com", "password": "user"},
+    )
+    user_token = user_login.json["token"]
+
+    # Créer une première collection
+    client.post(
+        '/collection',
+        headers={"Authorization": f"Bearer {user_token}"},
+        json={"name": "Collection Duplicate", "picture": "image.png"},
     )
 
-    assert response.status_code == 401
-    assert response.json == {"error": "Non autorisé"}
+    # Tenter d'en créer une autre avec le même nom
+    response = client.post(
+        '/collection',
+        headers={"Authorization": f"Bearer {user_token}"},
+        json={"name": "Collection Duplicate", "picture": "image2.png"},
+    )
+    assert response.status_code == 409
+    assert "Une collection avec ce nom existe déjà" in response.json["error"]
+
+
+def test_create_item_in_collection(client):
+    """Test que l'endpoint POST /collection/<id> ajoute un item dans une collection"""
+    user_login = client.post(
+        "/token",
+        json={"mail": "unadmin@example.com", "password": "user"},
+    )
+    user_token = user_login.json["token"]
+
+    response = client.post(
+        '/collection/1',
+        headers={"Authorization": f"Bearer {user_token}"},
+        json={"film_id": 11, "state": "Physique"},
+    )
+    assert response.status_code == 201
+    assert response.json["message"] == "Item de collection créé avec succès"
 
 #
 # ---- PATCH ----
 #
 
-
-def test_patch_item(client):
-    admin_login = client.post(
+def test_update_collection(client):
+    """Test que l'endpoint PATCH /collection/<id> met à jour une collection"""
+    user_login = client.post(
         "/token",
-        json={"mail": "admin@example.com", "password": "admin"},
+        json={"mail": "unadmin@example.com", "password": "user"},
     )
-    admin_token = admin_login.json["token"]
+    user_token = user_login.json["token"]
 
-    item_data = {
-        "film_id": 1,
-        "state": "Physique",
-        "borrowed": False,
-        "favorite": False,
-        "in_wishlist": False
-    }
-    response = client.post("/user/1/collection", json=item_data, headers={"Authorization": f"Bearer {admin_token}"})
-    assert response.status_code == 201
-    item_id = client.get(
-        "/user/1/collection",
-        headers={"Authorization": f"Bearer {admin_token}"}
-    ).json[0]["id"]
-
-    update_data = {
-        "borrowed": True,
-        "favorite": True
-    }
-    response = client.patch(f"/user/1/collection/{item_id}", json=update_data, headers={"Authorization": f"Bearer {admin_token}"})
+    response = client.patch(
+        '/collection/1',
+        headers={"Authorization": f"Bearer {user_token}"},
+        json={"name": "Nom Modifié", "picture": "image_modifiee.png"},
+    )
     assert response.status_code == 200
-    assert response.json["message"] == "Item mis à jour avec succès"
-
+    assert response.json["message"] == "Collection modifié avec succès"
 
 #
 # ---- DELETE ----
 #
 
-def test_delete_item(client):
-    admin_login = client.post(
+def test_delete_item_in_collection(client):
+    """Test que l'endpoint DELETE /collection/<id>/<film_id> supprime un item dans une collection"""
+    user_login = client.post(
         "/token",
-        json={"mail": "admin@example.com", "password": "admin"},
+        json={"mail": "unadmin@example.com", "password": "user"},
     )
-    admin_token = admin_login.json["token"]
+    user_token = user_login.json["token"]
 
-    item_data = {
-        "film_id": 1,
-        "state": "Physique",
-        "borrowed": False,
-        "favorite": False,
-        "in_wishlist": False
-    }
-    response = client.post("/user/1/collection", json=item_data, headers={"Authorization": f"Bearer {admin_token}"})
-    assert response.status_code == 201
-    item_id = client.get(
-        "/user/1/collection",
-        headers={"Authorization": f"Bearer {admin_token}"}
-    ).json[0]["id"]
-
-    response = client.delete(f"/user/1/collection/{item_id}", headers={"Authorization": f"Bearer {admin_token}"})
+    response = client.delete(
+        '/collection/1/11',
+        headers={"Authorization": f"Bearer {user_token}"}
+    )
     assert response.status_code == 200
-    assert response.json["message"] == "Item supprimé avec succès"
+    assert response.json["message"] == "Item de collection supprimé avec succès"
+
+def test_delete_collection(client):
+    """Test que l'endpoint DELETE /collection/<id> supprime une collection"""
+    user_login = client.post(
+        "/token",
+        json={"mail": "unadmin@example.com", "password": "user"},
+    )
+    user_token = user_login.json["token"]
+
+    response = client.delete(
+        '/collection/1',
+        headers={"Authorization": f"Bearer {user_token}"}
+    )
+    assert response.status_code == 200
+    assert response.json["message"] == "Collection supprimé avec succès"

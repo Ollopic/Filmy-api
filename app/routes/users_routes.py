@@ -131,6 +131,7 @@ def delete_user(identifier: int):
         return {"error": "Non autorisé"}, 401
 
     db.session.query(CollectionItem).filter(CollectionItem.user_id == identifier).delete()
+    db.session.query(Collection).filter(Collection.user_id == identifier).delete()
     db.session.delete(user)
     db.session.commit()
     return {"message": "Utilisateur supprimé avec succès"}

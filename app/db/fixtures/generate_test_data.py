@@ -80,6 +80,19 @@ def generate_test_data():
         films.append(film5)
         db.session.add(film5)
 
+        film6 = Film(
+            id_tmdb=1241982,
+            data={"id": 1241982, "title": "Film 1", "poster_path": "/aLVkiINlIeCkcZIzb7XHzPYgO6L.jpg"},
+        )
+        films.append(film6)
+        db.session.add(film6)
+
+        film7 = Film(
+            id_tmdb=1241983, data={"id": 1241983, "title": "Film 2", "poster_path": "/96FR5o2M8bshJBPy6yDah2E0oAa.jpg"}
+        )
+        films.append(film7)
+        db.session.add(film7)
+
         with open("app/db/fixtures/datas/persons.json", "r") as file:
             data = json.load(file)
 
@@ -118,16 +131,9 @@ def generate_test_data():
                 credit = CreditsFilm(film=film, person=person, character=fake.name())
                 db.session.add(credit)
 
-        film_1 = Film(
-            id=6,
-            id_tmdb=1241982,
-            data={"title": "Film 1"},
-        )
-        film_2 = Film(id=7, id_tmdb=1241983, data={"title": "Film 2"})
-
         collection1 = Collection(
             name="Collection 1",
-            user_id=3,
+            user_id=2,
         )
 
         db.session.add(collection1)
@@ -138,9 +144,9 @@ def generate_test_data():
             borrowed_at="2025-01-01 00:00:00",
             borrowed_by="User 1",
             favorite=True,
-            film_id=film_1.id,
+            film_id=6,
             collection_id=1,
-            user_id=3,
+            user_id=2,
         )
 
         item_false = CollectionItem(
@@ -149,15 +155,13 @@ def generate_test_data():
             borrowed_at=None,
             borrowed_by=None,
             favorite=False,
-            film_id=film_2.id,
+            film_id=7,
             collection_id=1,
-            user_id=3,
+            user_id=2,
         )
 
         db.session.add(item_true)
         db.session.add(item_false)
-        db.session.add(film_1)
-        db.session.add(film_2)
 
         db.session.commit()
         print("Données de test générées avec succès !")
