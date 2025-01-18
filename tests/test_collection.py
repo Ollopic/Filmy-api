@@ -183,6 +183,82 @@ def test_update_collection(client):
     assert response.status_code == 200
     assert response.json["message"] == "Collection modifié avec succès"
 
+
+def test_transfer_item_wishlist_to_collection_success(client):
+    """Test succès : transfert d'un film de la wishlist vers une collection"""
+    user_login = client.post(
+        "/token",
+        json={"mail": "unadmin@example.com", "password": "user"},
+    )
+    user_token = user_login.json["token"]
+    
+    collection_response = client.post(
+        "/collection",
+        json={"name": "Collection Test"},
+        headers={"Authorization": f"Bearer {user_token}"},
+    )
+
+    assert collection_response.status_code == 201
+
+    film_id = 14
+    wishlist_response = client.post(
+        '/collection/wishlist',
+        headers={"Authorization": f"Bearer {user_token}"},
+        json={"film_id": film_id},
+    )
+
+    assert wishlist_response.status_code == 201
+
+    transfer_response = client.patch(
+        "/collection/wishlist",
+        json={"film_id": film_id, "collection_id": 5, "state": "Physique"},
+        headers={"Authorization": f"Bearer {user_token}"},
+    )
+
+    assert transfer_response.status_code == 200
+    assert transfer_response.json["message"] == "Film transféré de la wishlist vers la collection avec succès"
+
+
+def test_transfer_item_wishlist_to_collection_nonexistent_collection(client):
+    """Test erreur : collection introuvable"""
+    user_login = client.post(
+        "/token",
+        json={"mail": "unadmin@example.com", "password": "user"},
+    )
+    user_token = user_login.json["token"]
+
+    response = client.patch(
+        "/collection/wishlist",
+        json={"film_id": 1, "collection_id": 999, "state": "Physique"},
+        headers={"Authorization": f"Bearer {user_token}"},
+    )
+    assert response.status_code == 404
+    assert response.json["error"] == "Collection introuvable"
+
+
+def test_transfer_item_wishlist_to_collection_nonexistent_wishlist_item(client):
+    """Test erreur : film introuvable dans la wishlist"""
+    user_login = client.post(
+        "/token",
+        json={"mail": "unadmin@example.com", "password": "user"},
+    )
+    user_token = user_login.json["token"]
+
+    collection_response = client.post(
+        "/collection",
+        json={"name": "Collection Test wishlist introuvable"},
+        headers={"Authorization": f"Bearer {user_token}"},
+    )
+    assert collection_response.status_code == 201
+
+    response = client.patch(
+        "/collection/wishlist",
+        json={"film_id": 12345, "collection_id": 6, "state": "Physique"},
+        headers={"Authorization": f"Bearer {user_token}"},
+    )
+    assert response.status_code == 404
+    assert response.json["error"] == "Film introuvable"
+
 #
 # ---- DELETE ----
 #

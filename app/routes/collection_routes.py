@@ -303,3 +303,45 @@ def create_item_wishlist():
     db.session.commit()
 
     return {"message": "Item ajouté à la wishlist"}, 201
+
+
+@app.route("/collection/wishlist", methods=["PATCH"])
+@jwt_required()
+def transfer_item_wishlist_to_collection():
+    user = db.session.get(User, get_jwt_identity())
+    data = request.json
+
+    if not data.get("state"):
+        return {"error": "state est requis"}, 400
+    if not data.get("film_id"):
+        return {"error": "film_id est requis"}, 400
+    if not data.get("collection_id"):
+        return {"error": "collection_id est requis"}, 400
+
+    film = db.session.query(Film).filter(Film.id_tmdb == data["film_id"]).first()
+    collection = db.session.get(Collection, data["collection_id"])
+    if collection is None:
+        return {"error": "Collection introuvable"}, 404
+    if film is None:
+        return {"error": "Film introuvable"}, 404
+    if collection.user_id != user.id:
+        return {"error": "Non autorisé"}, 403
+
+    item = (
+        db.session.query(CollectionItem)
+        .filter(
+            CollectionItem.film_id == film.id,
+            CollectionItem.user_id == user.id,
+            CollectionItem.collection_id.is_(None),
+        )
+        .first()
+    )
+    if item is None:
+        return {"error": "Film introuvable dans la wishlist"}, 404
+
+    item.collection_id = collection.id
+    item.state = data["state"]
+
+    db.session.commit()
+
+    return {"message": "Film transféré de la wishlist vers la collection avec succès"}, 200
