@@ -286,7 +286,7 @@ def create_item_wishlist():
         db.session.query(CollectionItem)
         .filter(
             CollectionItem.film_id == film.id,
-            Collection.user_id == user.id,
+            CollectionItem.user_id == user.id,
         )
         .first()
     )

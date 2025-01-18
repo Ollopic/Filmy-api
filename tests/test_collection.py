@@ -45,6 +45,23 @@ def test_get_collection_contains_specific_item(client):
     assert specific_item in collection
 
 
+def test_get_wishlist(client):
+    """Test que l'endpoint GET /collection/wishlist renvoie la wishlist de l'utilisateur"""
+    user_login = client.post(
+        "/token",
+        json={"mail": "unadmin@example.com", "password": "user"},
+    )
+    user_token = user_login.json["token"]
+
+    response = client.get(
+        '/collection/wishlist',
+        headers={"Authorization": f"Bearer {user_token}"}
+    )
+    assert response.status_code == 200
+    wishlist = response.json
+    assert isinstance(wishlist, list)
+
+
 #
 # ---- POST ----
 #
@@ -105,6 +122,46 @@ def test_create_item_in_collection(client):
     )
     assert response.status_code == 201
     assert response.json["message"] == "Item de collection créé avec succès"
+
+
+def test_create_item_wishlist(client):
+    """Test que l'endpoint POST /collection/wishlist ajoute un item dans la wishlist"""
+    user_login = client.post(
+        "/token",
+        json={"mail": "unadmin@example.com", "password": "user"},
+    )
+    user_token = user_login.json["token"]
+
+    response = client.post(
+        '/collection/wishlist',
+        headers={"Authorization": f"Bearer {user_token}"},
+        json={"film_id": 12},
+    )
+    assert response.status_code == 201
+    assert response.json["message"] == "Item ajouté à la wishlist"
+
+
+def test_create_item_wishlist_duplicate(client):
+    """Test que l'endpoint POST /collection/wishlist renvoie une erreur pour un film déjà dans la wishlist"""
+    user_login = client.post(
+        "/token",
+        json={"mail": "unadmin@example.com", "password": "user"},
+    )
+    user_token = user_login.json["token"]
+
+    client.post(
+        '/collection/wishlist',
+        headers={"Authorization": f"Bearer {user_token}"},
+        json={"film_id": 13},
+    )
+
+    response = client.post(
+        '/collection/wishlist',
+        headers={"Authorization": f"Bearer {user_token}"},
+        json={"film_id": 13},
+    )
+    assert response.status_code == 400
+    assert "Film déjà présent dans la wishlist" in response.json["error"]
 
 #
 # ---- PATCH ----
