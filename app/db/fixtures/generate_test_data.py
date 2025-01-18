@@ -138,9 +138,9 @@ def generate_test_data():
             borrowed_at="2025-01-01 00:00:00",
             borrowed_by="User 1",
             favorite=True,
-            in_wishlist=True,
             film_id=film_1.id,
             collection_id=1,
+            user_id=3,
         )
 
         item_false = CollectionItem(
@@ -149,9 +149,9 @@ def generate_test_data():
             borrowed_at=None,
             borrowed_by=None,
             favorite=False,
-            in_wishlist=False,
             film_id=film_2.id,
             collection_id=1,
+            user_id=3,
         )
 
         db.session.add(item_true)

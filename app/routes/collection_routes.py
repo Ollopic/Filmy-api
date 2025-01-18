@@ -104,7 +104,6 @@ def get_collection(identifier):
                 "borrowed_at": item.borrowed_at,
                 "borrowed_by": item.borrowed_by,
                 "favorite": item.favorite,
-                "in_wishlist": item.in_wishlist,
                 "film": {
                     "id": film.data["id"],
                     "title": film.data["title"],
@@ -154,8 +153,7 @@ def create_item_collection(identifier):
         db.session.query(CollectionItem)
         .filter(
             CollectionItem.film_id == film.id,
-            CollectionItem.collection_id == identifier,
-            CollectionItem.user_id == user,
+            Collection.user_id == user.id,
         )
         .first()
     )
@@ -168,9 +166,9 @@ def create_item_collection(identifier):
         borrowed_at=data.get("borrowed_at"),
         borrowed_by=data.get("borrowed_by"),
         favorite=data.get("favorite"),
-        in_wishlist=data.get("in_wishlist"),
         film_id=film.id,
         collection_id=identifier,
+        user_id=user.id,
     )
 
     db.session.add(item)
@@ -211,8 +209,6 @@ def update_item_collection(collection_id, film_id):
         item.borrowed_by = data["borrowed_by"]
     if data.get("favorite"):
         item.favorite = data["favorite"]
-    if data.get("in_wishlist"):
-        item.in_wishlist = data["in_wishlist"]
 
     db.session.commit()
 
@@ -245,3 +241,64 @@ def delete_item_collection(collection_id, film_id):
     db.session.commit()
 
     return {"message": "Item de collection supprimé avec succès"}, 200
+
+
+@app.route("/collection/wishlist", methods=["GET"])
+@jwt_required()
+def get_wishlist():
+    user = db.session.get(User, get_jwt_identity())
+    wishlist_items = (
+        db.session.query(CollectionItem)
+        .filter(CollectionItem.user_id == user.id, CollectionItem.collection_id.is_(None))
+        .all()
+    )
+
+    items_data = []
+
+    for item in wishlist_items:
+        film = db.session.query(Film).filter(Film.id == item.film_id).first()
+        items_data.append(
+            {
+                "id": film.data["id"],
+                "title": film.data["title"],
+                "poster_path": film.data["poster_path"],
+            }
+        )
+
+    return items_data
+
+
+@app.route("/collection/wishlist", methods=["POST"])
+@jwt_required()
+def create_item_wishlist():
+    user = db.session.get(User, get_jwt_identity())
+    data = request.json
+
+    if not data.get("film_id"):
+        return {"error": "film_id est requis"}, 400
+
+    film = db.session.query(Film).filter(Film.id_tmdb == data["film_id"]).first()
+    if film is None:
+        film = create_movie_if_not_exists(data["film_id"])
+
+    existing_item = (
+        db.session.query(CollectionItem)
+        .filter(
+            CollectionItem.film_id == film.id,
+            Collection.user_id == user.id,
+        )
+        .first()
+    )
+    if existing_item:
+        return {"error": "Film déjà présent dans la wishlist"}, 400
+
+    item = CollectionItem(
+        state="Wishlist",
+        film_id=film.id,
+        user_id=user.id,
+    )
+
+    db.session.add(item)
+    db.session.commit()
+
+    return {"message": "Item ajouté à la wishlist"}, 201
