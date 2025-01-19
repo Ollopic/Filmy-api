@@ -38,7 +38,7 @@ class User(db.Model):
     is_admin = db.Column(db.Boolean, default=False)
     profile_image = db.Column(db.Text, nullable=True)
 
-    collection = db.relationship("Collection", back_populates="user", cascade='all, delete-orphan')
+    collection = db.relationship("Collection", back_populates="user", cascade="all, delete-orphan")
 
 
 class Collection(db.Model):
@@ -48,7 +48,7 @@ class Collection(db.Model):
 
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     user = db.relationship("User", back_populates="collection")
-    collection_items = db.relationship("CollectionItem", back_populates="collection", cascade='all, delete-orphan')
+    collection_items = db.relationship("CollectionItem", back_populates="collection", cascade="all, delete-orphan")
 
     # Contrainte unique sur (name, user_id)
     __table_args__ = (db.UniqueConstraint("name", "user_id", name="uq_collection_name_user"),)

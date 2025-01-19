@@ -1,6 +1,9 @@
 bcrypt
+email_validator
 faker
 flask
+flask_wtf
+flask-admin
 flask-jwt-extended
 Flask-Migrate
 Flask-SQLAlchemy
