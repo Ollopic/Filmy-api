@@ -5,6 +5,7 @@ from flask_admin import Admin
 from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
 
+from app.admin.view.collectionItemView import CollectionItemAdmin
 from app.admin.view.collectionView import CollectionAdmin
 from app.admin.view.movieView import FilmAdmin
 from app.admin.view.personView import PersonAdmin
@@ -17,7 +18,7 @@ from app.config import (
     sqlalchemyTrackModificationsConfig,
 )
 from app.db.database import db
-from app.db.models import Collection, Film, Person, User
+from app.db.models import Collection, CollectionItem, Film, Person, User
 
 app = Flask(__name__)
 
@@ -30,6 +31,7 @@ migrate = Migrate(app, db)
 # Admin #
 admin = Admin(app, name="Filmy Admin", template_mode="bootstrap4")
 admin.add_view(CollectionAdmin(Collection, db.session))
+admin.add_view(CollectionItemAdmin(CollectionItem, db.session))
 admin.add_view(FilmAdmin(Film, db.session))
 admin.add_view(PersonAdmin(Person, db.session))
 admin.add_view(UserAdmin(User, db.session))

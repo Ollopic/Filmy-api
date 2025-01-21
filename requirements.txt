@@ -11,3 +11,4 @@ psycopg2
 pytest
 requests
 ruff
+wtforms-sqlalchemy
