@@ -7,7 +7,7 @@ from flask_wtf import FlaskForm
 from wtforms import IntegerField, TextAreaField, validators
 from wtforms.validators import ValidationError
 
-from app.db.models import Film
+from app.db.models import Person
 
 
 def validate_json(form, field):
@@ -15,18 +15,18 @@ def validate_json(form, field):
         try:
             data = json.loads(field.data)
             if not isinstance(data, dict):
-                raise ValidationError("Le contenu doit être un objet JSON ou un dictionnaire Python")
+                raise ValidationError("Le contenu doit être un objet JSON")
         except json.JSONDecodeError:
             try:
                 data = ast.literal_eval(field.data)
                 if not isinstance(data, dict):
-                    raise ValidationError("Le contenu doit être un objet JSON ou un dictionnaire Python")
+                    raise ValidationError("Le contenu doit être un objet JSON")
                 field.data = json.dumps(data)
             except (ValueError, SyntaxError):
-                raise ValidationError("Le contenu doit être un objet JSON ou un dictionnaire Python valide")
+                raise ValidationError("Le contenu doit être un objet JSON")
 
 
-class FilmForm(FlaskForm):
+class PersonForm(FlaskForm):
     class Meta:
         csrf = False
 
@@ -34,11 +34,11 @@ class FilmForm(FlaskForm):
     data = TextAreaField("Données JSON", [validators.DataRequired(), validate_json])
 
 
-class FilmAdmin(ModelView):
-    form = FilmForm
+class PersonAdmin(ModelView):
+    form = PersonForm
 
     column_list = ["id", "id_tmdb", "name", "data"]
-    column_labels = {"id_tmdb": "ID TMDB", "name": "Film", "data": "Données JSON"}
+    column_labels = {"id_tmdb": "ID TMDB", "name": "Nom", "data": "Données JSON"}
 
     column_searchable_list = ["id_tmdb"]
     column_filters = ["id_tmdb"]
@@ -48,7 +48,7 @@ class FilmAdmin(ModelView):
 
     def _get_name(self, context, model, name):
         try:
-            return model.data.get("original_title", "N/A") if isinstance(model.data, dict) else "N/A"
+            return model.data.get("name", "N/A") if isinstance(model.data, dict) else "N/A"
         except AttributeError:
             return "N/A"
 
@@ -59,13 +59,13 @@ class FilmAdmin(ModelView):
             return False
 
         current_id = request.args.get("id", None, type=int)
-        query = Film.query.filter(Film.id_tmdb == form.id_tmdb.data)
+        query = Person.query.filter(Person.id_tmdb == form.id_tmdb.data)
 
         if current_id:
-            query = query.filter(Film.id != current_id)
+            query = query.filter(Person.id != current_id)
 
         if query.first():
-            form.id_tmdb.errors.append("Un film avec cet ID TMDB existe déjà.")
+            form.id_tmdb.errors.append("Une personne avec cet ID TMDB existe déjà.")
             return False
 
         return True
