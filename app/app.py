@@ -6,6 +6,7 @@ from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
 
 from app.admin.view.collectionView import CollectionAdmin
+from app.admin.view.movieView import FilmAdmin
 from app.admin.view.userView import UserAdmin
 from app.config import (
     jwtAccessTokenExpiresConfig,
@@ -15,7 +16,7 @@ from app.config import (
     sqlalchemyTrackModificationsConfig,
 )
 from app.db.database import db
-from app.db.models import Collection, User
+from app.db.models import Collection, Film, User
 
 app = Flask(__name__)
 
@@ -27,8 +28,9 @@ migrate = Migrate(app, db)
 
 # Admin #
 admin = Admin(app, name="Filmy Admin", template_mode="bootstrap4")
-admin.add_view(UserAdmin(User, db.session))
 admin.add_view(CollectionAdmin(Collection, db.session))
+admin.add_view(FilmAdmin(Film, db.session))
+admin.add_view(UserAdmin(User, db.session))
 
 # Import routes
 from app.routes import *  # noqa: E402, F403
