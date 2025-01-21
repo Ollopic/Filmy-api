@@ -127,8 +127,8 @@ def get_movie(identifier: int):
 
     if not movie:
         try:
-            movie_data, _data_person = search_movie_in_tmdb(identifier), 200
-            return movie_data
+            movie_data, _ = search_movie_in_tmdb(identifier)
+            return movie_data, 200
 
         except HTTPError as e:
             if e.response.status_code == 404:
