@@ -14,7 +14,7 @@ tmdb_client = Client()
 def get_popular_movies():
     data = tmdb_client.get_popular_movies()["results"]
 
-    result = [
+    results = [
         {
             "id_tmdb": movie["id"],
             "title": movie["title"],
@@ -25,14 +25,14 @@ def get_popular_movies():
         for movie in data
     ]
 
-    return result, 200
+    return results, 200
 
 
 @app.route("/movies/trending", methods=["GET"])
 def get_trending_movies():
     data = tmdb_client.get_trending_movies()["results"]
 
-    result = [
+    results = [
         {
             "id_tmdb": movie["id"],
             "title": movie["title"],
@@ -43,14 +43,14 @@ def get_trending_movies():
         for movie in data
     ]
 
-    return result, 200
+    return results, 200
 
 
 @app.route("/movies/top_rated", methods=["GET"])
 def get_top_rating_movies():
     data = tmdb_client.get_top_rating_movies()["results"]
 
-    result = [
+    results = [
         {
             "id_tmdb": movie["id"],
             "title": movie["title"],
@@ -61,14 +61,14 @@ def get_top_rating_movies():
         for movie in data
     ]
 
-    return result, 200
+    return results, 200
 
 
 @app.route("/movies/upcoming", methods=["GET"])
 def get_upcoming_movies():
     data = tmdb_client.get_upcoming_movies()["results"]
 
-    result = [
+    results = [
         {
             "id_tmdb": movie["id"],
             "title": movie["title"],
@@ -79,14 +79,14 @@ def get_upcoming_movies():
         for movie in data
     ]
 
-    return result, 200
+    return results, 200
 
 
 @app.route("/movies/now_playing", methods=["GET"])
 def get_movies_now_playing():
     data = tmdb_client.get_movies_now_playing()["results"]
 
-    result = [
+    results = [
         {
             "id_tmdb": movie["id"],
             "title": movie["title"],
@@ -97,7 +97,7 @@ def get_movies_now_playing():
         for movie in data
     ]
 
-    return result, 200
+    return results, 200
 
 
 @app.route("/movies", methods=["GET"])
@@ -105,7 +105,7 @@ def search_movie():
     title = request.args.get("title")
     data = tmdb_client.get_movie_by_title(title)
 
-    result = [
+    results = [
         {
             "id_tmdb": movie["id"],
             "title": movie["title"],
@@ -117,7 +117,7 @@ def search_movie():
 
     return {
         "total_results": data["total_results"],
-        "movies": result,
+        "movies": results,
     }, 200
 
 
@@ -144,7 +144,7 @@ def get_movie_credits(identifier: int):
     if not film_id:
         movie_data = tmdb_client.get_movie_credits(identifier)
 
-        result = [
+        results = [
             {
                 "id_tmdb": person["id"],
                 "name": person["name"],
@@ -154,11 +154,11 @@ def get_movie_credits(identifier: int):
             for person in movie_data["cast"]
         ]
 
-        return result, 200
+        return results, 200
 
     credits = db.session.query(CreditsFilm).filter(CreditsFilm.film_id == film_id.id).all()
 
-    result = [
+    results = [
         {
             "id_tmdb": credit.person.id_tmdb,
             "name": credit.person.data["name"],
@@ -168,4 +168,52 @@ def get_movie_credits(identifier: int):
         for credit in credits
     ]
 
-    return result, 200
+    return results, 200
+
+
+@app.route("/movies/genres", methods=["GET"])
+def get_movie_genre_list():
+    return tmdb_client.get_movie_genres()["genres"], 200
+
+
+@app.route("/movies/discover", methods=["GET"])
+def discover_movies():
+    params = {}
+    genres = request.args.getlist("with_genres")
+    if genres:
+        params["with_genres"] = ",".join(genres)
+
+    sort_by = request.args.get("sort_by")
+    if sort_by:
+        params["sort_by"] = sort_by
+
+    release_date_gte = request.args.get("release_date.gte")
+    if release_date_gte:
+        params["release_date.gte"] = release_date_gte
+
+    release_date_lte = request.args.get("release_date.lte")
+    if release_date_lte:
+        params["release_date.lte"] = release_date_lte
+
+    with_runtime_gte = request.args.get("with_runtime.gte")
+    if with_runtime_gte:
+        params["with_runtime.gte"] = with_runtime_gte
+
+    with_runtime_lte = request.args.get("with_runtime.lte")
+    if with_runtime_lte:
+        params["with_runtime.lte"] = with_runtime_lte
+
+    data = tmdb_client.discover_movies(params)["results"]
+
+    results = [
+        {
+            "id_tmdb": movie["id"],
+            "title": movie["title"],
+            "release_date": movie["release_date"],
+            "vote_average": movie["vote_average"],
+            "poster_path": movie["poster_path"],
+        }
+        for movie in data
+    ]
+
+    return results, 200
