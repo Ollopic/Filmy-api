@@ -2,6 +2,7 @@ from datetime import timedelta
 
 from flask import Flask
 from flask_admin import Admin
+from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
 
@@ -11,6 +12,7 @@ from app.admin.view.movieView import FilmAdmin
 from app.admin.view.personView import PersonAdmin
 from app.admin.view.userView import UserAdmin
 from app.config import (
+    front_url,
     jwtAccessTokenExpiresConfig,
     jwtSecretKeyConfig,
     postgresqlConfig,
@@ -43,6 +45,8 @@ app.config["JWT_SECRET_KEY"] = jwtSecretKeyConfig
 app.config["SECRET_KEY"] = secretKeyConfig
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=jwtAccessTokenExpiresConfig)
 jwt = JWTManager(app)
+
+CORS(app, resources={r"/*": {"origins": front_url}})
 
 if __name__ == "__main__":
     app.run()

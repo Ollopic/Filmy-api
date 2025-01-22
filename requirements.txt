@@ -4,6 +4,7 @@ faker
 flask
 flask_wtf
 flask-admin
+flask-cors
 flask-jwt-extended
 Flask-Migrate
 Flask-SQLAlchemy
