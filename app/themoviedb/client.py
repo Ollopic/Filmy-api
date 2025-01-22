@@ -60,9 +60,10 @@ class Client:
             endpoint="movie/upcoming",
         )
 
-    def get_movies_now_playing(self) -> dict:
+    def get_movies_now_playing(self, page: int = 1) -> dict:
         return self._request(
             endpoint="movie/now_playing",
+            params={"page": page},
         )
 
     def get_movie_videos(self, movie_id: int) -> dict:
@@ -70,10 +71,10 @@ class Client:
             endpoint=f"movie/{movie_id}/videos",
         )
 
-    def get_movie_by_title(self, title: str) -> dict:
+    def get_movie_by_title(self, title: str, page: int = 1) -> dict:
         return self._request(
             endpoint="search/movie",
-            params={"query": title},
+            params={"query": title, "page": page},
         )
 
     def get_movie_release_dates(self, movie_id: int) -> dict:
@@ -97,15 +98,16 @@ class Client:
             params={"append_to_response": "combined_credits"},
         )
 
-    def get_popular_person(self) -> dict:
+    def get_popular_person(self, page: int = 1) -> dict:
         return self._request(
             endpoint="person/popular",
+            params={"page": page},
         )
 
-    def get_person_by_name(self, name: str) -> dict:
+    def get_person_by_name(self, name: str, page: int = 1) -> dict:
         return self._request(
             endpoint="search/person",
-            params={"query": name},
+            params={"query": name, "page": page},
         )
 
     def get_movie_genres(self) -> dict:

@@ -11,7 +11,8 @@ tmdb_client = Client()
 @app.route("/person", methods=["GET"])
 def search_person():
     name = request.args.get("name")
-    data = tmdb_client.get_person_by_name(name)
+    page = request.args.get("page", 1, type=int)
+    data = tmdb_client.get_person_by_name(name, page)
 
     result = [
         {
@@ -59,7 +60,8 @@ def get_person(identifier: int):
 
 @app.route("/person/popular", methods=["GET"])
 def get_popular_person():
-    data = tmdb_client.get_popular_person()["results"]
+    page = request.args.get("page", 1, type=int)
+    data = tmdb_client.get_popular_person(page)["results"]
 
     result = [
         {
