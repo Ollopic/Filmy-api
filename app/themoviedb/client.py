@@ -107,3 +107,11 @@ class Client:
             endpoint="search/person",
             params={"query": name},
         )
+
+    def get_movie_genres(self) -> dict:
+        return self._request(
+            endpoint="genre/movie/list",
+        )
+
+    def discover_movies(self, params: dict = None) -> dict:
+        return self._request(endpoint="discover/movie", params=params)
