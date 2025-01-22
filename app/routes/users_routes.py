@@ -3,7 +3,7 @@ from flask_jwt_extended import get_jwt_identity, jwt_required
 
 from app.app import app
 from app.db.database import db
-from app.db.models import CollectionItem, User
+from app.db.models import Collection, CollectionItem, User
 from app.utils import hash_password
 
 
@@ -51,10 +51,14 @@ def get_user(identifier: int):
 def create_user():
     data = request.json
 
-    existing_user = User.query.filter(User.mail == data["mail"]).first()
+    existing_mail = User.query.filter(User.mail == data["mail"]).first()
+    existing_username = User.query.filter(User.username == data["username"]).first()
 
-    if existing_user:
+    if existing_mail:
         return {"error": "Email déjà utilisé"}, 409
+
+    if existing_username:
+        return {"error": "Nom d'utilisateur déjà utilisé"}, 409
 
     user = User(
         username=data["username"],
@@ -62,8 +66,18 @@ def create_user():
         password=hash_password(data["password"]),
         is_admin=data.get("is_admin", False),
     )
+
     db.session.add(user)
     db.session.commit()
+
+    collection = Collection(
+        name="Defaut",
+        user_id=user.id,
+    )
+
+    db.session.add(collection)
+    db.session.commit()
+
     return {"message": "Utilisateur créé avec succès"}, 201
 
 
@@ -117,6 +131,7 @@ def delete_user(identifier: int):
         return {"error": "Non autorisé"}, 401
 
     db.session.query(CollectionItem).filter(CollectionItem.user_id == identifier).delete()
+    db.session.query(Collection).filter(Collection.user_id == identifier).delete()
     db.session.delete(user)
     db.session.commit()
     return {"message": "Utilisateur supprimé avec succès"}

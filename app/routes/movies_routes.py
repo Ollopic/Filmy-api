@@ -1,11 +1,12 @@
 from flask import request
+from flask_jwt_extended import get_jwt_identity, jwt_required
 from requests.exceptions import HTTPError
 
 from app.app import app
 from app.db.database import db
-from app.db.models import CreditsFilm, Film
+from app.db.models import CollectionItem, CreditsFilm, Film
 from app.themoviedb.client import Client
-from app.utils import create_credits_if_not_exists, create_movie_if_not_exists
+from app.utils import search_movie_in_tmdb
 
 tmdb_client = Client()
 
@@ -122,51 +123,36 @@ def search_movie():
 
 
 @app.route("/movies/<int:identifier>", methods=["GET"])
+@jwt_required(optional=True)
 def get_movie(identifier: int):
     movie = db.session.query(Film).filter(Film.id_tmdb == identifier).first()
+    user_id = get_jwt_identity()
 
     if not movie:
         try:
-            movie_data = tmdb_client.get_movie_by_id(identifier)
-            data_person = tmdb_client.get_movie_credits(identifier)
-
-            # Get director
-            director = None
-            for person in data_person["crew"]:
-                if person["job"] == "Director":
-                    director = person["name"]
-            movie_data["director"] = director
-
-            # Get trailer
-            trailers = tmdb_client.get_movie_videos(identifier)["results"] or []
-            for trailer in trailers:
-                if trailer["site"].lower() == "youtube" and trailer["type"].lower() == "trailer":
-                    movie_data["trailer_key"] = trailer["key"]
-                    break
-
-            if not trailers:
-                movie_data["trailer_key"] = None
-
-            # Get release dates FR
-            release_dates = tmdb_client.get_movie_release_dates(identifier)["results"]
-            for release_date in release_dates:
-                if release_date["iso_3166_1"] == "FR":
-                    movie_data["age_restriction"] = release_date["release_dates"][0]["certification"]
-                    break
-
-            data_movie = {
-                "id_tmdb": movie_data["id"],
-                "data": movie_data,
-            }
-
-            film_id = create_movie_if_not_exists(data_movie)
-            create_credits_if_not_exists(data_person, film_id)
+            movie_data, _ = search_movie_in_tmdb(identifier)
             return movie_data, 200
 
         except HTTPError as e:
             if e.response.status_code == 404:
                 return {"error": "Film introuvable"}, 404
             return {"error": "Erreur lors de la communication avec l'API TMDB"}, 500
+
+    if user_id:
+        user_movie = (
+            db.session.query(CollectionItem)
+            .filter(CollectionItem.user_id == user_id, CollectionItem.film_id == movie.id)
+            .first()
+        )
+
+        if user_movie:
+            movie.data["collection_item"] = {
+                "state": user_movie.state,
+                "borrowed": user_movie.borrowed,
+                "borrowed_at": user_movie.borrowed_at,
+                "borrowed_by": user_movie.borrowed_by,
+                "favorite": user_movie.favorite,
+            }
 
     return movie.data, 200
 

@@ -5,7 +5,7 @@ from faker import Faker
 
 from app.app import app
 from app.db.database import db
-from app.db.models import CollectionItem, CreditsFilm, Film, Person, User
+from app.db.models import Collection, CollectionItem, CreditsFilm, Film, Person, User
 from app.utils import hash_password
 
 fake = Faker()
@@ -80,6 +80,19 @@ def generate_test_data():
         films.append(film5)
         db.session.add(film5)
 
+        film6 = Film(
+            id_tmdb=1241982,
+            data={"id": 1241982, "title": "Film 1", "poster_path": "/aLVkiINlIeCkcZIzb7XHzPYgO6L.jpg"},
+        )
+        films.append(film6)
+        db.session.add(film6)
+
+        film7 = Film(
+            id_tmdb=1241983, data={"id": 1241983, "title": "Film 2", "poster_path": "/96FR5o2M8bshJBPy6yDah2E0oAa.jpg"}
+        )
+        films.append(film7)
+        db.session.add(film7)
+
         with open("app/db/fixtures/datas/persons.json", "r") as file:
             data = json.load(file)
 
@@ -117,24 +130,38 @@ def generate_test_data():
                 person = random.choice(persons)
                 credit = CreditsFilm(film=film, person=person, character=fake.name())
                 db.session.add(credit)
-        # Générer des éléments de collection
-        collection_items = []
-        for user in users:
-            num_items = random.randint(3, 7)
-            for _ in range(num_items):
-                item = CollectionItem(
-                    state=random.choice(["Physique", "Numérique"]),
-                    borrowed=fake.boolean(chance_of_getting_true=20),
-                    borrowed_at=fake.date_time_between(start_date="-1y", end_date="now")
-                    if fake.boolean(chance_of_getting_true=20)
-                    else None,
-                    borrowed_by=fake.name() if fake.boolean(chance_of_getting_true=20) else None,
-                    favorite=fake.boolean(chance_of_getting_true=20),
-                    in_wishlist=fake.boolean(chance_of_getting_true=20),
-                    user=user,
-                )
-                collection_items.append(item)
-                db.session.add(item)
+
+        collection1 = Collection(
+            name="Collection 1",
+            user_id=2,
+        )
+
+        db.session.add(collection1)
+
+        item_true = CollectionItem(
+            state="Physique",
+            borrowed=True,
+            borrowed_at="2025-01-01 00:00:00",
+            borrowed_by="User 1",
+            favorite=True,
+            film_id=6,
+            collection_id=1,
+            user_id=2,
+        )
+
+        item_false = CollectionItem(
+            state="Physique",
+            borrowed=False,
+            borrowed_at=None,
+            borrowed_by=None,
+            favorite=False,
+            film_id=7,
+            collection_id=1,
+            user_id=2,
+        )
+
+        db.session.add(item_true)
+        db.session.add(item_false)
 
         db.session.commit()
         print("Données de test générées avec succès !")
