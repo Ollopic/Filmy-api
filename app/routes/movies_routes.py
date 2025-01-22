@@ -144,15 +144,19 @@ def get_movie(identifier: int):
             .filter(CollectionItem.user_id == user_id, CollectionItem.film_id == movie.id)
             .first()
         )
-
         if user_movie:
-            movie.data["collection_item"] = {
-                "state": user_movie.state,
-                "borrowed": user_movie.borrowed,
-                "borrowed_at": user_movie.borrowed_at,
-                "borrowed_by": user_movie.borrowed_by,
-                "favorite": user_movie.favorite,
-            }
+            if user_movie.collection_id:
+                movie.data["collection_item"] = {
+                    "state": user_movie.state,
+                    "borrowed": user_movie.borrowed,
+                    "borrowed_at": user_movie.borrowed_at,
+                    "borrowed_by": user_movie.borrowed_by,
+                    "favorite": user_movie.favorite,
+                    "id": user_movie.collection_id,
+                }
+            else:
+                movie.data["wishlist"] = True
+
 
     return movie.data, 200
 
