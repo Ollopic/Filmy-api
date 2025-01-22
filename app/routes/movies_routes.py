@@ -159,7 +159,6 @@ def get_movie(identifier: int):
             else:
                 movie.data["wishlist"] = True
 
-
     return movie.data, 200
 
 
