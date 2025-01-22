@@ -1,10 +1,10 @@
-from flask_admin.contrib.sqla import ModelView
 from flask_wtf import FlaskForm
 from wtforms import BooleanField, SelectField, StringField, validators
 from wtforms.fields import DateField
 from wtforms.validators import ValidationError
 from wtforms_sqlalchemy.fields import QuerySelectField
 
+from app.admin.view.authView import SecureModelView
 from app.db.models import Collection, Film, User
 
 
@@ -33,7 +33,7 @@ class CollectionItemForm(FlaskForm):
     film_id = SelectField("Film", coerce=int, validators=[validators.DataRequired()])
 
 
-class CollectionItemAdmin(ModelView):
+class CollectionItemAdmin(SecureModelView):
     form = CollectionItemForm
 
     column_list = [

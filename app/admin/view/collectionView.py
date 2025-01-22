@@ -1,8 +1,8 @@
 from flask import request
-from flask_admin.contrib.sqla import ModelView
 from flask_wtf import FlaskForm
 from wtforms import SelectField, StringField, validators
 
+from app.admin.view.authView import SecureModelView
 from app.db.models import Collection, User
 
 
@@ -15,7 +15,7 @@ class CollectionForm(FlaskForm):
     user_id = SelectField("Utilisateur", coerce=int, validators=[validators.DataRequired()])
 
 
-class CollectionAdmin(ModelView):
+class CollectionAdmin(SecureModelView):
     form = CollectionForm
     column_list = ["id", "name", "picture", "user.username"]
     column_labels = {"name": "Nom", "picture": "Image", "user.username": "Utilisateur"}

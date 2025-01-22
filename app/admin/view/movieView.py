@@ -2,11 +2,11 @@ import ast
 import json
 
 from flask import request
-from flask_admin.contrib.sqla import ModelView
 from flask_wtf import FlaskForm
 from wtforms import IntegerField, TextAreaField, validators
 from wtforms.validators import ValidationError
 
+from app.admin.view.authView import SecureModelView
 from app.db.models import Film
 
 
@@ -34,7 +34,7 @@ class FilmForm(FlaskForm):
     data = TextAreaField("Données JSON", [validators.DataRequired(), validate_json])
 
 
-class FilmAdmin(ModelView):
+class FilmAdmin(SecureModelView):
     form = FilmForm
 
     column_list = ["id", "id_tmdb", "name", "data"]

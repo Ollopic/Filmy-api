@@ -1,8 +1,8 @@
 from flask import flash
-from flask_admin.contrib.sqla import ModelView
 from flask_wtf import FlaskForm
 from wtforms import BooleanField, PasswordField, StringField, validators
 
+from app.admin.view.authView import SecureModelView
 from app.db.models import User
 from app.utils import hash_password
 
@@ -29,7 +29,7 @@ class UserEditForm(FlaskForm):
     profile_image = StringField("Profile Image")
 
 
-class UserAdmin(ModelView):
+class UserAdmin(SecureModelView):
     form = UserEditForm
     create_form = UserCreateForm
 
