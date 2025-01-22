@@ -3,7 +3,7 @@ from flask_jwt_extended import get_jwt_identity, jwt_required
 
 from app.app import app
 from app.db.database import db
-from app.db.models import Collection, CollectionItem, User
+from app.db.models import Collection, User
 from app.utils import hash_password
 
 
@@ -130,8 +130,6 @@ def delete_user(identifier: int):
     if user_request.id != user.id and not user_request.is_admin:
         return {"error": "Non autorisé"}, 401
 
-    db.session.query(CollectionItem).filter(CollectionItem.user_id == identifier).delete()
-    db.session.query(Collection).filter(Collection.user_id == identifier).delete()
     db.session.delete(user)
     db.session.commit()
     return {"message": "Utilisateur supprimé avec succès"}

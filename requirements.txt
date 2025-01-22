@@ -1,11 +1,15 @@
 bcrypt
+email_validator
 faker
 flask
-flask-jwt-extended
+flask_wtf
+flask-admin
 flask-cors
+flask-jwt-extended
 Flask-Migrate
 Flask-SQLAlchemy
 psycopg2
 pytest
 requests
 ruff
+wtforms-sqlalchemy
