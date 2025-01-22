@@ -104,7 +104,9 @@ def get_movies_now_playing():
 @app.route("/movies", methods=["GET"])
 def search_movie():
     title = request.args.get("title")
-    data = tmdb_client.get_movie_by_title(title)
+    page = request.args.get("page", 1, type=int)
+
+    data = tmdb_client.get_movie_by_title(title, page)
 
     results = [
         {
@@ -199,6 +201,10 @@ def get_movie_genre_list():
 def discover_movies():
     params = {}
     genres = request.args.getlist("with_genres")
+    page = request.args.get("page", 1, type=int)
+    if page:
+        params["page"] = page
+
     if genres:
         params["with_genres"] = ",".join(genres)
 
