@@ -1,5 +1,8 @@
+from datetime import datetime
+
 from flask import request
 from flask_jwt_extended import get_jwt_identity, jwt_required
+from sqlalchemy import case, desc
 from sqlalchemy.exc import IntegrityError
 
 from app.app import app
@@ -12,7 +15,11 @@ from app.utils import create_movie_if_not_exists, validate_state_param
 @jwt_required()
 def get_all_collections():
     user_id = get_jwt_identity()
-    collections = Collection.query.filter_by(user_id=user_id).all()
+    collections = (
+        Collection.query.filter_by(user_id=user_id)
+        .order_by(case((Collection.name == "Defaut", 0), else_=1), Collection.name)
+        .all()
+    )
 
     return [
         {"id": c.id, "name": c.name, "picture": c.picture, "items_count": len(c.collection_items)} for c in collections
@@ -92,7 +99,12 @@ def get_collection(identifier):
     if collection.user_id != user.id:
         return {"error": "Non autorisé"}, 403
 
-    collection_items = db.session.query(CollectionItem).filter(CollectionItem.collection_id == identifier).all()
+    collection_items = (
+        db.session.query(CollectionItem)
+        .filter(CollectionItem.collection_id == identifier)
+        .order_by(desc(CollectionItem.favorite))
+        .all()
+    )
 
     items_data = []
     for item in collection_items:
@@ -105,7 +117,7 @@ def get_collection(identifier):
                 "borrowed_by": item.borrowed_by,
                 "favorite": item.favorite,
                 "film": {
-                    "id": film.data["id"],
+                    "id": film.id_tmdb,
                     "title": film.data["title"],
                     "poster_path": film.data["poster_path"],
                 }
@@ -127,8 +139,10 @@ def get_collection(identifier):
 def create_item_collection(identifier):
     user = db.session.get(User, get_jwt_identity())
     data = request.json
-
-    collection = db.session.get(Collection, identifier)
+    if identifier == 0:
+        collection = db.session.query(Collection).filter(Collection.name == "Defaut").first()
+    else:
+        collection = db.session.get(Collection, identifier)
 
     if collection is None:
         return {"error": "Collection introuvable"}, 404
@@ -168,7 +182,7 @@ def create_item_collection(identifier):
         borrowed_by=data.get("borrowed_by"),
         favorite=data.get("favorite"),
         film_id=film.id,
-        collection_id=identifier,
+        collection_id=collection.id,
         user_id=user.id,
     )
 
@@ -184,6 +198,8 @@ def update_item_collection(collection_id, film_id):
     user = db.session.get(User, get_jwt_identity())
     collection = db.session.get(Collection, collection_id)
     data = request.json
+    if not collection:
+        return {"error": "Collection introuvable"}, 404
 
     if collection.user_id != user.id:
         return {"error": "Non autorisé"}, 403
@@ -202,13 +218,11 @@ def update_item_collection(collection_id, film_id):
         if not validate_state_param(data["state"]):
             return {"error": "state invalide"}, 400
         item.state = data["state"]
-    if data.get("borrowed"):
+    if data.get("borrowed") is not None:
         item.borrowed = data["borrowed"]
-    if data.get("borrowed_at"):
-        item.borrowed_at = data["borrowed_at"]
-    if data.get("borrowed_by"):
-        item.borrowed_by = data["borrowed_by"]
-    if data.get("favorite"):
+        item.borrowed_at = datetime.now() if data["borrowed"] is True else None
+        item.borrowed_by = data.get("borrowed_by", "Anonymous") if data["borrowed"] is True else None
+    if data.get("favorite") is not None:
         item.favorite = data["favorite"]
 
     db.session.commit()
@@ -311,15 +325,22 @@ def transfer_item_wishlist_to_collection():
     user = db.session.get(User, get_jwt_identity())
     data = request.json
 
+    collection_id = data.get("collection_id")
+
     if not data.get("state"):
         return {"error": "state est requis"}, 400
     if not data.get("film_id"):
         return {"error": "film_id est requis"}, 400
-    if not data.get("collection_id"):
+    if collection_id is None:
         return {"error": "collection_id est requis"}, 400
 
     film = db.session.query(Film).filter(Film.id_tmdb == data["film_id"]).first()
-    collection = db.session.get(Collection, data["collection_id"])
+
+    if collection_id == 0:
+        collection = db.session.query(Collection).filter(Collection.name == "Defaut").first()
+    else:
+        collection = db.session.get(Collection, collection_id)
+
     if collection is None:
         return {"error": "Collection introuvable"}, 404
     if film is None:
