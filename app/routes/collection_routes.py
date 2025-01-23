@@ -140,7 +140,12 @@ def create_item_collection(identifier):
     user = db.session.get(User, get_jwt_identity())
     data = request.json
     if identifier == 0:
-        collection = db.session.query(Collection).filter(Collection.name == "Defaut").first()
+        collection = (
+            db.session.query(Collection)
+            .filter(Collection.name == "Defaut")
+            .filter(Collection.user_id == user.id)
+            .first()
+        )
     else:
         collection = db.session.get(Collection, identifier)
 
@@ -337,7 +342,12 @@ def transfer_item_wishlist_to_collection():
     film = db.session.query(Film).filter(Film.id_tmdb == data["film_id"]).first()
 
     if collection_id == 0:
-        collection = db.session.query(Collection).filter(Collection.name == "Defaut").first()
+        collection = (
+            db.session.query(Collection)
+            .filter(Collection.name == "Defaut")
+            .filter(Collection.user_id == user.id)
+            .first()
+        )
     else:
         collection = db.session.get(Collection, collection_id)
 
