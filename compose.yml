@@ -7,6 +7,14 @@ services:
       - ./:/app/filmy
     working_dir: /app/filmy/app
     command: flask run --debug --host=0.0.0.0 & python3 /app/filmy/app/app.py
+    environment:
+      POSTGRESQL_CONFIG: ""
+      SQLALCHEMY_TRACK_MODIFICATIONS: False
+      MOVIE_DB_TOKEN: ''
+      JWT_SECRET_KEY: ""
+      SECRET_KEY: ""
+      JWT_ACCESS_TOKEN_EXPIRES: 1
+      FRONT_URL: ''
     depends_on:
       - db
     networks:

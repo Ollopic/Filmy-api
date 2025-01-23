@@ -43,7 +43,7 @@ from app.routes import *  # noqa: E402, F403
 
 app.config["JWT_SECRET_KEY"] = jwtSecretKeyConfig
 app.config["SECRET_KEY"] = secretKeyConfig
-app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=jwtAccessTokenExpiresConfig)
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=int(jwtAccessTokenExpiresConfig))
 jwt = JWTManager(app)
 
 CORS(app, resources={r"/*": {"origins": front_url}})
