@@ -16,6 +16,9 @@ services:
       JWT_ACCESS_TOKEN_EXPIRES: 1
       FRONT_URL: ''
     depends_on:
+      db:
+        condition: service_healthy
+    depends_on:
       - db
     networks:
       - filmy_network
@@ -27,6 +30,11 @@ services:
       POSTGRES_DB: filmy
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: /usr/bin/pg_isready
+      interval: 5s
+      timeout: 10s
+      retries: 120
     networks:
         - filmy_network
 

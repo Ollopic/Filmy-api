@@ -4,7 +4,8 @@ from flask import Flask
 from flask_admin import Admin
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
-from flask_migrate import Migrate
+from flask_migrate import Migrate, upgrade
+from sqlalchemy import inspect
 
 from app.admin.view.collectionItemView import CollectionItemAdmin
 from app.admin.view.collectionView import CollectionAdmin
@@ -21,6 +22,7 @@ from app.config import (
 )
 from app.db.database import db
 from app.db.models import Collection, CollectionItem, Film, Person, User
+from app.utils import hash_password
 
 app = Flask(__name__)
 
@@ -48,5 +50,30 @@ jwt = JWTManager(app)
 
 CORS(app, resources={r"/*": {"origins": front_url}})
 
-if __name__ == "__main__":
-    app.run()
+
+def init_db():
+    with app.app_context():
+        print("Vérification de la base de données")
+        inspector = inspect(db.engine)
+        tables = inspector.get_table_names()
+        if not tables or (len(tables) == 1 and tables[0] == "alembic_version"):
+            print("Base de données vide, création des tables")
+
+            upgrade()
+            print("Tables créés")
+        else:
+            print("Base de données déjà initialisée")
+
+        admin = User.query.filter_by(username="admin").first()
+        if not admin:
+            print("Création de l'utilisateur admin")
+            admin = User(username="admin", mail="admin@example.com", password=hash_password("admin"), is_admin=True)
+            db.session.add(admin)
+            db.session.commit()
+            print("Utilisateur admin créé")
+        else:
+            print("Utilisateur admin déjà créé")
+
+
+with app.app_context():
+    init_db()

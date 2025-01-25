@@ -6,9 +6,7 @@ help:
 init: ## init project
 	@docker compose down -v
 	@$(MAKE) start
-	@sleep 5
-	@$(MAKE) reset-db
-	@docker compose exec api bash -c "cd ../ && pip install -e ."
+	# @docker compose exec api bash -c "cd ../ && pip install -e ."
 	@$(MAKE) log
 
 start: ## start containers
