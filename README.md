@@ -41,10 +41,10 @@ Un utilisateur par défaut est créé :
 - mot de passe : `admin`
 
 ## Déploiement global
-Pour lancer l'ensemble du projet, y compris l'app et l'API, un fichier Docker Compose est disponible dans le projet. Vous pouvez le retrouver ici : [compose.yml](./docker/compose.yml)
+Pour lancer l'ensemble du projet, y compris l'app et l'API, un fichier Docker Compose est disponible dans le projet. Vous pouvez le retrouver ici : [compose.yml](./docker-build/compose.yml)
 Un compte The Movie Database est nécessaire pour lancer l'API. Afin de pouvoir tester l'app directement, un compte spécial a été fait uniquement pour cette utilisation. Le token est déjà renseigné dans les variables dans le compose.
-Vous retrouverez également le Dockerfile ayant servi a build l'image de l'API ici : [Dockerfile](./docker/Dockerfile.prod)
-Plus d'informations sont affichées dans le [README](./docker/README.md) de la partie Docker.
+Vous retrouverez également le Dockerfile ayant servi a build l'image de l'API ici : [Dockerfile](./docker-build/Dockerfile.prod)
+Plus d'informations sont affichées dans le [README](./docker-build/README.md) de la partie Docker.
 
 
 ## Api Reference
