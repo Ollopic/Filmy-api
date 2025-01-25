@@ -1,0 +1,61 @@
+services:
+    api:
+      image: ollopic/filmy-api
+      ports:
+        - 8002:5000
+      environment:
+        POSTGRESQL_CONFIG: "postgresql://postgres:postgres@filmydb:5432/filmy"
+        SQLALCHEMY_TRACK_MODIFICATIONS: False
+        MOVIE_DB_TOKEN: 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjNTNjYjQ0ZjQzYzA1MTZiZWU4NGQzYjgyOTM3NDNiMiIsIm5iZiI6MTczMzMwMzY5OC45MzQsInN1YiI6IjY3NTAxZDkyMjFlMWVhY2FjNmYwMjAyOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.7zI59cQBE3ygkFnBGHMC-02iSApAsp0Hak2EE_PzBEM'
+        JWT_SECRET_KEY: "your_secret_key"
+        SECRET_KEY: "your_secret_key"
+        JWT_ACCESS_TOKEN_EXPIRES: 1
+        FRONT_URL: 'http://app:5000'
+      depends_on:
+        filmydb:
+          condition: service_healthy
+      healthcheck:
+        test: ["CMD", "curl", "-f", "http://localhost:5000/admin"]
+        interval: 1m
+        timeout: 10s
+        retries: 3
+        start_period: 10s
+      networks:
+        filmy:
+
+    filmydb:
+      image: postgres:17
+      ports:
+        - 5433:5432
+      environment:
+        POSTGRES_DB: filmy
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: postgres
+      healthcheck:
+        test: ["CMD-SHELL", "pg_isready -U postgres"]
+        interval: 5s
+        timeout: 10s
+        retries: 120
+      volumes:
+        - filmy-data:/var/lib/postgresql/data
+      networks:
+        filmy:
+
+    app:
+      image: ollopic/filmy
+      ports:
+        - 8080:5000
+      environment:
+        APP_SECRET_KEY: 'your_secret_key'
+        API_URL: 'http://api:5000'
+      depends_on:
+        api:
+          condition: service_healthy
+      networks:
+        filmy:
+
+networks:
+  filmy:
+
+volumes:
+  filmy-data:
