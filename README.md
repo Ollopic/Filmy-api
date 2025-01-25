@@ -33,7 +33,7 @@ make init
 docker compose up -d
 ```
 
-L'API est alors accessible à l'adresse suivante : [http://localhost:8080](http://localhost:8080)
+L'API est alors accessible à l'adresse suivante : [http://localhost:8002](http://localhost:8002)
 
 Un utilisateur par défaut est créé :
 
