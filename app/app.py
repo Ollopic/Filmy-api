@@ -70,6 +70,9 @@ def init_db():
             admin = User(username="admin", mail="admin@example.com", password=hash_password("admin"), is_admin=True)
             db.session.add(admin)
             db.session.commit()
+            collection = Collection(name="Defaut", user_id=admin.id)
+            db.session.add(collection)
+            db.session.commit()
             print("Utilisateur admin créé")
         else:
             print("Utilisateur admin déjà créé")
