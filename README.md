@@ -59,7 +59,7 @@ GET /collection
 ```
 | Nom  | Type   | Optionnel | Description                  |
 | ---- | ------ | --------- | ---------------------------- |
-| -    | -      | -         | Néant                       |
+| -    | -      | -         | -                       |
 
 #### Créer une nouvelle collection
 ```bash
@@ -85,7 +85,7 @@ DELETE /collection/<identifier>
 ```
 | Nom  | Type   | Optionnel | Description                  |
 | ---- | ------ | --------- | ---------------------------- |
-| -    | -      | -         | Néant                       |
+| -    | -      | -         | -                       |
 
 #### Récupérer une collection spécifique
 ```bash
@@ -93,7 +93,7 @@ GET /collection/<identifier>
 ```
 | Nom  | Type   | Optionnel | Description                  |
 | ---- | ------ | --------- | ---------------------------- |
-| -    | -      | -         | Néant                       |
+| -    | -      | -         | -                       |
 
 #### Ajouter un film à une collection
 ```bash
@@ -124,7 +124,7 @@ DELETE /collection/<collection_id>/<film_id>
 ```
 | Nom  | Type   | Optionnel | Description                  |
 | ---- | ------ | --------- | ---------------------------- |
-| -    | -      | -         | Néant                       |
+| -    | -      | -         | -                       |
 
 #### Récupérer la wishlist
 ```bash
@@ -132,7 +132,7 @@ GET /collection/wishlist
 ```
 | Nom  | Type   | Optionnel | Description                  |
 | ---- | ------ | --------- | ---------------------------- |
-| -    | -      | -         | Néant                       |
+| -    | -      | -         | -                       |
 
 #### Ajouter un film à la wishlist
 ```bash
@@ -173,7 +173,7 @@ GET /movies/popular
 ```
 | Nom  | Type   | Optionnel | Description                  |
 | ---- | ------ | --------- | ---------------------------- |
-| -    | -      | -         | Néant                       |
+| -    | -      | -         | -                       |
 
 #### Récupérer les films tendances
 ```bash
@@ -181,7 +181,7 @@ GET /movies/trending
 ```
 | Nom  | Type   | Optionnel | Description                  |
 | ---- | ------ | --------- | ---------------------------- |
-| -    | -      | -         | Néant                       |
+| -    | -      | -         | -                       |
 
 #### Récupérer les films les mieux notés
 ```bash
@@ -189,7 +189,7 @@ GET /movies/top_rated
 ```
 | Nom  | Type   | Optionnel | Description                  |
 | ---- | ------ | --------- | ---------------------------- |
-| -    | -      | -         | Néant                       |
+| -    | -      | -         | -                       |
 
 #### Récupérer les films à venir
 ```bash
@@ -197,7 +197,7 @@ GET /movies/upcoming
 ```
 | Nom  | Type   | Optionnel | Description                  |
 | ---- | ------ | --------- | ---------------------------- |
-| -    | -      | -         | Néant                       |
+| -    | -      | -         | -                       |
 
 #### Récupérer les films actuellement en salle
 ```bash
@@ -205,7 +205,7 @@ GET /movies/now_playing
 ```
 | Nom  | Type   | Optionnel | Description                  |
 | ---- | ------ | --------- | ---------------------------- |
-| -    | -      | -         | Néant                       |
+| -    | -      | -         | -                       |
 
 #### Rechercher un film par titre
 ```bash
@@ -238,7 +238,7 @@ GET /movies/genres
 ```
 | Nom  | Type   | Optionnel | Description                  |
 | ---- | ------ | --------- | ---------------------------- |
-| -    | -      | -         | Néant                       |
+| -    | -      | -         | -                       |
 
 #### Découvrir des films avec des filtres
 ```bash
