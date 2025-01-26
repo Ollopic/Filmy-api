@@ -13,6 +13,9 @@ Afin de faciliter le développement local, nous avons créé des fichiers [compo
 ## Build des images
 
 Les images Docker ont été construites pour deux architectures différentes : `amd64` et `arm64` (pour les Macs Apple équipés des puces M1,2,3, par exemple). Cela permet d'assurer que l'application fonctionne sur diverses plateformes sans nécessiter d'adaptations supplémentaires. Ces images sont disponibles sur Docker Hub et peuvent être utilisées dans notre compose avec le tag `latest` (détecte automatiquement l'architecture) afin de déployer l'application rapidement sans avoir à rebuild les images à chaque fois.
+Les images sont disponibles sur le Docker Hub :
+- [ollopic/filmy](https://hub.docker.com/repository/docker/ollopic/filmy/general)
+- [ollopic/filmy-api](https://hub.docker.com/repository/docker/ollopic/filmy-api/general)
 
 Les commandes de build utilisées sont les suivantes :
 ```bash
